@@ -20,14 +20,45 @@ class MyGenerator extends Generator {
     }
 
     writing() {
+        this._makeEnv();
+
         this._copySolutionFile();
+        
+        this._copySrcFolder();
     }
 
     _copySolutionFile() {
+        var destPathOrig = this.destinationPath('TemplateSolution.sln');
+        var destPathFinal = this.destinationPath(`${this._projectName}.sln`);
+
         this.fs.copyTpl(
             this.templatePath('TemplateSolution.sln'),
-            this.destinationPath(`${this._projectName}.sln`)
+            destPathOrig,
+            this._env
         );
+
+        this.fs.move(destPathOrig, destPathFinal);
+    }
+
+    _copySrcFolder() {
+        var destSrcWebProjFolder = `src/${this._projectName}.Web`;
+
+        this.fs.copyTpl(
+            this.templatePath('src/TemplateProject.Web'),
+            this.destinationPath(destSrcWebProjFolder),
+            this._env
+        );
+
+        this.fs.move(
+            this.destinationPath(`${destSrcWebProjFolder}/TemplateProject.Web.csproj`),
+            this.destinationPath(`${destSrcWebProjFolder}/${this._projectName}.Web.csproj`)
+        );
+    }
+
+    _makeEnv() {
+        this._env = {
+            projectName: this._projectName
+        }
     }
 }
 
