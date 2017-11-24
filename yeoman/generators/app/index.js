@@ -23,6 +23,8 @@ class MyGenerator extends Generator {
         this._makeEnv();
 
         this._copySolutionFile();
+        this._copyReadme();
+        this._copyGitignore();
         
         this._copySrcFolder();
     }
@@ -38,6 +40,22 @@ class MyGenerator extends Generator {
         );
 
         this.fs.move(destPathOrig, destPathFinal);
+    }
+
+    _copyReadme() {
+        this.fs.copyTpl(
+            this.templatePath('README.md'),
+            this.destinationPath('README.md'),
+            this._env
+        );
+    }
+
+    _copyGitignore() {
+        this.fs.copyTpl(
+            this.templatePath('.gitignore'),
+            this.destinationPath('.gitignore'),
+            this._env
+        );
     }
 
     _copySrcFolder() {
