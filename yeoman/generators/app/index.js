@@ -29,6 +29,20 @@ class MyGenerator extends Generator {
         this._copySrcFolder();
     }
 
+    install () {
+        var cwd = this.destinationPath(this._env.destSrcWebProjFolder);
+
+        this.spawnCommand("npm", ["install"], { cwd: cwd})
+    }
+
+    _makeEnv() {
+        this._env = {
+            projectName: this._projectName,
+            projectNameFluc: this._jsUcfirst(this._projectName),
+            destSrcWebProjFolder: `src/${this._projectName}.Web`
+        }
+    }
+
     _copySolutionFile() {
         var destPathOrig = this.destinationPath('TemplateSolution.sln');
         var destPathFinal = this.destinationPath(`${this._projectName}.sln`);
@@ -59,7 +73,7 @@ class MyGenerator extends Generator {
     }
 
     _copySrcFolder() {
-        var destSrcWebProjFolder = `src/${this._projectName}.Web`;
+        var destSrcWebProjFolder = this._env.destSrcWebProjFolder;
 
         this.fs.copyTpl(
             this.templatePath('src/TemplateProject.Web'),
@@ -73,10 +87,12 @@ class MyGenerator extends Generator {
         );
     }
 
-    _makeEnv() {
-        this._env = {
-            projectName: this._projectName
-        }
+    _jsUcfirst(string) 
+    {
+        if (string.length < 1)
+            return string;
+
+        return string.charAt(0).toLowerCase() + string.slice(1);
     }
 }
 

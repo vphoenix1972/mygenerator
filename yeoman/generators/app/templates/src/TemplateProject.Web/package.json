@@ -1,0 +1,13 @@
+{
+  "version": "1.0.0",
+  "name": "<%= projectNameFluc %>",
+  "private": true,
+  "scripts": {
+    "webpack-dev": "set NODE_ENV=development&&webpack --color",
+    "webpack-prod": "set NODE_ENV=production&&webpack",
+    "webpack-prof": "set NODE_ENV=profiling&&webpack"
+  },
+  "devDependencies": {
+    "angular": "^1.6.7"
+  }
+}
