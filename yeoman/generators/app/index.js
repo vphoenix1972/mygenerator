@@ -38,7 +38,8 @@ class MyGenerator extends Generator {
     _makeEnv() {
         this._env = {
             projectName: this._projectName,
-            projectNameFluc: this._jsUcfirst(this._projectName),
+            npmPackageName: this._jsUcfirst(this._projectName),
+            angularModuleName: this._jsUcfirst(this._projectName),
             destSrcWebProjFolder: `src/${this._projectName}.Web`
         }
     }

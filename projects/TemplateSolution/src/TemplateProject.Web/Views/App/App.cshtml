@@ -4,16 +4,21 @@
 
 <!DOCTYPE html>
 
-<html>
+<html ng-app="templateProject" ng-strict-di>
 <head>
     <meta charset="utf-8"/>
     <title>TemplateProject</title>
 
     <link href="~/favicon.ico" rel="icon">
+    <link href="~/dist/app.css" rel="stylesheet" asp-append-version="true"/>
 </head>
 <body>
 <div>
-    Hello world!
+    <div ng-controller="appController as vm">
+        {{vm.message}}
+    </div>
+
+    <script src="~/dist/app.bundle.js" asp-append-version="true"></script>
 </div>
 </body>
 </html>

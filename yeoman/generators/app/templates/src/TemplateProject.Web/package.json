@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "name": "<%= projectNameFluc %>",
+  "name": "<%= npmPackageName %>",
   "private": true,
   "scripts": {
     "webpack-dev": "set NODE_ENV=development&&webpack --color",
@@ -8,6 +8,27 @@
     "webpack-prof": "set NODE_ENV=profiling&&webpack"
   },
   "devDependencies": {
-    "angular": "^1.6.7"
+    "angular": "^1.6.7",
+    "jquery": "2.2.4",
+    "babel-core": "^6.24.1",
+    "babel-loader": "^7.0.0",
+    "babel-plugin-transform-runtime": "^6.23.0",
+    "babel-preset-env": "^1.4.0",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-runtime": "^6.23.0",
+    "clean-webpack-plugin": "0.1.16",
+    "core-js": "^2.4.1",
+    "css-loader": "0.28.0",
+    "extract-text-webpack-plugin": "2.1.0",
+    "file-loader": "0.11.1",    
+    "js-polyfills": "^0.1.34",
+    "ng-annotate-loader": "^0.6.0",
+    "null-loader": "^0.1.1",
+    "postcss-loader": "^1.3.3",
+    "raw-loader": "0.5.1",
+    "style-loader": "0.16.1",
+    "url-loader": "^0.5.8",
+    "webpack": "^2.6.1",
+    "webpack-bundle-analyzer": "^2.7.0"
   }
 }
