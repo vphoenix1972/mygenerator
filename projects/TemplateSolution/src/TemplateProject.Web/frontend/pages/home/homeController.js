@@ -1,9 +1,9 @@
 'use strict';
 
 import angular from 'angular';
-import appModule from './appModule';
+import appModule from 'rootDir/appModule';
 
-function AppController() {
+function HomeController() {
     'ngInject';
 
     const self = this;
@@ -12,4 +12,4 @@ function AppController() {
 }
 
 angular.module(appModule)
-    .controller('appController', AppController);
+    .controller('homeController', HomeController);

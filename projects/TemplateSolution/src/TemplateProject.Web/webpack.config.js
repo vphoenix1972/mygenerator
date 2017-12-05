@@ -129,7 +129,12 @@ module.exports = {
 
             // Using minified version for remove console.assert()
             // https://github.com/inexorabletash/polyfill#files
-            'js-polyfills/min': path.join(__dirname, 'node_modules/js-polyfills/polyfill.min.js')            
+            'js-polyfills/min': path.join(__dirname, 'node_modules/js-polyfills/polyfill.min.js'),
+            
+            'bootstrap.css': path.join(__dirname, 'node_modules/bootstrap/dist/css/bootstrap.css'),
+            'bootstrap.js': path.join(__dirname, 'node_modules/bootstrap/dist/js/bootstrap.js'),
+
+            'font-awesome.css': path.join(__dirname, 'node_modules/font-awesome/css/font-awesome.css')
         }
     },
     devtool: 'source-map',
