@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace <%= projectName %>.Web
+namespace <%= projectNamespace %>.Web
 {
     public class Startup
     {

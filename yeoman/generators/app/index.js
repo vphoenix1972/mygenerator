@@ -20,6 +20,8 @@ class MyGenerator extends Generator {
     }
 
     writing() {
+        this._prepare();
+
         this._makeEnv();
 
         this._copySolutionFile();
@@ -35,18 +37,25 @@ class MyGenerator extends Generator {
         this.spawnCommand("npm", ["install"], { cwd: cwd})
     }
 
-    _makeEnv() {
+    _prepare() {
+        this._csprojName = this._jsUcfirst(this._projectName);
+        this._destSrcWebProjFolder = `src/${this._csprojName}.Web`;
+    }
+
+    _makeEnv() {      
         this._env = {
             projectName: this._projectName,
-            npmPackageName: this._jsUcfirst(this._projectName),
-            angularModuleName: this._jsUcfirst(this._projectName),
-            destSrcWebProjFolder: `src/${this._projectName}.Web`
+            npmPackageName: this._jsLcfirst(this._projectName),
+            angularModuleName: this._jsLcfirst(this._projectName),
+            csprojName: this._csprojName,
+            projectNamespace: this._jsUcfirst(this._projectName),
+            destSrcWebProjFolder: this._destSrcWebProjFolder
         }
     }
 
     _copySolutionFile() {
         var destPathOrig = this.destinationPath('TemplateSolution.sln');
-        var destPathFinal = this.destinationPath(`${this._projectName}.sln`);
+        var destPathFinal = this.destinationPath(`${this._csprojName}.sln`);
 
         this.fs.copyTpl(
             this.templatePath('TemplateSolution.sln'),
@@ -74,21 +83,27 @@ class MyGenerator extends Generator {
     }
 
     _copySrcFolder() {
-        var destSrcWebProjFolder = this._env.destSrcWebProjFolder;
-
         this.fs.copyTpl(
             this.templatePath('src/TemplateProject.Web'),
-            this.destinationPath(destSrcWebProjFolder),
+            this.destinationPath(this._destSrcWebProjFolder),
             this._env
         );
 
         this.fs.move(
-            this.destinationPath(`${destSrcWebProjFolder}/TemplateProject.Web.csproj`),
-            this.destinationPath(`${destSrcWebProjFolder}/${this._projectName}.Web.csproj`)
+            this.destinationPath(`${this._destSrcWebProjFolder}/TemplateProject.Web.csproj`),
+            this.destinationPath(`${this._destSrcWebProjFolder}/${this._csprojName}.Web.csproj`)
         );
     }
 
     _jsUcfirst(string) 
+    {
+        if (string.length < 1)
+            return string;
+
+        return string.charAt(0).toUpperCase() + string.slice(1);
+    }
+
+    _jsLcfirst(string) 
     {
         if (string.length < 1)
             return string;

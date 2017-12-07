@@ -2,7 +2,7 @@
 using System.Threading;
 using Microsoft.AspNetCore.Mvc;
 
-namespace <%= projectName %>.Web.Controllers
+namespace <%= projectNamespace %>.Web.Controllers
 {
     [Route("api/todo")]
     public sealed class TodoApiController : Controller

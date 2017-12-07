@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace <%= projectName %>.Web.Controllers
+namespace <%= projectNamespace %>.Web.Controllers
 {
     [Route("")]
     public sealed class AppController : Controller
