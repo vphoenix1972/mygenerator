@@ -38,3 +38,30 @@ body {
 .page-container {
     padding: 10px 0;
 }
+
+.app-row {
+    width: 100%;
+}
+
+.app-row:after {
+    /* Clear float */
+    clear: both;
+    display: block;
+    height: 0;
+    overflow: hidden;
+    visibility: hidden;
+    content: ".";
+    font-size: 0;
+}
+
+.app-col {
+    float: left;
+}
+
+.app-col-10ps {
+    width: 10%;
+}
+
+.app-col-90ps {
+    width: 90%;
+}

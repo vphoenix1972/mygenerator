@@ -1,0 +1,20 @@
+<div class="modal-header">
+    <h3 class="app-dialog__title">{{vm.title}}</h3>
+</div>
+    
+<div class="modal-body">
+    <div class="progress progress-striped active app-progress-dialog__progress-bar">
+        <div class="progress-bar" style="width: 100%">
+
+        </div>
+    </div>
+
+    <div ng-if="vm.isCancelButtonVisible()"
+            class="app-progress-dialog__buttons">
+        <button type="button"
+                class="btn btn-warning"
+                ng-click="vm.onCancelButtonClicked()">
+            Cancel
+        </button>
+    </div>
+</div>
