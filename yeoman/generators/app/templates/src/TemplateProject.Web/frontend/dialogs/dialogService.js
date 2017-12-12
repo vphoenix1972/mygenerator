@@ -114,6 +114,8 @@ DialogService.prototype.showErrorAsync = function (options) {
         }
     }
 
+    self.hideExecuting();
+
     var instance = self.showModal(modalOptions);
 
     return instance.result;

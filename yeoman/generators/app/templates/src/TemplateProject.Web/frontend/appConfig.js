@@ -2,6 +2,7 @@
 
 import homeTemplateUrl from 'rootDir/pages/home/home.tpl.html';
 import todoIndexTemplateUrl from 'rootDir/pages/todo/todoIndex.tpl.html';
+import todoEditTemplateUrl from 'rootDir/pages/todo/todoEdit.tpl.html';
 import examplesTemplateUrl from 'rootDir/pages/examples/examples.tpl.html';
 import aboutTemplateUrl from 'rootDir/pages/about/about.tpl.html';
 
@@ -32,6 +33,22 @@ function config(
         templateUrl: todoIndexTemplateUrl
     };
 
+    var todoNewState = {
+        name: 'todo-new',
+        url: '/todo-new',
+        controller: 'todoEditController',
+        controllerAs: 'vm',
+        templateUrl: todoEditTemplateUrl
+    };
+
+    var todoEditState = {
+        name: 'todo-edit',
+        url: '/todo-edit/{id:int}',
+        controller: 'todoEditController',
+        controllerAs: 'vm',
+        templateUrl: todoEditTemplateUrl
+    };
+
     var examplesState = {
         name: 'examples',
         url: '/examples',
@@ -50,6 +67,8 @@ function config(
 
     $stateProvider.state(homeState)
                   .state(todoIndexState)
+                  .state(todoNewState)
+                  .state(todoEditState)
                   .state(examplesState)
                   .state(aboutState);
 

@@ -8,6 +8,8 @@ import 'angularjs-toaster.css';
 
 import './app.css';
 
+import 'rootDir/utils/arrayExtensions';
+
 import './appModule';
 
 import 'rootDir/services/connectorService';
@@ -21,5 +23,6 @@ import 'rootDir/dialogs/errorDialog/errorDialogController';
 
 import 'rootDir/pages/home/homeController';
 import 'rootDir/pages/todo/todoIndexController';
+import 'rootDir/pages/todo/todoEditController';
 import 'rootDir/pages/examples/examplesController';
 import 'rootDir/pages/about/aboutController';

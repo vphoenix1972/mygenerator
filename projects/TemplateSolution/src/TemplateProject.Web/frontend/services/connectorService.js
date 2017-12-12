@@ -14,10 +14,34 @@ function ConnectorService(
     self._$http = $http;
 }
 
-ConnectorService.prototype.getTodoItemsAsync = function () {
+ConnectorService.prototype.getTodoIndexAsync = function () {
     const self = this;
 
-    return self._get('api/todo');
+    return self._get('todo/index');
+}
+
+ConnectorService.prototype.getTodoEditAsync = function (todoItemId) {
+    const self = this;
+
+    return self._get(`todo/edit/${todoItemId}`);
+}
+
+ConnectorService.prototype.addTodoItemAsync = function (item) {
+    const self = this;
+
+    return self._post('todo', item);
+}
+
+ConnectorService.prototype.updateTodoItemAsync = function (todoItemId, item) {
+    const self = this;
+
+    return self._put(`todo/${todoItemId}`, item);
+}
+
+ConnectorService.prototype.deleteTodoItemAsync = function (todoItemId) {
+    const self = this;
+
+    return self._delete(`todo/${todoItemId}`);
 }
 
 /* Private */
