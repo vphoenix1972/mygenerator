@@ -40,6 +40,9 @@ class MyGenerator extends Generator {
     _prepare() {
         this._csprojName = this._jsUcfirst(this._projectName);
         this._destSrcWebProjFolder = `src/${this._csprojName}.Web`;
+        this._destSrcCoreProjFolder = `src/${this._csprojName}.Core`;
+        this._destSrcDataAccessProjFolder = `src/${this._csprojName}.DataAccess`;
+        this._destSrcUtilsProjFolder = `src/${this._csprojName}.Utils`;
     }
 
     _makeEnv() {      
@@ -49,7 +52,10 @@ class MyGenerator extends Generator {
             angularModuleName: this._jsLcfirst(this._projectName),
             csprojName: this._csprojName,
             projectNamespace: this._jsUcfirst(this._projectName),
-            destSrcWebProjFolder: this._destSrcWebProjFolder
+            destSrcWebProjFolder: this._destSrcWebProjFolder,
+            destSrcCoreProjFolder: this._destSrcCoreProjFolder,
+            destSrcDataAccessProjFolder: this._destSrcDataAccessProjFolder,
+            destSrcUtilsProjFolder: this._destSrcUtilsProjFolder
         }
     }
 
@@ -83,15 +89,48 @@ class MyGenerator extends Generator {
     }
 
     _copySrcFolder() {
+        // Web
         this.fs.copyTpl(
             this.templatePath('src/TemplateProject.Web'),
             this.destinationPath(this._destSrcWebProjFolder),
             this._env
         );
-
         this.fs.move(
             this.destinationPath(`${this._destSrcWebProjFolder}/TemplateProject.Web.csproj`),
             this.destinationPath(`${this._destSrcWebProjFolder}/${this._csprojName}.Web.csproj`)
+        );
+
+        // Core
+        this.fs.copyTpl(
+            this.templatePath('src/TemplateProject.Core'),
+            this.destinationPath(this._destSrcCoreProjFolder),
+            this._env
+        );
+        this.fs.move(
+            this.destinationPath(`${this._destSrcCoreProjFolder}/TemplateProject.Core.csproj`),
+            this.destinationPath(`${this._destSrcCoreProjFolder}/${this._csprojName}.Core.csproj`)
+        );
+
+        // DataAccess
+        this.fs.copyTpl(
+            this.templatePath('src/TemplateProject.DataAccess'),
+            this.destinationPath(this._destSrcDataAccessProjFolder),
+            this._env
+        );
+        this.fs.move(
+            this.destinationPath(`${this._destSrcDataAccessProjFolder}/TemplateProject.DataAccess.csproj`),
+            this.destinationPath(`${this._destSrcDataAccessProjFolder}/${this._csprojName}.DataAccess.csproj`)
+        );
+
+        // Utils
+        this.fs.copyTpl(
+            this.templatePath('src/TemplateProject.Utils'),
+            this.destinationPath(this._destSrcUtilsProjFolder),
+            this._env
+        );
+        this.fs.move(
+            this.destinationPath(`${this._destSrcUtilsProjFolder}/TemplateProject.Utils.csproj`),
+            this.destinationPath(`${this._destSrcUtilsProjFolder}/${this._csprojName}.Utils.csproj`)
         );
     }
 

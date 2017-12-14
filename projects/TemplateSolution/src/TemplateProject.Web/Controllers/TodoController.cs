@@ -1,31 +1,33 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System;
 using Microsoft.AspNetCore.Mvc;
+using TemplateProject.Core.Domain;
+using TemplateProject.Core.Interfaces.DataAccess;
 
 namespace TemplateProject.Web.Controllers
 {
     [Route("todo")]
     public sealed class TodoController : Controller
     {
-        private static readonly IList<Item> items = new List<Item>()
-        {
-            new Item {Id = 1, Name = "Item 1"},
-            new Item {Id = 2, Name = "Item 2"},
-            new Item {Id = 3, Name = "Item 3"}
-        };
+        private readonly IDatabaseService _databaseService;
 
-        private static int _counter = 4;
+        public TodoController(IDatabaseService databaseService)
+        {
+            if (databaseService == null)
+                throw new ArgumentNullException(nameof(databaseService));
+
+            _databaseService = databaseService;
+        }
 
         [HttpGet("index")]
         public IActionResult Index()
         {
-            return Ok(items);
+            return Ok(_databaseService.TodoItemsRepository.GetAll());
         }
 
         [HttpGet("edit/{id:int}")]
         public IActionResult Edit(int id)
         {
-            var item = items.FirstOrDefault(e => e.Id == id);
+            var item = _databaseService.TodoItemsRepository.GetById(id);
             if (item == null)
                 return NotFound();
 
@@ -33,50 +35,37 @@ namespace TemplateProject.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult Add([FromBody] Item item)
+        public IActionResult Add([FromBody] TodoItem item)
         {
             if (item == null)
                 return BadRequest();
 
-            item.Id = _counter++;
+            var result = _databaseService.TodoItemsRepository.AddOrUpdate(item);
 
-            items.Add(item);
-
-            return Ok(item);
+            return Ok(result);
         }
 
         [HttpPut("{id:int}")]
-        public IActionResult Update(int id, [FromBody] Item item)
+        public IActionResult Update(int id, [FromBody] TodoItem item)
         {
             if (item == null)
                 return BadRequest();
 
-            var existingItem = items.FirstOrDefault(e => e.Id == id);
+            var existingItem = _databaseService.TodoItemsRepository.GetById(id);
             if (existingItem == null)
                 return NotFound();
 
-            existingItem.Name = item.Name;
+            var result = _databaseService.TodoItemsRepository.AddOrUpdate(item);
 
-            return Ok(existingItem);
+            return Ok(result);
         }
 
         [HttpDelete("{id:int}")]
         public IActionResult Delete(int id)
         {
-            var item = items.FirstOrDefault(e => e.Id == id);
-            if (item == null)
-                return NotFound();
-
-            items.Remove(item);
+            _databaseService.TodoItemsRepository.DeleteById(id);
 
             return Ok();
-        }
-
-        public class Item
-        {
-            public int? Id { get; set; }
-
-            public string Name { get; set; }
         }
     }
 }

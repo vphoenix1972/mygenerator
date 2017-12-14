@@ -13,4 +13,9 @@
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.3" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\<%= csprojName %>.Core\<%= csprojName %>.Core.csproj" />
+    <ProjectReference Include="..\<%= csprojName %>.DataAccess\<%= csprojName %>.DataAccess.csproj" />
+  </ItemGroup>
+
 </Project>
