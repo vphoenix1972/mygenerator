@@ -1,0 +1,1 @@
+Host=localhost;Port=5432;Username=postgres;Password=12345678;Database=mygenerator

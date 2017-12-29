@@ -82,7 +82,7 @@ class MyGenerator extends Generator {
 
     _copyGitignore() {
         this.fs.copyTpl(
-            this.templatePath('.gitignore'),
+            this.templatePath('._gitignore'),
             this.destinationPath('.gitignore'),
             this._env
         );
