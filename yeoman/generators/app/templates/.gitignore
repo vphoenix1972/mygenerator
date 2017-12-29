@@ -288,3 +288,5 @@ build/
 **/wwwroot/dist/
 **/wwwroot/assets/
 **/wwwroot/templates/
+
+src/TemplateProject.DataAccess/connectionStringForMigrations

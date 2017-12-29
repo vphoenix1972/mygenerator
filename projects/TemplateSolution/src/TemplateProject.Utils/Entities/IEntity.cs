@@ -1,4 +1,6 @@
-﻿namespace TemplateProject.Utils.Entities
+﻿using System;
+
+namespace TemplateProject.Utils.Entities
 {
     public interface IEntity<TKey>
     {

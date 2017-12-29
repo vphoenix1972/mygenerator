@@ -1,4 +1,6 @@
-﻿namespace <%= projectNamespace %>.Utils.Entities
+﻿using System;
+
+namespace <%= projectNamespace %>.Utils.Entities
 {
     public interface IEntity<TKey>
     {

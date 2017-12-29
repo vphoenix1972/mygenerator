@@ -42,6 +42,8 @@ namespace TemplateProject.Web.Controllers
 
             var result = _databaseService.TodoItemsRepository.AddOrUpdate(item);
 
+            _databaseService.SaveChanges();
+
             return Ok(result);
         }
 
@@ -57,6 +59,8 @@ namespace TemplateProject.Web.Controllers
 
             var result = _databaseService.TodoItemsRepository.AddOrUpdate(item);
 
+            _databaseService.SaveChanges();
+
             return Ok(result);
         }
 
@@ -64,6 +68,8 @@ namespace TemplateProject.Web.Controllers
         public IActionResult Delete(int id)
         {
             _databaseService.TodoItemsRepository.DeleteById(id);
+
+            _databaseService.SaveChanges();
 
             return Ok();
         }

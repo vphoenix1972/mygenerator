@@ -1,4 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using TemplateProject.Core.Domain;
+using TemplateProject.Utils.Factories;
 
 namespace TemplateProject.Core
 {
@@ -6,6 +8,7 @@ namespace TemplateProject.Core
     {
         public static void AddCore(this IServiceCollection services)
         {
+            services.AddSingleton<IFactory<ITodoItem>, Factory<ITodoItem, TodoItem>>();
         }
     }
 }

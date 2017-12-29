@@ -1,61 +1,29 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using TemplateProject.Core.Domain;
 using TemplateProject.Core.Interfaces.DataAccess.Repositories;
+using TemplateProject.DataAccess.Models;
+using TemplateProject.Utils.Factories;
 
 namespace TemplateProject.DataAccess.Repositories
 {
-    public sealed class TodoItemsRepository : ITodoItemsRepository
+    public sealed class TodoItemsRepository : RepositoryBase<ITodoItem, int, TodoItemDataModel>,
+        ITodoItemsRepository
     {
-        private static readonly IList<ITodoItem> items = new List<ITodoItem>()
+        public TodoItemsRepository(ApplicationDbContext db,
+            IFactory<ITodoItem> todoItemsFactory) :
+            base(db, db?.TodoItems, todoItemsFactory)
         {
-            new TodoItem {Id = 1, Name = "Item 1"},
-            new TodoItem {Id = 2, Name = "Item 2"},
-            new TodoItem {Id = 3, Name = "Item 3"}
-        };
-
-        private static int _counter = 4;
-
-        public IList<ITodoItem> GetAll()
-        {
-            return items.ToList();
         }
 
-        public ITodoItem GetById(int id)
+        protected override void Map(TodoItemDataModel source, ITodoItem dest)
         {
-            return items.FirstOrDefault(e => e.Id == id);
+            dest.Id = source.Id;
+            dest.Name = source.Name;
         }
 
-        public ITodoItem AddOrUpdate(ITodoItem item)
-        {
-            if (item.Id.HasValue)
-            {
-                var existing = GetById(item.Id.Value);
-                if (existing != null)
-                {
-                    Map(item, existing);
-
-                    return existing;
-                }
-            }
-
-            item.Id = _counter++;
-
-            items.Add(item);
-
-            return item;
-        }
-
-        public void DeleteById(int id)
-        {
-            var item = GetById(id);
-            if (item == null)
-                return;
-
-            items.Remove(item);
-        }
-
-        private void Map(ITodoItem source, ITodoItem dest)
+        protected override void Map(ITodoItem source, TodoItemDataModel dest)
         {
             dest.Name = source.Name;
         }
