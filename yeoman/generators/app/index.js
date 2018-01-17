@@ -27,7 +27,8 @@ class MyGenerator extends Generator {
         this._copySolutionFile();
         this._copyReadme();
         this._copyGitignore();
-        
+        this._copyNugetConfig();
+                
         this._copySrcFolder();
     }
 
@@ -84,6 +85,14 @@ class MyGenerator extends Generator {
         this.fs.copyTpl(
             this.templatePath('._gitignore'),
             this.destinationPath('.gitignore'),
+            this._env
+        );
+    }
+
+    _copyNugetConfig() {
+        this.fs.copyTpl(
+            this.templatePath('NuGet.Config'),
+            this.destinationPath('NuGet.Config'),
             this._env
         );
     }
