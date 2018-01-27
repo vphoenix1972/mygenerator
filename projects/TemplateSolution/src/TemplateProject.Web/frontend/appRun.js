@@ -3,8 +3,8 @@
 function run($location) {
     'ngInject';
 
-    // Goto home page on application startup
-    $location.url('/app/home');
+    // Goto loading page on application startup
+    $location.url('/loading');
 }
 
 export default run;

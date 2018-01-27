@@ -32,7 +32,7 @@ function TodoEditController(connectorService,
                 self._fromServerModel(result.data);
             },
             () => {
-                self._$state.go('home');
+                self._$state.go('app.home');
             })
             .finally(() => self.isLoading = false);
     }
@@ -41,7 +41,7 @@ function TodoEditController(connectorService,
 TodoEditController.prototype.onBackToIndexButtonClicked = function () {
     const self = this;
 
-    self._$state.go('todo-index');
+    self._$state.go('app.todo-index');
 }
 
 TodoEditController.prototype.onSaveButtonClicked = function () {
@@ -58,7 +58,7 @@ TodoEditController.prototype.onSaveButtonClicked = function () {
     savePromise.then(() => {
         self._dialogService.showSuccess();
 
-        self._$state.go('todo-index');
+        self._$state.go('app.todo-index');
     }, () => {
         self._dialogService.showErrorAsync({ text: 'An error occured on saving.' });
     });
@@ -72,7 +72,7 @@ TodoEditController.prototype._fromServerModel = function (serverModel) {
     self.name = serverModel.name;
 }
 
-TodoEditController.prototype._toServerModel = function (serverModel) {
+TodoEditController.prototype._toServerModel = function () {
     const self = this;
 
     return {

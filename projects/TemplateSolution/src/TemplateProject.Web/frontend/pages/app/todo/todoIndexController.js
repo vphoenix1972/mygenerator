@@ -27,7 +27,7 @@ function TodoIndexController(connectorService,
             self.items = result.data;
         },
         () => {
-            self._$state.go('home');
+            self._$state.go('app.home');
         })
         .finally(() => self.isLoading = false);
 }
@@ -35,13 +35,13 @@ function TodoIndexController(connectorService,
 TodoIndexController.prototype.onAddButtonClicked = function () {
     const self = this;
     
-    self._$state.go('todo-new');
+    self._$state.go('app.todo-new');
 }
 
 TodoIndexController.prototype.onEditButtonClicked = function (item) {
     const self = this;
 
-    self._$state.go('todo-edit', { id: item.id });
+    self._$state.go('app.todo-edit', { id: item.id });
 }
 
 TodoIndexController.prototype.onDeleteButtonClicked = function (item) {

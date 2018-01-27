@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TemplateProject.Core", "src
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TemplateProject.Utils", "src\TemplateProject.Utils\TemplateProject.Utils.csproj", "{729A5600-F858-4FDB-A507-B74986834167}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TemplateProject.DataAccess", "src\TemplateProject.DataAccess\TemplateProject.DataAccess.csproj", "{C27C176C-5319-46B8-9208-76F67358DA63}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TemplateProject.DataAccess", "src\TemplateProject.DataAccess\TemplateProject.DataAccess.csproj", "{C27C176C-5319-46B8-9208-76F67358DA63}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -1,5 +1,7 @@
 'use strict';
 
+import loadingTemplateUrl from 'rootDir/pages/loading/loading.tpl.html';
+
 import appLayoutTemplateUrl from 'rootDir/pages/app/appLayout.tpl.html';
 import homeTemplateUrl from 'rootDir/pages/app/home/home.tpl.html';
 import todoIndexTemplateUrl from 'rootDir/pages/app/todo/todoIndex.tpl.html';
@@ -24,61 +26,63 @@ function configureRoutes($stateProvider, $urlRouterProvider) {
 
     var appStateName = 'app';
 
-    $stateProvider.state('app',
+    $stateProvider.state('loading',
+        {
+            url: '/loading',
+            controller: 'loadingController',
+            controllerAs: 'vm',
+            templateUrl: loadingTemplateUrl
+        });
+
+    $stateProvider.state(appStateName,
         {
             abstract: true,
             url: '/app',
             templateUrl: appLayoutTemplateUrl
         });
 
-    $stateProvider.state('home',
+    $stateProvider.state(`${appStateName}.home`,
         {
-            parent: appStateName,
             url: '/home',
             controller: 'homeController',
             controllerAs: 'vm',
             templateUrl: homeTemplateUrl
         });
 
-    $stateProvider.state('todo-index',
+    $stateProvider.state(`${appStateName}.todo-index`,
         {
-            parent: appStateName,
             url: '/todo-index',
             controller: 'todoIndexController',
             controllerAs: 'vm',
             templateUrl: todoIndexTemplateUrl
         });
 
-    $stateProvider.state('todo-new',
+    $stateProvider.state(`${appStateName}.todo-new`,
         {
-            parent: appStateName,
             url: '/todo-new',
             controller: 'todoEditController',
             controllerAs: 'vm',
             templateUrl: todoEditTemplateUrl
         });
 
-    $stateProvider.state('todo-edit',
+    $stateProvider.state(`${appStateName}.todo-edit`,
         {
-            parent: appStateName,
             url: '/todo-edit/{id:int}',
             controller: 'todoEditController',
             controllerAs: 'vm',
             templateUrl: todoEditTemplateUrl
         });
 
-    $stateProvider.state('examples',
+    $stateProvider.state(`${appStateName}.examples`,
         {
-            parent: appStateName,
             url: '/examples',
             controller: 'examplesController',
             controllerAs: 'vm',
             templateUrl: examplesTemplateUrl
         });
 
-    $stateProvider.state('about',
+    $stateProvider.state(`${appStateName}.about`,
         {
-            parent: appStateName,
             url: '/about',
             controller: 'aboutController',
             controllerAs: 'vm',
