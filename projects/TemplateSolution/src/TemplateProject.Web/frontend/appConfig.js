@@ -1,10 +1,11 @@
 'use strict';
 
-import homeTemplateUrl from 'rootDir/pages/home/home.tpl.html';
-import todoIndexTemplateUrl from 'rootDir/pages/todo/todoIndex.tpl.html';
-import todoEditTemplateUrl from 'rootDir/pages/todo/todoEdit.tpl.html';
-import examplesTemplateUrl from 'rootDir/pages/examples/examples.tpl.html';
-import aboutTemplateUrl from 'rootDir/pages/about/about.tpl.html';
+import appLayoutTemplateUrl from 'rootDir/pages/app/appLayout.tpl.html';
+import homeTemplateUrl from 'rootDir/pages/app/home/home.tpl.html';
+import todoIndexTemplateUrl from 'rootDir/pages/app/todo/todoIndex.tpl.html';
+import todoEditTemplateUrl from 'rootDir/pages/app/todo/todoEdit.tpl.html';
+import examplesTemplateUrl from 'rootDir/pages/app/examples/examples.tpl.html';
+import aboutTemplateUrl from 'rootDir/pages/app/about/about.tpl.html';
 
 function config(
     $stateProvider,
@@ -16,64 +17,76 @@ function config(
     // https://github.com/angular-ui/ui-router/issues/2889
     $qProvider.errorOnUnhandledRejections(false);
 
-    /* Configure routes */
-    var homeState = {
-        name: 'home',
-        url: '/home',
-        controller: 'homeController',
-        controllerAs: 'vm',
-        templateUrl: homeTemplateUrl
-    };
+    configureRoutes($stateProvider, $urlRouterProvider);
+}
 
-    var todoIndexState = {
-        name: 'todo-index',
-        url: '/todo-index',
-        controller: 'todoIndexController',
-        controllerAs: 'vm',
-        templateUrl: todoIndexTemplateUrl
-    };
+function configureRoutes($stateProvider, $urlRouterProvider) {
 
-    var todoNewState = {
-        name: 'todo-new',
-        url: '/todo-new',
-        controller: 'todoEditController',
-        controllerAs: 'vm',
-        templateUrl: todoEditTemplateUrl
-    };
+    var appStateName = 'app';
 
-    var todoEditState = {
-        name: 'todo-edit',
-        url: '/todo-edit/{id:int}',
-        controller: 'todoEditController',
-        controllerAs: 'vm',
-        templateUrl: todoEditTemplateUrl
-    };
+    $stateProvider.state('app',
+        {
+            abstract: true,
+            url: '/app',
+            templateUrl: appLayoutTemplateUrl
+        });
 
-    var examplesState = {
-        name: 'examples',
-        url: '/examples',
-        controller: 'examplesController',
-        controllerAs: 'vm',
-        templateUrl: examplesTemplateUrl
-    };
+    $stateProvider.state('home',
+        {
+            parent: appStateName,
+            url: '/home',
+            controller: 'homeController',
+            controllerAs: 'vm',
+            templateUrl: homeTemplateUrl
+        });
 
-    var aboutState = {
-        name: 'about',
-        url: '/about',
-        controller: 'aboutController',
-        controllerAs: 'vm',
-        templateUrl: aboutTemplateUrl
-    };
+    $stateProvider.state('todo-index',
+        {
+            parent: appStateName,
+            url: '/todo-index',
+            controller: 'todoIndexController',
+            controllerAs: 'vm',
+            templateUrl: todoIndexTemplateUrl
+        });
 
-    $stateProvider.state(homeState)
-                  .state(todoIndexState)
-                  .state(todoNewState)
-                  .state(todoEditState)
-                  .state(examplesState)
-                  .state(aboutState);
+    $stateProvider.state('todo-new',
+        {
+            parent: appStateName,
+            url: '/todo-new',
+            controller: 'todoEditController',
+            controllerAs: 'vm',
+            templateUrl: todoEditTemplateUrl
+        });
+
+    $stateProvider.state('todo-edit',
+        {
+            parent: appStateName,
+            url: '/todo-edit/{id:int}',
+            controller: 'todoEditController',
+            controllerAs: 'vm',
+            templateUrl: todoEditTemplateUrl
+        });
+
+    $stateProvider.state('examples',
+        {
+            parent: appStateName,
+            url: '/examples',
+            controller: 'examplesController',
+            controllerAs: 'vm',
+            templateUrl: examplesTemplateUrl
+        });
+
+    $stateProvider.state('about',
+        {
+            parent: appStateName,
+            url: '/about',
+            controller: 'aboutController',
+            controllerAs: 'vm',
+            templateUrl: aboutTemplateUrl
+        });
 
     // Set default and 404 state
-    $urlRouterProvider.otherwise('/home');
+    $urlRouterProvider.otherwise('/app/home');
 }
 
 

@@ -21,8 +21,8 @@ import 'rootDir/dialogs/progressDialog/progressDialogController';
 import 'rootDir/dialogs/confirmDialog/confirmDialogController';
 import 'rootDir/dialogs/errorDialog/errorDialogController';
 
-import 'rootDir/pages/home/homeController';
-import 'rootDir/pages/todo/todoIndexController';
-import 'rootDir/pages/todo/todoEditController';
-import 'rootDir/pages/examples/examplesController';
-import 'rootDir/pages/about/aboutController';
+import 'rootDir/pages/app/home/homeController';
+import 'rootDir/pages/app/todo/todoIndexController';
+import 'rootDir/pages/app/todo/todoEditController';
+import 'rootDir/pages/app/examples/examplesController';
+import 'rootDir/pages/app/about/aboutController';
