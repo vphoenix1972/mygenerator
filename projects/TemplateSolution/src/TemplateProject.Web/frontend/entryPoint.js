@@ -12,7 +12,10 @@ import 'rootDir/utils/arrayExtensions';
 
 import './appModule';
 
+import 'rootDir/constants/roles';
+
 import 'rootDir/services/connectorService';
+import 'rootDir/services/security/authorizationService';
 
 import 'rootDir/directives/appSpinner/appSpinnerDirective';
 
@@ -23,6 +26,8 @@ import 'rootDir/dialogs/errorDialog/errorDialogController';
 
 
 import 'rootDir/pages/loading/loadingController';
+import 'rootDir/pages/signIn/signInController';
+import 'rootDir/pages/forbidden/forbiddenController';
 
 import 'rootDir/pages/app/home/homeController';
 import 'rootDir/pages/app/todo/todoIndexController';

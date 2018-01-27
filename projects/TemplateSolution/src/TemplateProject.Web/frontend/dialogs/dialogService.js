@@ -64,9 +64,21 @@ DialogService.prototype.showExecutingAsync = function (options) {
         }
     }
 
-    self._executingDialog = {}
+    self._executingDialog = {
+        instance: null,
+        isHideRequested: false,
+        isOpened: false
+    }
 
     self._executingDialog.instance = self.showModal(modalOptions);
+
+    self._executingDialog.instance.opened.then(() => {
+        self._executingDialog.isOpened = true;
+
+        // Workaround to allow to hide executing right after it showExecuting has been called
+        if (self._executingDialog.isHideRequested)
+            self._executingDialog.instance.close();
+    });
 
     self._executingDialog.instance.closed.then(() => {
         self._executingDialog = null;
@@ -81,7 +93,10 @@ DialogService.prototype.hideExecuting = function () {
     if (self._executingDialog == null)
         return;
 
-    self._executingDialog.instance.close();
+    self._executingDialog.isHideRequested = true;
+
+    if (self._executingDialog.isOpened)
+        self._executingDialog.instance.close();
 }
 
 DialogService.prototype.isExecutingShown = function () {
@@ -165,13 +180,12 @@ DialogService.prototype.showToaster = function (options) {
 DialogService.prototype.showModal = function (modalOptions) {
     const self = this;
 
-    var modalInstance = self._$uibModal.open(modalOptions);    
+    var modalInstance = self._$uibModal.open(modalOptions);
 
     return modalInstance;
 }
 
 /* Private */
-
 
 
 angular.module(appModule)

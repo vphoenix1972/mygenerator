@@ -1,6 +1,8 @@
 'use strict';
 
 import loadingTemplateUrl from 'rootDir/pages/loading/loading.tpl.html';
+import signInTemplateUrl from 'rootDir/pages/signIn/signIn.tpl.html';
+import forbiddenTemplateUrl from 'rootDir/pages/forbidden/forbidden.tpl.html';
 
 import appLayoutTemplateUrl from 'rootDir/pages/app/appLayout.tpl.html';
 import homeTemplateUrl from 'rootDir/pages/app/home/home.tpl.html';
@@ -12,19 +14,21 @@ import aboutTemplateUrl from 'rootDir/pages/app/about/about.tpl.html';
 function config(
     $stateProvider,
     $urlRouterProvider,
-    $qProvider) {
+    $qProvider,
+    roles) {
     'ngInject';
 
     // Turn off unhandled rejection warnings
     // https://github.com/angular-ui/ui-router/issues/2889
     $qProvider.errorOnUnhandledRejections(false);
 
-    configureRoutes($stateProvider, $urlRouterProvider);
+    configureRoutes($stateProvider, $urlRouterProvider, roles);
 }
 
-function configureRoutes($stateProvider, $urlRouterProvider) {
+function configureRoutes($stateProvider, $urlRouterProvider, roles) {
 
     var appStateName = 'app';
+    var authenticatedUserRoles = [roles.user];
 
     $stateProvider.state('loading',
         {
@@ -32,6 +36,25 @@ function configureRoutes($stateProvider, $urlRouterProvider) {
             controller: 'loadingController',
             controllerAs: 'vm',
             templateUrl: loadingTemplateUrl
+        });
+
+    $stateProvider.state('signIn',
+        {
+            url: '/signIn',
+            controller: 'signInController',
+            controllerAs: 'vm',
+            templateUrl: signInTemplateUrl
+        });
+
+    $stateProvider.state('forbidden',
+        {
+            url: '/forbidden',
+            controller: 'forbiddenController',
+            controllerAs: 'vm',
+            templateUrl: forbiddenTemplateUrl,
+            data: {
+                roles: authenticatedUserRoles
+            }
         });
 
     $stateProvider.state(appStateName,
@@ -46,7 +69,10 @@ function configureRoutes($stateProvider, $urlRouterProvider) {
             url: '/home',
             controller: 'homeController',
             controllerAs: 'vm',
-            templateUrl: homeTemplateUrl
+            templateUrl: homeTemplateUrl,
+            data: {
+                roles: authenticatedUserRoles
+            }
         });
 
     $stateProvider.state(`${appStateName}.todo-index`,
@@ -54,7 +80,10 @@ function configureRoutes($stateProvider, $urlRouterProvider) {
             url: '/todo-index',
             controller: 'todoIndexController',
             controllerAs: 'vm',
-            templateUrl: todoIndexTemplateUrl
+            templateUrl: todoIndexTemplateUrl,
+            data: {
+                roles: authenticatedUserRoles
+            }
         });
 
     $stateProvider.state(`${appStateName}.todo-new`,
@@ -62,7 +91,10 @@ function configureRoutes($stateProvider, $urlRouterProvider) {
             url: '/todo-new',
             controller: 'todoEditController',
             controllerAs: 'vm',
-            templateUrl: todoEditTemplateUrl
+            templateUrl: todoEditTemplateUrl,
+            data: {
+                roles: authenticatedUserRoles
+            }
         });
 
     $stateProvider.state(`${appStateName}.todo-edit`,
@@ -70,7 +102,10 @@ function configureRoutes($stateProvider, $urlRouterProvider) {
             url: '/todo-edit/{id:int}',
             controller: 'todoEditController',
             controllerAs: 'vm',
-            templateUrl: todoEditTemplateUrl
+            templateUrl: todoEditTemplateUrl,
+            data: {
+                roles: authenticatedUserRoles
+            }
         });
 
     $stateProvider.state(`${appStateName}.examples`,
@@ -78,7 +113,10 @@ function configureRoutes($stateProvider, $urlRouterProvider) {
             url: '/examples',
             controller: 'examplesController',
             controllerAs: 'vm',
-            templateUrl: examplesTemplateUrl
+            templateUrl: examplesTemplateUrl,
+            data: {
+                roles: [roles.admin]
+            }
         });
 
     $stateProvider.state(`${appStateName}.about`,
@@ -86,7 +124,10 @@ function configureRoutes($stateProvider, $urlRouterProvider) {
             url: '/about',
             controller: 'aboutController',
             controllerAs: 'vm',
-            templateUrl: aboutTemplateUrl
+            templateUrl: aboutTemplateUrl,
+            data: {
+                roles: authenticatedUserRoles
+            }
         });
 
     // Set default and 404 state
