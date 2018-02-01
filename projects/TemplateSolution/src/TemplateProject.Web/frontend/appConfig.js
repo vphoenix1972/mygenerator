@@ -61,6 +61,8 @@ function configureRoutes($stateProvider, $urlRouterProvider, roles) {
         {
             abstract: true,
             url: '/app',
+            controller: 'appLayoutController',
+            controllerAs: 'vm',
             templateUrl: appLayoutTemplateUrl
         });
 

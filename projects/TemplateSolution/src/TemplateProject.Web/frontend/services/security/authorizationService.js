@@ -20,7 +20,7 @@ function AuthorizationService(
     self._roles = roles;
 
     // Init
-    self._currentUser = self._createUser();
+    self._currentUser = self._createUnauthorizedUser();
     self._users = [
         {
             email: 'admin',
@@ -57,6 +57,14 @@ AuthorizationService.prototype.signInAsync = function (options) {
     return self._$q.resolve();
 }
 
+AuthorizationService.prototype.signOutAsync = function () {
+    const self = this;
+
+    self._currentUser = self._createUnauthorizedUser();
+
+    return self._$q.resolve();
+}
+
 AuthorizationService.prototype.loadUserFromCacheAsync = function () {
     var self = this;
 
@@ -64,6 +72,12 @@ AuthorizationService.prototype.loadUserFromCacheAsync = function () {
 }
 
 /* Private */
+
+AuthorizationService.prototype._createUnauthorizedUser = function () {
+    const self = this;
+
+    return self._createUser();
+}
 
 AuthorizationService.prototype._createUser = function (options) {
     var user = {

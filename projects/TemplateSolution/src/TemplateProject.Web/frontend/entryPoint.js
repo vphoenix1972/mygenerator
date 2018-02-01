@@ -29,6 +29,7 @@ import 'rootDir/pages/loading/loadingController';
 import 'rootDir/pages/signIn/signInController';
 import 'rootDir/pages/forbidden/forbiddenController';
 
+import 'rootDir/pages/app/appLayoutController';
 import 'rootDir/pages/app/home/homeController';
 import 'rootDir/pages/app/todo/todoIndexController';
 import 'rootDir/pages/app/todo/todoEditController';
