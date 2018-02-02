@@ -7,6 +7,7 @@ function AuthorizationService(
     $q,
     $http,
     $injector,
+    localStorage,
     roles) {
 
     'ngInject';
@@ -17,9 +18,11 @@ function AuthorizationService(
     self._$q = $q;
     self._$http = $http;
     self._$injector = $injector;
+    self._localStorage = localStorage;
     self._roles = roles;
 
     // Init
+    self._localStorageUserKey = 'authorizationService.user';
     self._currentUser = self._createUnauthorizedUser();
     self._users = [
         {
@@ -54,6 +57,8 @@ AuthorizationService.prototype.signInAsync = function (options) {
     self._currentUser.isAuthenticated = true;
     self._currentUser.roles = angular.copy(user.roles);
 
+    self._localStorage.setItem(self._localStorageUserKey, self._currentUser);
+
     return self._$q.resolve();
 }
 
@@ -62,11 +67,18 @@ AuthorizationService.prototype.signOutAsync = function () {
 
     self._currentUser = self._createUnauthorizedUser();
 
+    self._localStorage.removeItem(self._localStorageUserKey);
+
     return self._$q.resolve();
 }
 
 AuthorizationService.prototype.loadUserFromCacheAsync = function () {
-    var self = this;
+    const self = this;
+
+    var userFromStorage = self._localStorage.getItem(self._localStorageUserKey);
+    if (angular.isObject(userFromStorage)) {
+        self._currentUser = userFromStorage;
+    }
 
     return self._$q.resolve();
 }

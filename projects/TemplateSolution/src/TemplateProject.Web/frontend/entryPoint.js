@@ -16,6 +16,7 @@ import 'rootDir/constants/roles';
 
 import 'rootDir/services/connectorService';
 import 'rootDir/services/security/authorizationService';
+import 'rootDir/services/storage/localStorage';
 
 import 'rootDir/directives/appSpinner/appSpinnerDirective';
 
