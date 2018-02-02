@@ -8,5 +8,10 @@
 }
 
 .app-signin-form__buttons {
-    text-align: center;
+    line-height: 34px;
+    text-align: right;
+}
+
+.app-signin-form__signin-button {
+    margin-right: calc(50% - 79px);
 }
