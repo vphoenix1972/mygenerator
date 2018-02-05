@@ -9,6 +9,7 @@ import 'angularjs-toaster.css';
 import './app.css';
 
 import 'rootDir/utils/arrayExtensions';
+import 'rootDir/utils/stringExtensions';
 
 import './appModule';
 
@@ -29,6 +30,7 @@ import 'rootDir/dialogs/errorDialog/errorDialogController';
 import 'rootDir/pages/loading/loadingController';
 import 'rootDir/pages/signIn/signInController';
 import 'rootDir/pages/forbidden/forbiddenController';
+import 'rootDir/pages/register/registerController';
 
 import 'rootDir/pages/app/appLayoutController';
 import 'rootDir/pages/app/home/homeController';

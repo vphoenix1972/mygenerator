@@ -3,6 +3,7 @@
 import loadingTemplateUrl from 'rootDir/pages/loading/loading.tpl.html';
 import signInTemplateUrl from 'rootDir/pages/signIn/signIn.tpl.html';
 import forbiddenTemplateUrl from 'rootDir/pages/forbidden/forbidden.tpl.html';
+import registerTemplateUrl from 'rootDir/pages/register/register.tpl.html';
 
 import appLayoutTemplateUrl from 'rootDir/pages/app/appLayout.tpl.html';
 import homeTemplateUrl from 'rootDir/pages/app/home/home.tpl.html';
@@ -55,6 +56,14 @@ function configureRoutes($stateProvider, $urlRouterProvider, roles) {
             data: {
                 roles: authenticatedUserRoles
             }
+        });
+
+    $stateProvider.state('register',
+        {
+            url: '/register',
+            controller: 'registerController',
+            controllerAs: 'vm',
+            templateUrl: registerTemplateUrl
         });
 
     $stateProvider.state(appStateName,

@@ -26,12 +26,14 @@ function AuthorizationService(
     self._currentUser = self._createUnauthorizedUser();
     self._users = [
         {
-            email: 'admin',
+            email: 'admin@gmail.com',
+            name: 'admin',
             password: '1234',
             roles: [self._roles.user, self._roles.admin]
         },
         {
-            email: 'user',
+            email: 'user@gmail.com',
+            name: 'user',
             password: '1',
             roles: [self._roles.user]
         }
@@ -50,7 +52,8 @@ AuthorizationService.prototype.signInAsync = function (options) {
     if (!angular.isObject(options))
         throw new Error('Parameter "options" must be an object');
 
-    var user = self._users.find(e => e.email === options.login && e.password === options.password);
+    var user = self._users.find(e => (e.email === options.login || e.name === options.login) &&
+        e.password === options.password);
     if (user == null)
         return self._$q.reject();
 
@@ -68,6 +71,26 @@ AuthorizationService.prototype.signOutAsync = function () {
     self._currentUser = self._createUnauthorizedUser();
 
     self._localStorage.removeItem(self._localStorageUserKey);
+
+    return self._$q.resolve();
+}
+
+AuthorizationService.prototype.registerAsync = function (ticket) {
+    const self = this;
+
+    var newUser = {
+        email: ticket.email,
+        name: ticket.username,
+        password: ticket.password,
+        roles: [self._roles.user]
+    };
+
+    self._users.push(newUser);
+
+    self._currentUser.isAuthenticated = true;
+    self._currentUser.roles = angular.copy(newUser.roles);
+
+    self._localStorage.setItem(self._localStorageUserKey, self._currentUser);
 
     return self._$q.resolve();
 }
