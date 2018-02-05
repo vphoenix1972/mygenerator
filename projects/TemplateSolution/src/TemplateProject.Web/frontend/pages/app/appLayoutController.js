@@ -16,6 +16,9 @@ function AppLayoutController($state,
     self._$state = $state;
     self._dialogService = dialogService;
     self._authorizationService = authorizationService;
+
+    // Init
+    self.username = self._authorizationService.currentUser().name;
 }
 
 AppLayoutController.prototype.onSignOutClicked = function () {

@@ -58,6 +58,7 @@ AuthorizationService.prototype.signInAsync = function (options) {
         return self._$q.reject();
 
     self._currentUser.isAuthenticated = true;
+    self._currentUser.name = user.name;
     self._currentUser.roles = angular.copy(user.roles);
 
     self._localStorage.setItem(self._localStorageUserKey, self._currentUser);
@@ -88,6 +89,7 @@ AuthorizationService.prototype.registerAsync = function (ticket) {
     self._users.push(newUser);
 
     self._currentUser.isAuthenticated = true;
+    self._currentUser.name = newUser.name;
     self._currentUser.roles = angular.copy(newUser.roles);
 
     self._localStorage.setItem(self._localStorageUserKey, self._currentUser);

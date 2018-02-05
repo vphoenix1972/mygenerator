@@ -1,1 +1,4 @@
-﻿
+﻿.app-navbar__username {
+    max-width: 200px;
+    display: inline-block;
+}

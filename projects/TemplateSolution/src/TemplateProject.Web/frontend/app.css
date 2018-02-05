@@ -65,3 +65,10 @@ body {
 .app-col-90ps {
     width: 90%;
 }
+
+.app-text {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    vertical-align: top;
+}

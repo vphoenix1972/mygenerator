@@ -19,10 +19,17 @@
                 </li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                <li>
-                    <a href ng-click="vm.onSignOutClicked()">
-                        Sign out&nbsp;<i class="fa fa-sign-out"></i>
+                <li uib-dropdown>
+                    <a href uib-dropdown-toggle>
+                        <span class="app-text app-navbar__username">{{vm.username}}</span>&nbsp;<i class="fa fa-caret-down"></i>
                     </a>
+                    <ul uib-dropdown-menu>
+                        <li>
+                            <a href ng-click="vm.onSignOutClicked()">
+                                Sign out&nbsp;<i class="fa fa-sign-out"></i>
+                            </a>
+                        </li>
+                    </ul>
                 </li>
             </ul>
         </div>
