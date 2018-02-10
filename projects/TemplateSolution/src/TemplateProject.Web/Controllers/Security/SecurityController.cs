@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
@@ -87,6 +89,21 @@ namespace TemplateProject.Web.Controllers.Security
             {
                 accessToken
             });
+        }
+
+        [Route("validateToken")]
+        [AllowAnonymous]
+        [HttpPost]
+        public async Task<IActionResult> ValidateToken([FromBody] ValidateTokenApiModel model)
+        {
+            if (model == null)
+                return BadRequest();
+            if (string.IsNullOrWhiteSpace(model.AccessToken))
+                return BadRequest();
+
+            await HttpContext.AuthenticateAsync();
+
+            return User.Identity.IsAuthenticated ? Ok() as IActionResult : Unauthorized();
         }
 
         private string GetAccessToken(IUser user)

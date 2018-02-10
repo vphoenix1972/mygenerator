@@ -62,6 +62,19 @@ ConnectorService.prototype.registerAsync = function (data) {
     return self._post('security/register', data);
 }
 
+ConnectorService.prototype.validateToken = function (data) {
+    const self = this;
+
+    return self._$http({
+        method: 'POST',
+        url: 'security/validateToken',
+        headers: {
+            Authorization: self._createAuthorizationHeader(data.accessToken)
+        },
+        data: data
+    });
+}
+
 /* Private */
 
 ConnectorService.prototype._http = function (options) {
@@ -71,7 +84,7 @@ ConnectorService.prototype._http = function (options) {
         if (!angular.isObject(options.headers))
             options.headers = {};
 
-        options.headers.Authorization = `Bearer ${self._accessToken}`;
+        options.headers.Authorization = self._createAuthorizationHeader(self._accessToken);
     }
 
     return self._$http(options).then(
@@ -116,6 +129,10 @@ ConnectorService.prototype._handleError = function (response) {
 ConnectorService.prototype._createResult = function (response) {
     return response;
 };
+
+ConnectorService.prototype._createAuthorizationHeader = function (accessToken) {
+    return `Bearer ${accessToken}`;
+}
 
 
 angular.module(appModule)

@@ -53,9 +53,7 @@ AuthorizationService.prototype.signInAsync = function (options) {
 AuthorizationService.prototype.signOutAsync = function () {
     const self = this;
 
-    self._currentUser = self._createUnauthorizedUser();
-
-    self._localStorage.removeItem(self._localStorageAccessTokenKey);
+    self._onSignOut();
 
     return self._$q.resolve();
 }
@@ -74,9 +72,18 @@ AuthorizationService.prototype.loadUserFromCacheAsync = function () {
 
     var accessToken = self._localStorage.getItem(self._localStorageAccessTokenKey);
     if (angular.isString(accessToken)) {
-        self._loadUserFromAccessToken(accessToken);
-        self._connectorService.setAccessToken(accessToken);
+        return self._connectorService.validateToken({ accessToken: accessToken })
+            .then(() => {
+                    self._onSignIn(accessToken);
+                },
+                () => {
+                    self._onSignOut();
+
+                    return self._$q.resolve();
+                });
     }
+
+    self._onSignOut();
 
     return self._$q.resolve();
 }
@@ -90,6 +97,16 @@ AuthorizationService.prototype._onSignIn = function (accessToken) {
     self._connectorService.setAccessToken(accessToken);
 
     self._localStorage.setItem(self._localStorageAccessTokenKey, accessToken);
+}
+
+AuthorizationService.prototype._onSignOut = function () {
+    const self = this;
+
+    self._currentUser = self._createUnauthorizedUser();
+
+    self._connectorService.setAccessToken(null);
+
+    self._localStorage.removeItem(self._localStorageAccessTokenKey);
 }
 
 AuthorizationService.prototype._createUnauthorizedUser = function () {
