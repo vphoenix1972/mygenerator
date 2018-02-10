@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using TemplateProject.Core.Domain;
@@ -35,11 +36,59 @@ namespace TemplateProject.DataAccess.Repositories
             if (userDataModel == null)
                 return null;
 
-            var user = _usersFactory.Create();
+            return Map(userDataModel);
+        }
 
-            Map(userDataModel, user);
+        public IList<IUser> GetByNameOrEMail(string name, string eMail)
+        {
+            var result = _db.Users
+                .Include(e => e.UserUserRoles)
+                .ThenInclude(e => e.Role)
+                .Where(e => e.Name == name || e.EMail == eMail)
+                .ToList();
+
+            return result.Select(Map).ToList();
+        }
+
+        public IUser Add(IUser user)
+        {
+            if (user == null)
+                throw new ArgumentNullException(nameof(user));
+
+            var userDataModel = new UserDataModel();
+
+            Map(user, userDataModel);
+
+            foreach (var role in user.Roles)
+            {
+                var roleDataModel = _db.UserRoles
+                    .FirstOrDefault(e => e.Name == role.Name);
+                if (roleDataModel == null)
+                    throw new ArgumentException($"Role '{role.Name}' does not exist in database");
+
+                var link = new UserRoleUserDataModel()
+                {
+                    User = userDataModel,
+                    Role = roleDataModel
+                };
+
+                _db.UserRoleUsers.Add(link);
+            }
+
+            _db.Users.Add(userDataModel);
+
+            _db.AddSaveChangesHook(() => user.Id = userDataModel.Id);
 
             return user;
+        }
+
+        private IUser Map(UserDataModel source)
+        {
+            var dest = _usersFactory.Create();
+
+            Map(source, dest);
+
+            return dest;
         }
 
         private void Map(UserDataModel source, User dest)
@@ -49,6 +98,13 @@ namespace TemplateProject.DataAccess.Repositories
             dest.EMail = source.EMail;
             dest.Password = source.Password;
             dest.Roles = source.UserUserRoles.Select(e => new UserRole() {Name = e.Role.Name} as IUserRole).ToList();
+        }
+
+        private void Map(IUser source, UserDataModel dest)
+        {
+            dest.Name = source.Name;
+            dest.EMail = source.EMail;
+            dest.Password = source.Password;
         }
     }
 }

@@ -34,14 +34,14 @@ RegisterController.prototype.onRegisterButtonClicked = function () {
 
     var ticket = {
         email: self.email,
-        username: self.username,
+        name: self.username,
         password: self.password
     };
 
     self._authorizationService.registerAsync(ticket)
         .then(
             () => self._$state.go('app.home'),
-            (error) => self.registrationError = error
+            () => self.registrationError = 'Registration error'
         )
         .finally(() => self._dialogService.hideExecuting());
 }

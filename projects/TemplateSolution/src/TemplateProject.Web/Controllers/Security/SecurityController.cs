@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using TemplateProject.Core.Domain;
 using TemplateProject.Core.Interfaces.DataAccess;
+using TemplateProject.Utils.Factories;
 
 namespace TemplateProject.Web.Controllers.Security
 {
@@ -15,13 +16,23 @@ namespace TemplateProject.Web.Controllers.Security
     public sealed class SecurityController : Controller
     {
         private readonly IDatabaseService _db;
+        private readonly IFactory<User> _usersFactory;
+        private readonly IFactory<UserRole> _userRolesFactory;
 
-        public SecurityController(IDatabaseService db)
+        public SecurityController(IDatabaseService db,
+            IFactory<User> usersFactory,
+            IFactory<UserRole> userRolesFactory)
         {
             if (db == null)
                 throw new ArgumentNullException(nameof(db));
+            if (usersFactory == null)
+                throw new ArgumentNullException(nameof(usersFactory));
+            if (userRolesFactory == null)
+                throw new ArgumentNullException(nameof(userRolesFactory));
 
             _db = db;
+            _usersFactory = usersFactory;
+            _userRolesFactory = userRolesFactory;
         }
 
         [Route("signin")]
@@ -37,6 +48,40 @@ namespace TemplateProject.Web.Controllers.Security
                 return BadRequest();
 
             var accessToken = GetAccessToken(user);
+
+            return Ok(new
+            {
+                accessToken
+            });
+        }
+
+        [Route("register")]
+        [AllowAnonymous]
+        [HttpPost]
+        public IActionResult Register([FromBody] RegisterApiModel model)
+        {
+            if (model == null)
+                return BadRequest();
+            if (string.IsNullOrWhiteSpace(model.Name) ||
+                string.IsNullOrWhiteSpace(model.EMail) ||
+                string.IsNullOrWhiteSpace(model.Password))
+                return BadRequest();
+
+            var users = _db.UsersRepository.GetByNameOrEMail(model.Name, model.EMail);
+            if (users.Count > 0)
+                return BadRequest();
+
+            var newUser = _usersFactory.Create();
+            newUser.Name = model.Name;
+            newUser.EMail = model.EMail;
+            newUser.Password = model.Password;
+            newUser.Roles = GetUserRoles();
+
+            _db.UsersRepository.Add(newUser);
+
+            _db.SaveChanges();
+
+            var accessToken = GetAccessToken(newUser);
 
             return Ok(new
             {
@@ -73,6 +118,17 @@ namespace TemplateProject.Web.Controllers.Security
             identity.AddClaims(roleClaims);
 
             return identity;
+        }
+
+        private IList<IUserRole> GetUserRoles()
+        {
+            var userRole = _userRolesFactory.Create();
+            userRole.Name = WebProjectConstants.RoleUser;
+
+            return new List<IUserRole>()
+            {
+                userRole
+            };
         }
     }
 }

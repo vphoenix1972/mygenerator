@@ -46,12 +46,7 @@ AuthorizationService.prototype.signInAsync = function (options) {
 
     return self._connectorService.signInAsync(options)
         .then((response) => {
-            var accessToken = response.data.accessToken;
-
-            self._loadUserFromAccessToken(accessToken);
-            self._connectorService.setAccessToken(accessToken);
-
-            self._localStorage.setItem(self._localStorageAccessTokenKey, accessToken);
+            self._onSignIn(response.data.accessToken);
         });
 }
 
@@ -68,22 +63,10 @@ AuthorizationService.prototype.signOutAsync = function () {
 AuthorizationService.prototype.registerAsync = function (ticket) {
     const self = this;
 
-    //var newUser = {
-    //    email: ticket.email,
-    //    name: ticket.username,
-    //    password: ticket.password,
-    //    roles: [self._roles.user]
-    //};
-
-    //self._users.push(newUser);
-
-    //self._currentUser.isAuthenticated = true;
-    //self._currentUser.name = newUser.name;
-    //self._currentUser.roles = angular.copy(newUser.roles);
-
-    //self._localStorage.setItem(self._localStorageAccessTokenKey, self._currentUser);
-
-    return self._$q.resolve();
+    return self._connectorService.registerAsync(ticket)
+        .then((response) => {
+            self._onSignIn(response.data.accessToken);
+        });
 }
 
 AuthorizationService.prototype.loadUserFromCacheAsync = function () {
@@ -99,6 +82,15 @@ AuthorizationService.prototype.loadUserFromCacheAsync = function () {
 }
 
 /* Private */
+
+AuthorizationService.prototype._onSignIn = function (accessToken) {
+    const self = this;
+
+    self._loadUserFromAccessToken(accessToken);
+    self._connectorService.setAccessToken(accessToken);
+
+    self._localStorage.setItem(self._localStorageAccessTokenKey, accessToken);
+}
 
 AuthorizationService.prototype._createUnauthorizedUser = function () {
     const self = this;
