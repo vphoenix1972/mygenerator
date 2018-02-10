@@ -7,6 +7,7 @@ function AuthorizationService(
     $q,
     $http,
     $injector,
+    connectorService,
     localStorage,
     roles) {
 
@@ -18,6 +19,7 @@ function AuthorizationService(
     self._$q = $q;
     self._$http = $http;
     self._$injector = $injector;
+    self._connectorService = connectorService;
     self._localStorage = localStorage;
     self._roles = roles;
 
@@ -52,18 +54,16 @@ AuthorizationService.prototype.signInAsync = function (options) {
     if (!angular.isObject(options))
         throw new Error('Parameter "options" must be an object');
 
-    var user = self._users.find(e => (e.email === options.login || e.name === options.login) &&
-        e.password === options.password);
-    if (user == null)
-        return self._$q.reject();
+    return self._connectorService.signInAsync(options)
+        .then((response) => {
+            var user = response.data;
 
-    self._currentUser.isAuthenticated = true;
-    self._currentUser.name = user.name;
-    self._currentUser.roles = angular.copy(user.roles);
+            self._currentUser.isAuthenticated = true;
+            self._currentUser.name = user.name;
+            self._currentUser.roles = angular.copy(user.roles);
 
-    self._localStorage.setItem(self._localStorageUserKey, self._currentUser);
-
-    return self._$q.resolve();
+            self._localStorage.setItem(self._localStorageUserKey, self._currentUser);
+        });
 }
 
 AuthorizationService.prototype.signOutAsync = function () {

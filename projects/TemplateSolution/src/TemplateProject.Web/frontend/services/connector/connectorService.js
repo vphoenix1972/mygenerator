@@ -44,6 +44,12 @@ ConnectorService.prototype.deleteTodoItemAsync = function (todoItemId) {
     return self._delete(`todo/${todoItemId}`);
 }
 
+ConnectorService.prototype.signInAsync = function (options) {
+    const self = this;
+
+    return self._post('security/signin', options);
+}
+
 /* Private */
 
 ConnectorService.prototype._http = function (url, method, params) {

@@ -6,6 +6,8 @@ namespace TemplateProject.Core.Interfaces.DataAccess
     {
         ITodoItemsRepository TodoItemsRepository { get; }
 
+        IUsersRepository UsersRepository { get; }
+
         void MigrateToLatestVersion();
 
         void SaveChanges();
