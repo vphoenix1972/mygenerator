@@ -1,7 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
+using TemplateProject.Core.Domain;
 using TemplateProject.Core.Interfaces.DataAccess;
 
 namespace TemplateProject.Web.Controllers.Security
@@ -31,13 +36,43 @@ namespace TemplateProject.Web.Controllers.Security
             if (user == null)
                 return BadRequest();
 
+            var accessToken = GetAccessToken(user);
+
             return Ok(new
             {
-                user.Id,
-                user.Name,
-                user.EMail,
-                Roles = user.Roles.Select(e => e.Name)
+                accessToken
             });
+        }
+
+        private string GetAccessToken(IUser user)
+        {
+            var now = DateTime.UtcNow;
+
+            var identity = GetIdentity(user);
+
+            var jwt = new JwtSecurityToken(
+                issuer: WebProjectConstants.JwtIssuer,
+                audience: WebProjectConstants.JwtAudience,
+                notBefore: now,
+                claims: identity.Claims,
+                expires: now.Add(WebProjectConstants.JwtLifetime),
+                signingCredentials: new SigningCredentials(WebProjectConstants.GetJwtSymmetricSecurityKey(),
+                    SecurityAlgorithms.HmacSha256));
+            var encodedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);
+
+            return encodedJwt;
+        }
+
+        private ClaimsIdentity GetIdentity(IUser user)
+        {
+            var identity = new ClaimsIdentity();
+
+            identity.AddClaim(new Claim(ClaimsIdentity.DefaultNameClaimType, user.Name));
+
+            var roleClaims = user.Roles.Select(e => new Claim(ClaimsIdentity.DefaultRoleClaimType, e.Name));
+            identity.AddClaims(roleClaims);
+
+            return identity;
         }
     }
 }

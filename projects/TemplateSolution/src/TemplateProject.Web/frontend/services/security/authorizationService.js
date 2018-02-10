@@ -8,6 +8,8 @@ function AuthorizationService(
     $http,
     $injector,
     connectorService,
+    jwtService,
+    jwtClaimTypes,
     localStorage,
     roles) {
 
@@ -20,26 +22,14 @@ function AuthorizationService(
     self._$http = $http;
     self._$injector = $injector;
     self._connectorService = connectorService;
+    self._jwtService = jwtService;
+    self._jwtClaimTypes = jwtClaimTypes;
     self._localStorage = localStorage;
     self._roles = roles;
 
     // Init
-    self._localStorageUserKey = 'authorizationService.user';
+    self._localStorageAccessTokenKey = 'authorizationService.accessToken';
     self._currentUser = self._createUnauthorizedUser();
-    self._users = [
-        {
-            email: 'admin@gmail.com',
-            name: 'admin',
-            password: '1234',
-            roles: [self._roles.user, self._roles.admin]
-        },
-        {
-            email: 'user@gmail.com',
-            name: 'user',
-            password: '1',
-            roles: [self._roles.user]
-        }
-    ];
 }
 
 AuthorizationService.prototype.currentUser = function () {
@@ -56,13 +46,12 @@ AuthorizationService.prototype.signInAsync = function (options) {
 
     return self._connectorService.signInAsync(options)
         .then((response) => {
-            var user = response.data;
+            var accessToken = response.data.accessToken;
 
-            self._currentUser.isAuthenticated = true;
-            self._currentUser.name = user.name;
-            self._currentUser.roles = angular.copy(user.roles);
+            self._loadUserFromAccessToken(accessToken);
+            self._connectorService.setAccessToken(accessToken);
 
-            self._localStorage.setItem(self._localStorageUserKey, self._currentUser);
+            self._localStorage.setItem(self._localStorageAccessTokenKey, accessToken);
         });
 }
 
@@ -71,7 +60,7 @@ AuthorizationService.prototype.signOutAsync = function () {
 
     self._currentUser = self._createUnauthorizedUser();
 
-    self._localStorage.removeItem(self._localStorageUserKey);
+    self._localStorage.removeItem(self._localStorageAccessTokenKey);
 
     return self._$q.resolve();
 }
@@ -79,20 +68,20 @@ AuthorizationService.prototype.signOutAsync = function () {
 AuthorizationService.prototype.registerAsync = function (ticket) {
     const self = this;
 
-    var newUser = {
-        email: ticket.email,
-        name: ticket.username,
-        password: ticket.password,
-        roles: [self._roles.user]
-    };
+    //var newUser = {
+    //    email: ticket.email,
+    //    name: ticket.username,
+    //    password: ticket.password,
+    //    roles: [self._roles.user]
+    //};
 
-    self._users.push(newUser);
+    //self._users.push(newUser);
 
-    self._currentUser.isAuthenticated = true;
-    self._currentUser.name = newUser.name;
-    self._currentUser.roles = angular.copy(newUser.roles);
+    //self._currentUser.isAuthenticated = true;
+    //self._currentUser.name = newUser.name;
+    //self._currentUser.roles = angular.copy(newUser.roles);
 
-    self._localStorage.setItem(self._localStorageUserKey, self._currentUser);
+    //self._localStorage.setItem(self._localStorageAccessTokenKey, self._currentUser);
 
     return self._$q.resolve();
 }
@@ -100,9 +89,10 @@ AuthorizationService.prototype.registerAsync = function (ticket) {
 AuthorizationService.prototype.loadUserFromCacheAsync = function () {
     const self = this;
 
-    var userFromStorage = self._localStorage.getItem(self._localStorageUserKey);
-    if (angular.isObject(userFromStorage)) {
-        self._currentUser = userFromStorage;
+    var accessToken = self._localStorage.getItem(self._localStorageAccessTokenKey);
+    if (angular.isString(accessToken)) {
+        self._loadUserFromAccessToken(accessToken);
+        self._connectorService.setAccessToken(accessToken);
     }
 
     return self._$q.resolve();
@@ -125,6 +115,26 @@ AuthorizationService.prototype._createUser = function (options) {
     angular.extend(user, options);
 
     return user;
+}
+
+AuthorizationService.prototype._loadUserFromAccessToken = function (accessToken) {
+    const self = this;
+
+    var payload = self._jwtService.decodeToken(accessToken);
+
+    self._currentUser.isAuthenticated = true;
+    self._currentUser.name = payload[self._jwtClaimTypes.name];
+    self._currentUser.roles = self._parseJwtRole(payload[self._jwtClaimTypes.role]);
+}
+
+AuthorizationService.prototype._parseJwtRole = function (jwtRole) {
+    if (angular.isArray(jwtRole))
+        return jwtRole;
+
+    if (angular.isString(jwtRole))
+        return [jwtRole];
+
+    return [];
 }
 
 

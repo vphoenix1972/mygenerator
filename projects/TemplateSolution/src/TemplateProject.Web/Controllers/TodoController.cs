@@ -1,10 +1,12 @@
 ﻿using System;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TemplateProject.Core.Domain;
 using TemplateProject.Core.Interfaces.DataAccess;
 
 namespace TemplateProject.Web.Controllers
 {
+    [Authorize(Roles = WebProjectConstants.RoleUser)]
     [Route("todo")]
     public sealed class TodoController : Controller
     {

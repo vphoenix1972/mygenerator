@@ -14,6 +14,12 @@ function ConnectorService(
     self._$http = $http;
 }
 
+ConnectorService.prototype.setAccessToken = function (accessToken) {
+    const self = this;
+
+    self._accessToken = accessToken;
+}
+
 ConnectorService.prototype.getTodoIndexAsync = function () {
     const self = this;
 
@@ -52,14 +58,17 @@ ConnectorService.prototype.signInAsync = function (options) {
 
 /* Private */
 
-ConnectorService.prototype._http = function (url, method, params) {
-    var self = this;
+ConnectorService.prototype._http = function (options) {
+    const self = this;
 
-    return self._$http({
-        url: url,
-        method: method,
-        params: params
-    }).then(
+    if (angular.isString(self._accessToken)) {
+        if (!angular.isObject(options.headers))
+            options.headers = {};
+
+        options.headers.Authorization = `Bearer ${self._accessToken}`;
+    }
+
+    return self._$http(options).then(
         function (response) {
             return self._createResult(response);
         },
@@ -69,47 +78,27 @@ ConnectorService.prototype._http = function (url, method, params) {
 };
 
 ConnectorService.prototype._get = function (url) {
-    var self = this;
-    return self._$http.get(url).then(
-        function (response) {
-            return self._createResult(response);
-        },
-        function (response) {
-            return self._handleError(response);
-        });
+    const self = this;
+
+    return self._http({ method: 'GET', url: url });
 };
 
 ConnectorService.prototype._post = function (url, data) {
-    var self = this;
-    return self._$http.post(url, data).then(
-        function (response) {
-            return self._createResult(response);
-        },
-        function (response) {
-            return self._handleError(response);
-        });
+    const self = this;
+
+    return self._http({ method: 'POST', url: url, data: data });
 };
 
 ConnectorService.prototype._put = function (url, data) {
-    var self = this;
-    return self._$http.put(url, data).then(
-        function (response) {
-            return self._createResult(response);
-        },
-        function (response) {
-            return self._handleError(response);
-        });
+    const self = this;
+
+    return self._http({ method: 'PUT', url: url, data: data });
 };
 
 ConnectorService.prototype._delete = function (url, data) {
-    var self = this;
-    return self._$http.delete(url, data).then(
-        function (response) {
-            return self._createResult(response);
-        },
-        function (response) {
-            return self._handleError(response);
-        });
+    const self = this;
+
+    return self._http({ method: 'DELETE', url: url, data: data });
 };
 
 ConnectorService.prototype._handleError = function (response) {

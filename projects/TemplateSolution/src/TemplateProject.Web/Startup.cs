@@ -1,7 +1,9 @@
 ﻿using System;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
 using TemplateProject.Core;
 using TemplateProject.Core.Interfaces.DataAccess;
 using TemplateProject.DataAccess;
@@ -17,6 +19,22 @@ namespace TemplateProject.Web
             services.AddCore();
             services.AddDataAccess("Host=localhost;Port=5432;Username=postgres;Password=12345678;Database=mygenerator");
 
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options =>
+                {
+                    options.RequireHttpsMetadata = false;
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuer = true,
+                        ValidIssuer = WebProjectConstants.JwtIssuer,
+                        ValidateAudience = true,
+                        ValidAudience = WebProjectConstants.JwtAudience,
+                        ValidateLifetime = true,
+                        IssuerSigningKey = WebProjectConstants.GetJwtSymmetricSecurityKey(),
+                        ValidateIssuerSigningKey = true,
+                    };
+                });
+
             services.AddMvc();
         }
 
@@ -26,6 +44,8 @@ namespace TemplateProject.Web
             IApplicationLifetime applicationLifetime)
         {
             app.UseStaticFiles();
+
+            app.UseAuthentication();
 
             app.UseMvc();
 

@@ -16,7 +16,9 @@ import './appModule';
 import 'rootDir/constants/roles';
 
 import 'rootDir/services/connector/connectorService';
+import 'rootDir/services/security/jwtClaimTypes';
 import 'rootDir/services/security/authorizationService';
+import 'rootDir/services/security/jwtService';
 import 'rootDir/services/storage/localStorage';
 
 import 'rootDir/directives/appSpinner/appSpinnerDirective';
