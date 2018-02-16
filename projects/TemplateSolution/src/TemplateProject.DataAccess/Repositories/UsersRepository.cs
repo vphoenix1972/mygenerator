@@ -26,6 +26,16 @@ namespace TemplateProject.DataAccess.Repositories
             _usersFactory = usersFactory;
         }
 
+        public IUser GetById(int id)
+        {
+            var userDataModel = _db.Users
+                .Include(e => e.UserUserRoles)
+                .ThenInclude(e => e.Role)
+                .SingleOrDefault(e => e.Id == id);
+
+            return Map(userDataModel);
+        }
+
         public IUser Get(string nameOrEMail, string password)
         {
             var userDataModel = _db.Users

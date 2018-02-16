@@ -22,6 +22,8 @@ namespace TemplateProject.DataAccess
 
         public DbSet<UserRoleUserDataModel> UserRoleUsers { get; set; }
 
+        public DbSet<RefreshTokenDataModel> RefreshTokens { get; set; }
+
         public void AddSaveChangesHook(Action func)
         {
             _hooks.Add(func);
@@ -40,10 +42,12 @@ namespace TemplateProject.DataAccess
         {
             base.OnModelCreating(mb);
 
-            SetupUserToUserRoleRelationShip(mb);
+            SetupUserToUserRoleRelationship(mb);
+
+            SetupUserToRefreshTokenRelationship(mb);
         }
 
-        private void SetupUserToUserRoleRelationShip(ModelBuilder mb)
+        private void SetupUserToUserRoleRelationship(ModelBuilder mb)
         {
             mb.Entity<UserRoleUserDataModel>()
                 .HasKey(t => new {t.UserId, t.RoleId});
@@ -57,6 +61,14 @@ namespace TemplateProject.DataAccess
                 .HasOne(e => e.Role)
                 .WithMany(e => e.UserRoleUsers)
                 .HasForeignKey(e => e.RoleId);
+        }
+
+        private void SetupUserToRefreshTokenRelationship(ModelBuilder mb)
+        {
+            mb.Entity<UserDataModel>()
+                .HasMany(e => e.RefreshTokens)
+                .WithOne(e => e.User)
+                .HasForeignKey(e => e.UserId);
         }
 
         private void OnSaveChangesExecuted()

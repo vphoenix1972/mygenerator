@@ -11,7 +11,7 @@ using TemplateProject.DataAccess;
 namespace TemplateProject.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20180210071925_Initial")]
+    [Migration("20180216051733_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -20,6 +20,22 @@ namespace TemplateProject.DataAccess.Migrations
             modelBuilder
                 .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn)
                 .HasAnnotation("ProductVersion", "2.0.1-rtm-125");
+
+            modelBuilder.Entity("TemplateProject.DataAccess.Models.RefreshTokenDataModel", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("ExpiresUtc");
+
+                    b.Property<int>("UserId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("RefreshTokens");
+                });
 
             modelBuilder.Entity("TemplateProject.DataAccess.Models.TodoItemDataModel", b =>
                 {
@@ -72,6 +88,14 @@ namespace TemplateProject.DataAccess.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("UserRoleUsers");
+                });
+
+            modelBuilder.Entity("TemplateProject.DataAccess.Models.RefreshTokenDataModel", b =>
+                {
+                    b.HasOne("TemplateProject.DataAccess.Models.UserDataModel", "User")
+                        .WithMany("RefreshTokens")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("TemplateProject.DataAccess.Models.UserRoleUserDataModel", b =>

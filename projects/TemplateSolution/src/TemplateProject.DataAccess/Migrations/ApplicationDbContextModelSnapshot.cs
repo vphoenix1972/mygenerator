@@ -20,6 +20,22 @@ namespace TemplateProject.DataAccess.Migrations
                 .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn)
                 .HasAnnotation("ProductVersion", "2.0.1-rtm-125");
 
+            modelBuilder.Entity("TemplateProject.DataAccess.Models.RefreshTokenDataModel", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("ExpiresUtc");
+
+                    b.Property<int>("UserId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("RefreshTokens");
+                });
+
             modelBuilder.Entity("TemplateProject.DataAccess.Models.TodoItemDataModel", b =>
                 {
                     b.Property<int>("Id")
@@ -71,6 +87,14 @@ namespace TemplateProject.DataAccess.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("UserRoleUsers");
+                });
+
+            modelBuilder.Entity("TemplateProject.DataAccess.Models.RefreshTokenDataModel", b =>
+                {
+                    b.HasOne("TemplateProject.DataAccess.Models.UserDataModel", "User")
+                        .WithMany("RefreshTokens")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("TemplateProject.DataAccess.Models.UserRoleUserDataModel", b =>

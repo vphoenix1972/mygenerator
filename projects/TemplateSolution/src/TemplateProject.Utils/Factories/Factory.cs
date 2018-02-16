@@ -20,4 +20,12 @@ namespace TemplateProject.Utils.Factories
             return ActivatorUtilities.CreateInstance<TImpl>(_provider, parameters);
         }
     }
+
+    public class Factory<TImpl> : Factory<TImpl, TImpl>
+    {
+        public Factory(IServiceProvider provider) :
+            base(provider)
+        {
+        }
+    }
 }

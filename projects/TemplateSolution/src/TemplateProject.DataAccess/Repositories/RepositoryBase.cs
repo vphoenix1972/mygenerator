@@ -9,18 +9,19 @@ using TemplateProject.Utils.Factories;
 
 namespace TemplateProject.DataAccess.Repositories
 {
-    public abstract class RepositoryBase<TEntity, TKey, TDataModel>
+    public abstract class RepositoryBase<TEntity, TEntityImpl, TKey, TDataModel>
         where TEntity : class, IEntity<TKey?>
+        where TEntityImpl: TEntity
         where TKey : struct
         where TDataModel : class, IEntity<TKey>, new()
     {
         private readonly ApplicationDbContext _db;
         private readonly DbSet<TDataModel> _dbSet;
-        private readonly IFactory<TEntity> _entitiesFactory;
+        private readonly IFactory<TEntityImpl> _entitiesFactory;
 
         public RepositoryBase(ApplicationDbContext db,
             DbSet<TDataModel> dbSet,
-            IFactory<TEntity> entitiesFactory)
+            IFactory<TEntityImpl> entitiesFactory)
         {
             if (db == null)
                 throw new ArgumentNullException(nameof(db));
@@ -38,7 +39,7 @@ namespace TemplateProject.DataAccess.Repositories
 
         protected DbSet<TDataModel> DbSet => _dbSet;
 
-        protected IFactory<TEntity> EntitiesFactory => _entitiesFactory;
+        protected IFactory<TEntityImpl> EntitiesFactory => _entitiesFactory;
 
         public IList<TEntity> GetAll()
         {
@@ -89,7 +90,7 @@ namespace TemplateProject.DataAccess.Repositories
             _dbSet.Remove(existing);
         }
 
-        protected abstract void Map(TDataModel source, TEntity dest);
+        protected abstract void Map(TDataModel source, TEntityImpl dest);
 
         protected abstract void Map(TEntity source, TDataModel dest);
 

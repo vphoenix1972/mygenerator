@@ -17,7 +17,7 @@ namespace TemplateProject.Web
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddCore();
-            services.AddDataAccess("Host=localhost;Port=5432;Username=postgres;Password=12345678;Database=mygenerator");
+            services.AddDataAccess("Host=localhost;Port=5432;Username=postgres;Password=postgres;Database=mygenerator");
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
@@ -57,14 +57,27 @@ namespace TemplateProject.Web
             using (var scope = app.ApplicationServices.CreateScope())
             {
                 MigrateDatabaseToLatestVersion(scope.ServiceProvider);
+
+                DeleteExpiredRefreshTokens(scope.ServiceProvider);
             }
         }
 
         private void MigrateDatabaseToLatestVersion(IServiceProvider provider)
         {
-            var databaseService = provider.GetRequiredService<IDatabaseService>();
+            var db = provider.GetRequiredService<IDatabaseService>();
 
-            databaseService.MigrateToLatestVersion();
+            db.MigrateToLatestVersion();
+        }
+
+        private void DeleteExpiredRefreshTokens(IServiceProvider provider)
+        {
+            var db = provider.GetRequiredService<IDatabaseService>();
+
+            var utcNow = DateTime.UtcNow;
+
+            db.RefreshTokensRepository.DeleteExpired(utcNow);
+
+            db.SaveChanges();
         }
     }
 }

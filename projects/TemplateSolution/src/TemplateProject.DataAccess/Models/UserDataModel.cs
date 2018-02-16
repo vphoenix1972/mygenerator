@@ -14,5 +14,7 @@ namespace TemplateProject.DataAccess.Models
         public string Password { get; set; }
 
         public IList<UserRoleUserDataModel> UserUserRoles { get; set; }
+
+        public IList<RefreshTokenDataModel> RefreshTokens { get; set; }
     }
 }

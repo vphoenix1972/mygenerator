@@ -20,10 +20,12 @@ namespace TemplateProject.Web.Controllers.Security
         private readonly IDatabaseService _db;
         private readonly IFactory<User> _usersFactory;
         private readonly IFactory<UserRole> _userRolesFactory;
+        private readonly IFactory<RefreshToken> _refreshTokenFactory;
 
         public SecurityController(IDatabaseService db,
             IFactory<User> usersFactory,
-            IFactory<UserRole> userRolesFactory)
+            IFactory<UserRole> userRolesFactory,
+            IFactory<RefreshToken> refreshTokenFactory)
         {
             if (db == null)
                 throw new ArgumentNullException(nameof(db));
@@ -31,10 +33,13 @@ namespace TemplateProject.Web.Controllers.Security
                 throw new ArgumentNullException(nameof(usersFactory));
             if (userRolesFactory == null)
                 throw new ArgumentNullException(nameof(userRolesFactory));
+            if (refreshTokenFactory == null)
+                throw new ArgumentNullException(nameof(refreshTokenFactory));
 
             _db = db;
             _usersFactory = usersFactory;
             _userRolesFactory = userRolesFactory;
+            _refreshTokenFactory = refreshTokenFactory;
         }
 
         [Route("signin")]
@@ -49,11 +54,13 @@ namespace TemplateProject.Web.Controllers.Security
             if (user == null)
                 return BadRequest();
 
-            var accessToken = GetAccessToken(user);
+            var accessToken = GetAccessTokenJwt(user);
+            var refreshToken = GetRefreshTokenJwt(user);
 
             return Ok(new
             {
-                accessToken
+                accessToken,
+                refreshToken
             });
         }
 
@@ -83,7 +90,7 @@ namespace TemplateProject.Web.Controllers.Security
 
             _db.SaveChanges();
 
-            var accessToken = GetAccessToken(newUser);
+            var accessToken = GetAccessTokenJwt(newUser);
 
             return Ok(new
             {
@@ -106,7 +113,81 @@ namespace TemplateProject.Web.Controllers.Security
             return User.Identity.IsAuthenticated ? Ok() as IActionResult : Unauthorized();
         }
 
-        private string GetAccessToken(IUser user)
+        [Route("refreshToken")]
+        [AllowAnonymous]
+        [HttpPost]
+        public async Task<IActionResult> RefreshToken([FromBody] RefreshTokenApiModel model)
+        {
+            if (model == null)
+                return BadRequest();
+            if (string.IsNullOrWhiteSpace(model.RefreshToken))
+                return BadRequest();
+
+            var tokenHandler = new JwtSecurityTokenHandler();
+
+            var tokenValidationParameters = new TokenValidationParameters()
+            {
+                ValidateIssuer = true,
+                ValidIssuer = WebProjectConstants.JwtIssuer,
+                ValidateAudience = true,
+                ValidAudience = WebProjectConstants.JwtAudience,
+                ValidateLifetime = true,
+                IssuerSigningKey = WebProjectConstants.GetJwtSymmetricSecurityKey(),
+                ValidateIssuerSigningKey = true,
+                ClockSkew = WebProjectConstants.JwtClockSkew
+            };
+
+            ClaimsPrincipal principal;
+
+            try
+            {
+                principal = tokenHandler.ValidateToken(model.RefreshToken, tokenValidationParameters, out _);
+            }
+            catch
+            {
+                return BadRequest("Token is invalid");
+            }
+
+            var tokenIdClaim = principal.Claims.FirstOrDefault(e => e.Type == "token_id");
+            if (tokenIdClaim == null)
+                return BadRequest("Token doesn't have token_id claim");
+
+            long tokenId;
+            if (!long.TryParse(tokenIdClaim.Value, out tokenId))
+                return BadRequest("token_id claim is invalid");
+
+            var refreshToken = _db.RefreshTokensRepository.GetById(tokenId);
+            if (refreshToken == null)
+                return BadRequest("Token not found");
+
+            var utcNow = DateTime.UtcNow;
+
+            if (refreshToken.ExpiresUtc <= utcNow)
+            {
+                _db.RefreshTokensRepository.DeleteById(refreshToken.Id.Value);
+                _db.SaveChanges();
+
+                return BadRequest("Token is expired");
+            }
+
+            refreshToken.ExpiresUtc = utcNow.Add(WebProjectConstants.JwtRefreshTokenLifetime);
+
+            _db.RefreshTokensRepository.AddOrUpdate(refreshToken);
+            _db.SaveChanges();
+
+            var user = _db.UsersRepository.GetById(refreshToken.UserId);
+
+            var accessToken = GetAccessTokenJwt(user);
+            var refreshTokenJwt = GetRefreshTokenJwt(refreshToken);
+
+            return Ok(new
+            {
+                accessToken,
+                refreshToken = refreshTokenJwt
+            });
+        }
+
+        private string GetAccessTokenJwt(IUser user)
         {
             var now = DateTime.UtcNow;
 
@@ -117,7 +198,46 @@ namespace TemplateProject.Web.Controllers.Security
                 audience: WebProjectConstants.JwtAudience,
                 notBefore: now,
                 claims: identity.Claims,
-                expires: now.Add(WebProjectConstants.JwtLifetime),
+                expires: now.Add(WebProjectConstants.JwtAccessTokenLifetime),
+                signingCredentials: new SigningCredentials(WebProjectConstants.GetJwtSymmetricSecurityKey(),
+                    SecurityAlgorithms.HmacSha256));
+            var encodedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);
+
+            return encodedJwt;
+        }
+
+        private string GetRefreshTokenJwt(IUser user)
+        {
+            if (!user.Id.HasValue)
+                throw new InvalidOperationException("Cannot create a refresh token for user without id");
+
+            var now = DateTime.UtcNow;
+            var expiresUtc = now.Add(WebProjectConstants.JwtRefreshTokenLifetime);
+
+            var refreshToken = _refreshTokenFactory.Create();
+            refreshToken.UserId = user.Id.Value;
+            refreshToken.ExpiresUtc = expiresUtc;
+
+            _db.RefreshTokensRepository.AddOrUpdate(refreshToken);
+
+            _db.SaveChanges();
+
+            return GetRefreshTokenJwt(refreshToken);
+        }
+
+        private string GetRefreshTokenJwt(IRefreshToken refreshToken)
+        {
+            var now = DateTime.UtcNow;
+
+            var identity = new ClaimsIdentity();
+            identity.AddClaim(new Claim("token_id", refreshToken.Id.ToString()));
+
+            var jwt = new JwtSecurityToken(
+                issuer: WebProjectConstants.JwtIssuer,
+                audience: WebProjectConstants.JwtAudience,
+                notBefore: now,
+                claims: identity.Claims,
+                expires: refreshToken.ExpiresUtc,
                 signingCredentials: new SigningCredentials(WebProjectConstants.GetJwtSymmetricSecurityKey(),
                     SecurityAlgorithms.HmacSha256));
             var encodedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);

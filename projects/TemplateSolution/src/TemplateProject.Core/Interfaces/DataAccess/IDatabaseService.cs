@@ -8,6 +8,8 @@ namespace TemplateProject.Core.Interfaces.DataAccess
 
         IUsersRepository UsersRepository { get; }
 
+        IRefreshTokensRepository RefreshTokensRepository { get; }
+
         void MigrateToLatestVersion();
 
         void SaveChanges();
