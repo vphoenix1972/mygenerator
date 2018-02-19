@@ -30,7 +30,10 @@ AppLayoutController.prototype.onSignOutClicked = function () {
         self._dialogService.showExecutingAsync();
 
         self._authorizationService.signOutAsync()
-            .then(() => self._$state.go('signIn'))
+            .then(
+                () => self._$state.go('signIn'),
+                () => self._dialogService.showErrorAsync({ title: 'Sign out error' })
+            )
             .finally(() => self._dialogService.hideExecuting());
     });
 }

@@ -2,6 +2,8 @@
 
 import './signIn.css';
 
+import templateUrl from './signIn.tpl.html';
+
 import angular from 'angular';
 import appModule from 'rootDir/appModule';
 
@@ -42,4 +44,13 @@ SignInController.prototype.onSignInButtonClicked = function () {
 }
 
 angular.module(appModule)
-    .controller('signInController', SignInController);
+    .controller('signInController', SignInController)
+    // Preload dialog's template to show dialog even if server is unavailable
+    .run([
+        '$http', '$templateCache', function ($http, $templateCache) {
+            $http.get(templateUrl)
+                .then(function (response) {
+                    $templateCache.put(templateUrl, response.data);
+                });
+        }
+    ]);

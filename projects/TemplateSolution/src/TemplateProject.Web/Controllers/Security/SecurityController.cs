@@ -91,26 +91,13 @@ namespace TemplateProject.Web.Controllers.Security
             _db.SaveChanges();
 
             var accessToken = GetAccessTokenJwt(newUser);
+            var refreshToken = GetRefreshTokenJwt(newUser);
 
             return Ok(new
             {
-                accessToken
+                accessToken,
+                refreshToken
             });
-        }
-
-        [Route("validateToken")]
-        [AllowAnonymous]
-        [HttpPost]
-        public async Task<IActionResult> ValidateToken([FromBody] ValidateTokenApiModel model)
-        {
-            if (model == null)
-                return BadRequest();
-            if (string.IsNullOrWhiteSpace(model.AccessToken))
-                return BadRequest();
-
-            await HttpContext.AuthenticateAsync();
-
-            return User.Identity.IsAuthenticated ? Ok() as IActionResult : Unauthorized();
         }
 
         [Route("refreshToken")]
@@ -185,6 +172,59 @@ namespace TemplateProject.Web.Controllers.Security
                 accessToken,
                 refreshToken = refreshTokenJwt
             });
+        }
+
+        [Route("signout")]
+        [AllowAnonymous]
+        [HttpPost]
+        public IActionResult SignOut([FromBody] SignOutApiModel model)
+        {
+            if (model == null)
+                return BadRequest();
+            if (string.IsNullOrWhiteSpace(model.RefreshToken))
+                return BadRequest();
+
+            var tokenHandler = new JwtSecurityTokenHandler();
+
+            var tokenValidationParameters = new TokenValidationParameters()
+            {
+                ValidateIssuer = true,
+                ValidIssuer = WebProjectConstants.JwtIssuer,
+                ValidateAudience = true,
+                ValidAudience = WebProjectConstants.JwtAudience,
+                ValidateLifetime = true,
+                IssuerSigningKey = WebProjectConstants.GetJwtSymmetricSecurityKey(),
+                ValidateIssuerSigningKey = true,
+                ClockSkew = WebProjectConstants.JwtClockSkew
+            };
+
+            ClaimsPrincipal principal;
+
+            try
+            {
+                principal = tokenHandler.ValidateToken(model.RefreshToken, tokenValidationParameters, out _);
+            }
+            catch
+            {
+                return BadRequest("Token is invalid");
+            }
+
+            var tokenIdClaim = principal.Claims.FirstOrDefault(e => e.Type == "token_id");
+            if (tokenIdClaim == null)
+                return BadRequest("Token doesn't have token_id claim");
+
+            long tokenId;
+            if (!long.TryParse(tokenIdClaim.Value, out tokenId))
+                return BadRequest("token_id claim is invalid");
+
+            var refreshToken = _db.RefreshTokensRepository.GetById(tokenId);
+            if (refreshToken == null)
+                return BadRequest("Token not found");
+
+            _db.RefreshTokensRepository.DeleteById(refreshToken.Id.Value);
+            _db.SaveChanges();
+
+            return Ok();
         }
 
         private string GetAccessTokenJwt(IUser user)

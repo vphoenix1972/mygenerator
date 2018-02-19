@@ -62,17 +62,20 @@ ConnectorService.prototype.registerAsync = function (data) {
     return self._post('security/register', data);
 }
 
-ConnectorService.prototype.validateToken = function (data) {
+ConnectorService.prototype.refreshToken = function (data) {
     const self = this;
 
     return self._$http({
         method: 'POST',
-        url: 'security/validateToken',
-        headers: {
-            Authorization: self._createAuthorizationHeader(data.accessToken)
-        },
+        url: 'security/refreshToken',
         data: data
     });
+}
+
+ConnectorService.prototype.signOutAsync = function (data) {
+    const self = this;
+
+    return self._post('security/signout', data);
 }
 
 /* Private */

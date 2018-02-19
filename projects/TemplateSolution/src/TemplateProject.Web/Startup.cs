@@ -31,7 +31,8 @@ namespace TemplateProject.Web
                         ValidAudience = WebProjectConstants.JwtAudience,
                         ValidateLifetime = true,
                         IssuerSigningKey = WebProjectConstants.GetJwtSymmetricSecurityKey(),
-                        ValidateIssuerSigningKey = true
+                        ValidateIssuerSigningKey = true,
+                        ClockSkew = WebProjectConstants.JwtClockSkew
                     };
                 });
 
