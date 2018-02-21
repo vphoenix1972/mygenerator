@@ -1,16 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
 using TemplateProject.Core.Domain;
 using TemplateProject.Core.Interfaces.DataAccess;
 using TemplateProject.Utils.Factories;
+using TemplateProject.Web.Configuration;
+using TemplateProject.Web.Security;
 
 namespace TemplateProject.Web.Controllers.Security
 {
@@ -21,11 +18,15 @@ namespace TemplateProject.Web.Controllers.Security
         private readonly IFactory<User> _usersFactory;
         private readonly IFactory<UserRole> _userRolesFactory;
         private readonly IFactory<RefreshToken> _refreshTokenFactory;
+        private readonly IWebSecurityService _webSecurityService;
+        private readonly IWebConfiguration _webConfig;
 
         public SecurityController(IDatabaseService db,
             IFactory<User> usersFactory,
             IFactory<UserRole> userRolesFactory,
-            IFactory<RefreshToken> refreshTokenFactory)
+            IFactory<RefreshToken> refreshTokenFactory,
+            IWebSecurityService webSecurityService,
+            IWebConfiguration webConfig)
         {
             if (db == null)
                 throw new ArgumentNullException(nameof(db));
@@ -35,11 +36,17 @@ namespace TemplateProject.Web.Controllers.Security
                 throw new ArgumentNullException(nameof(userRolesFactory));
             if (refreshTokenFactory == null)
                 throw new ArgumentNullException(nameof(refreshTokenFactory));
+            if (webSecurityService == null)
+                throw new ArgumentNullException(nameof(webSecurityService));
+            if (webConfig == null)
+                throw new ArgumentNullException(nameof(webConfig));
 
             _db = db;
             _usersFactory = usersFactory;
             _userRolesFactory = userRolesFactory;
             _refreshTokenFactory = refreshTokenFactory;
+            _webSecurityService = webSecurityService;
+            _webConfig = webConfig;
         }
 
         [Route("signin")]
@@ -54,7 +61,7 @@ namespace TemplateProject.Web.Controllers.Security
             if (user == null)
                 return BadRequest();
 
-            var accessToken = GetAccessTokenJwt(user);
+            var accessToken = _webSecurityService.GetAccessTokenJwt(user);
             var refreshToken = GetRefreshTokenJwt(user);
 
             return Ok(new
@@ -90,7 +97,7 @@ namespace TemplateProject.Web.Controllers.Security
 
             _db.SaveChanges();
 
-            var accessToken = GetAccessTokenJwt(newUser);
+            var accessToken = _webSecurityService.GetAccessTokenJwt(newUser);
             var refreshToken = GetRefreshTokenJwt(newUser);
 
             return Ok(new
@@ -110,38 +117,15 @@ namespace TemplateProject.Web.Controllers.Security
             if (string.IsNullOrWhiteSpace(model.RefreshToken))
                 return BadRequest();
 
-            var tokenHandler = new JwtSecurityTokenHandler();
-
-            var tokenValidationParameters = new TokenValidationParameters()
-            {
-                ValidateIssuer = true,
-                ValidIssuer = WebProjectConstants.JwtIssuer,
-                ValidateAudience = true,
-                ValidAudience = WebProjectConstants.JwtAudience,
-                ValidateLifetime = true,
-                IssuerSigningKey = WebProjectConstants.GetJwtSymmetricSecurityKey(),
-                ValidateIssuerSigningKey = true,
-                ClockSkew = WebProjectConstants.JwtClockSkew
-            };
-
-            ClaimsPrincipal principal;
-
+            long tokenId;
             try
             {
-                principal = tokenHandler.ValidateToken(model.RefreshToken, tokenValidationParameters, out _);
+                tokenId = _webSecurityService.GetRefreshTokenId(model.RefreshToken);
             }
-            catch
+            catch (JwtTokenInvalidException e)
             {
-                return BadRequest("Token is invalid");
+                return BadRequest(e.Message);
             }
-
-            var tokenIdClaim = principal.Claims.FirstOrDefault(e => e.Type == "token_id");
-            if (tokenIdClaim == null)
-                return BadRequest("Token doesn't have token_id claim");
-
-            long tokenId;
-            if (!long.TryParse(tokenIdClaim.Value, out tokenId))
-                return BadRequest("token_id claim is invalid");
 
             var refreshToken = _db.RefreshTokensRepository.GetById(tokenId);
             if (refreshToken == null)
@@ -157,15 +141,15 @@ namespace TemplateProject.Web.Controllers.Security
                 return BadRequest("Token is expired");
             }
 
-            refreshToken.ExpiresUtc = utcNow.Add(WebProjectConstants.JwtRefreshTokenLifetime);
+            refreshToken.ExpiresUtc = utcNow.Add(_webConfig.JwtRefreshTokenLifetime);
 
             _db.RefreshTokensRepository.AddOrUpdate(refreshToken);
             _db.SaveChanges();
 
             var user = _db.UsersRepository.GetById(refreshToken.UserId);
 
-            var accessToken = GetAccessTokenJwt(user);
-            var refreshTokenJwt = GetRefreshTokenJwt(refreshToken);
+            var accessToken = _webSecurityService.GetAccessTokenJwt(user);
+            var refreshTokenJwt = _webSecurityService.GetRefreshTokenJwt(refreshToken);
 
             return Ok(new
             {
@@ -184,38 +168,15 @@ namespace TemplateProject.Web.Controllers.Security
             if (string.IsNullOrWhiteSpace(model.RefreshToken))
                 return BadRequest();
 
-            var tokenHandler = new JwtSecurityTokenHandler();
-
-            var tokenValidationParameters = new TokenValidationParameters()
-            {
-                ValidateIssuer = true,
-                ValidIssuer = WebProjectConstants.JwtIssuer,
-                ValidateAudience = true,
-                ValidAudience = WebProjectConstants.JwtAudience,
-                ValidateLifetime = true,
-                IssuerSigningKey = WebProjectConstants.GetJwtSymmetricSecurityKey(),
-                ValidateIssuerSigningKey = true,
-                ClockSkew = WebProjectConstants.JwtClockSkew
-            };
-
-            ClaimsPrincipal principal;
-
+            long tokenId;
             try
             {
-                principal = tokenHandler.ValidateToken(model.RefreshToken, tokenValidationParameters, out _);
+                tokenId = _webSecurityService.GetRefreshTokenId(model.RefreshToken);
             }
-            catch
+            catch (JwtTokenInvalidException e)
             {
-                return BadRequest("Token is invalid");
+                return BadRequest(e.Message);
             }
-
-            var tokenIdClaim = principal.Claims.FirstOrDefault(e => e.Type == "token_id");
-            if (tokenIdClaim == null)
-                return BadRequest("Token doesn't have token_id claim");
-
-            long tokenId;
-            if (!long.TryParse(tokenIdClaim.Value, out tokenId))
-                return BadRequest("token_id claim is invalid");
 
             var refreshToken = _db.RefreshTokensRepository.GetById(tokenId);
             if (refreshToken == null)
@@ -227,32 +188,13 @@ namespace TemplateProject.Web.Controllers.Security
             return Ok();
         }
 
-        private string GetAccessTokenJwt(IUser user)
-        {
-            var now = DateTime.UtcNow;
-
-            var identity = GetIdentity(user);
-
-            var jwt = new JwtSecurityToken(
-                issuer: WebProjectConstants.JwtIssuer,
-                audience: WebProjectConstants.JwtAudience,
-                notBefore: now,
-                claims: identity.Claims,
-                expires: now.Add(WebProjectConstants.JwtAccessTokenLifetime),
-                signingCredentials: new SigningCredentials(WebProjectConstants.GetJwtSymmetricSecurityKey(),
-                    SecurityAlgorithms.HmacSha256));
-            var encodedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);
-
-            return encodedJwt;
-        }
-
         private string GetRefreshTokenJwt(IUser user)
         {
             if (!user.Id.HasValue)
                 throw new InvalidOperationException("Cannot create a refresh token for user without id");
 
             var now = DateTime.UtcNow;
-            var expiresUtc = now.Add(WebProjectConstants.JwtRefreshTokenLifetime);
+            var expiresUtc = now.Add(_webConfig.JwtRefreshTokenLifetime);
 
             var refreshToken = _refreshTokenFactory.Create();
             refreshToken.UserId = user.Id.Value;
@@ -262,45 +204,13 @@ namespace TemplateProject.Web.Controllers.Security
 
             _db.SaveChanges();
 
-            return GetRefreshTokenJwt(refreshToken);
-        }
-
-        private string GetRefreshTokenJwt(IRefreshToken refreshToken)
-        {
-            var now = DateTime.UtcNow;
-
-            var identity = new ClaimsIdentity();
-            identity.AddClaim(new Claim("token_id", refreshToken.Id.ToString()));
-
-            var jwt = new JwtSecurityToken(
-                issuer: WebProjectConstants.JwtIssuer,
-                audience: WebProjectConstants.JwtAudience,
-                notBefore: now,
-                claims: identity.Claims,
-                expires: refreshToken.ExpiresUtc,
-                signingCredentials: new SigningCredentials(WebProjectConstants.GetJwtSymmetricSecurityKey(),
-                    SecurityAlgorithms.HmacSha256));
-            var encodedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);
-
-            return encodedJwt;
-        }
-
-        private ClaimsIdentity GetIdentity(IUser user)
-        {
-            var identity = new ClaimsIdentity();
-
-            identity.AddClaim(new Claim(ClaimsIdentity.DefaultNameClaimType, user.Name));
-
-            var roleClaims = user.Roles.Select(e => new Claim(ClaimsIdentity.DefaultRoleClaimType, e.Name));
-            identity.AddClaims(roleClaims);
-
-            return identity;
+            return _webSecurityService.GetRefreshTokenJwt(refreshToken);
         }
 
         private IList<IUserRole> GetUserRoles()
         {
             var userRole = _userRolesFactory.Create();
-            userRole.Name = WebProjectConstants.RoleUser;
+            userRole.Name = WebConstants.RoleUser;
 
             return new List<IUserRole>()
             {

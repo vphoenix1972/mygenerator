@@ -6,7 +6,7 @@ using TemplateProject.Core.Interfaces.DataAccess;
 
 namespace TemplateProject.Web.Controllers
 {
-    [Authorize(Roles = WebProjectConstants.RoleUser)]
+    [Authorize(Roles = WebConstants.RoleUser)]
     [Route("todo")]
     public sealed class TodoController : Controller
     {
