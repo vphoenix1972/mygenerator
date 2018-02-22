@@ -11,7 +11,7 @@ namespace TemplateProject.DataAccess.Models
 
         public string EMail { get; set; }
 
-        public string Password { get; set; }
+        public string PasswordEncrypted { get; set; }
 
         public IList<UserRoleUserDataModel> UserUserRoles { get; set; }
 

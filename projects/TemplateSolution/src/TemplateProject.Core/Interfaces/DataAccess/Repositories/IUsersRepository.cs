@@ -9,7 +9,7 @@ namespace TemplateProject.Core.Interfaces.DataAccess.Repositories
 
         IUser GetById(int id);
 
-        IUser Get(string nameOrEMail, string password);
+        IUser Get(string nameOrEMail, string passwordEncrypted);
 
         IList<IUser> GetByNameOrEMail(string name, string eMail);
 

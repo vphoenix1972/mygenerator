@@ -57,7 +57,7 @@ namespace TemplateProject.DataAccess.Migrations
 
                     b.Property<string>("Name");
 
-                    b.Property<string>("Password");
+                    b.Property<string>("PasswordEncrypted");
 
                     b.HasKey("Id");
 

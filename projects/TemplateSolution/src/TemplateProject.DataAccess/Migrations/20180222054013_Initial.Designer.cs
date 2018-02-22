@@ -11,7 +11,7 @@ using TemplateProject.DataAccess;
 namespace TemplateProject.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20180216051733_Initial")]
+    [Migration("20180222054013_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -58,7 +58,7 @@ namespace TemplateProject.DataAccess.Migrations
 
                     b.Property<string>("Name");
 
-                    b.Property<string>("Password");
+                    b.Property<string>("PasswordEncrypted");
 
                     b.HasKey("Id");
 

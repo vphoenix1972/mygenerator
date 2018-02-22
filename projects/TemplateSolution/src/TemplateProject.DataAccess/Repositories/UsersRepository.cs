@@ -44,13 +44,13 @@ namespace TemplateProject.DataAccess.Repositories
             return Map(userDataModel);
         }
 
-        public IUser Get(string nameOrEMail, string password)
+        public IUser Get(string nameOrEMail, string passwordEncrypted)
         {
             var userDataModel = _db.Users
                 .Include(e => e.UserUserRoles)
                 .ThenInclude(e => e.Role)
                 .FirstOrDefault(e => (e.Name == nameOrEMail || e.EMail == nameOrEMail) &&
-                                     e.Password == password);
+                                     e.PasswordEncrypted == passwordEncrypted);
             if (userDataModel == null)
                 return null;
 
@@ -142,7 +142,7 @@ namespace TemplateProject.DataAccess.Repositories
             dest.Id = source.Id;
             dest.Name = source.Name;
             dest.EMail = source.EMail;
-            dest.Password = source.Password;
+            dest.PasswordEncrypted = source.PasswordEncrypted;
             dest.Roles = source.UserUserRoles.Select(e => new UserRole() {Name = e.Role.Name} as IUserRole).ToList();
         }
 
@@ -150,7 +150,7 @@ namespace TemplateProject.DataAccess.Repositories
         {
             dest.Name = source.Name;
             dest.EMail = source.EMail;
-            dest.Password = source.Password;
+            dest.PasswordEncrypted = source.PasswordEncrypted;
         }
     }
 }

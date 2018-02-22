@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using TemplateProject.Core.Domain;
 using TemplateProject.Core.Interfaces.DataAccess;
 using TemplateProject.Utils.Factories;
+using TemplateProject.Utils.Md5;
 using TemplateProject.Web.Configuration;
 using TemplateProject.Web.Security;
 
@@ -19,13 +20,15 @@ namespace TemplateProject.Web.Controllers.Security
         private readonly IFactory<RefreshToken> _refreshTokenFactory;
         private readonly IWebSecurityService _webSecurityService;
         private readonly IWebConfiguration _webConfig;
+        private readonly IMd5Crypter _md5Crypter;
 
         public SecurityController(IDatabaseService db,
             IFactory<User> usersFactory,
             IFactory<UserRole> userRolesFactory,
             IFactory<RefreshToken> refreshTokenFactory,
             IWebSecurityService webSecurityService,
-            IWebConfiguration webConfig)
+            IWebConfiguration webConfig,
+            IMd5Crypter md5Crypter)
         {
             if (db == null)
                 throw new ArgumentNullException(nameof(db));
@@ -39,6 +42,8 @@ namespace TemplateProject.Web.Controllers.Security
                 throw new ArgumentNullException(nameof(webSecurityService));
             if (webConfig == null)
                 throw new ArgumentNullException(nameof(webConfig));
+            if (md5Crypter == null)
+                throw new ArgumentNullException(nameof(md5Crypter));
 
             _db = db;
             _usersFactory = usersFactory;
@@ -46,6 +51,7 @@ namespace TemplateProject.Web.Controllers.Security
             _refreshTokenFactory = refreshTokenFactory;
             _webSecurityService = webSecurityService;
             _webConfig = webConfig;
+            _md5Crypter = md5Crypter;
         }
 
         [Route("signin")]
@@ -55,8 +61,13 @@ namespace TemplateProject.Web.Controllers.Security
         {
             if (model == null)
                 return BadRequest();
+            if (string.IsNullOrWhiteSpace(model.Login) ||
+                string.IsNullOrWhiteSpace(model.Password))
+                return BadRequest();
 
-            var user = _db.UsersRepository.Get(model.Login, model.Password);
+            var passwordEncrypted = _md5Crypter.Encrypt(model.Password);
+
+            var user = _db.UsersRepository.Get(model.Login, passwordEncrypted);
             if (user == null)
                 return BadRequest();
 
@@ -89,7 +100,7 @@ namespace TemplateProject.Web.Controllers.Security
             var newUser = _usersFactory.Create();
             newUser.Name = model.Name;
             newUser.EMail = model.EMail;
-            newUser.Password = model.Password;
+            newUser.PasswordEncrypted = _md5Crypter.Encrypt(model.Password);
             newUser.Roles = GetUserRoles();
 
             _db.UsersRepository.Add(newUser);

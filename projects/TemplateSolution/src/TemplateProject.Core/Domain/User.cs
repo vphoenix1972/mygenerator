@@ -10,7 +10,7 @@ namespace TemplateProject.Core.Domain
 
         public string EMail { get; set; }
 
-        public string Password { get; set; }
+        public string PasswordEncrypted { get; set; }
 
         public IList<IUserRole> Roles { get; set; } = new List<IUserRole>();
     }

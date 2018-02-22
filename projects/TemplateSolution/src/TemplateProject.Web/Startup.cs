@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using TemplateProject.Core;
 using TemplateProject.Core.Interfaces.DataAccess;
 using TemplateProject.DataAccess;
+using TemplateProject.Utils;
 using TemplateProject.Web.Configuration;
 using TemplateProject.Web.Security;
 
@@ -23,6 +24,7 @@ namespace TemplateProject.Web
         {
             services.AddWebConfiguration();
 
+            services.AddUtils();
             services.AddCore();
             services.AddDataAccess(_config.DbConnectionString);
 

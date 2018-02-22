@@ -43,7 +43,7 @@ namespace TemplateProject.DataAccess.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
                     EMail = table.Column<string>(nullable: true),
                     Name = table.Column<string>(nullable: true),
-                    Password = table.Column<string>(nullable: true)
+                    PasswordEncrypted = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -141,7 +141,7 @@ namespace TemplateProject.DataAccess.Migrations
         private void SeedUsers(MigrationBuilder mb)
         {
             mb.Sql(@"INSERT INTO ""UserRoles"" (""Name"") VALUES ('admin'), ('user');");
-            mb.Sql(@"INSERT INTO ""Users"" (""Name"", ""EMail"", ""Password"") VALUES ('admin', 'admin@gmail.com', '1234'), ('user', 'user@gmail.com', '1');");
+            mb.Sql(@"INSERT INTO ""Users"" (""Name"", ""EMail"", ""PasswordEncrypted"") VALUES ('admin', 'admin@gmail.com', '81dc9bdb52d04dc20036dbd8313ed055'), ('user', 'user@gmail.com', 'c4ca4238a0b923820dcc509a6f75849b');");
 
             mb.Sql(@"DO $$
                      DECLARE 
