@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TemplateProject.Core.Domain;
@@ -110,7 +109,7 @@ namespace TemplateProject.Web.Controllers.Security
         [Route("refreshToken")]
         [AllowAnonymous]
         [HttpPost]
-        public async Task<IActionResult> RefreshToken([FromBody] RefreshTokenApiModel model)
+        public IActionResult RefreshToken([FromBody] RefreshTokenApiModel model)
         {
             if (model == null)
                 return BadRequest();
@@ -210,7 +209,7 @@ namespace TemplateProject.Web.Controllers.Security
         private IList<IUserRole> GetUserRoles()
         {
             var userRole = _userRolesFactory.Create();
-            userRole.Name = WebConstants.RoleUser;
+            userRole.Name = UserRoleNames.RoleUser;
 
             return new List<IUserRole>()
             {

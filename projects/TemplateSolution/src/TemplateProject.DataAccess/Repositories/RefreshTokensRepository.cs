@@ -21,6 +21,11 @@ namespace TemplateProject.DataAccess.Repositories
             Db.RefreshTokens.RemoveRange(Db.RefreshTokens.Where(e => e.ExpiresUtc <= beforeUtc));
         }
 
+        public void DeleteByUserId(int userId)
+        {
+            Db.RefreshTokens.RemoveRange(Db.RefreshTokens.Where(e => e.UserId == userId));
+        }
+
         protected override void Map(RefreshTokenDataModel source, RefreshToken dest)
         {
             dest.Id = source.Id;

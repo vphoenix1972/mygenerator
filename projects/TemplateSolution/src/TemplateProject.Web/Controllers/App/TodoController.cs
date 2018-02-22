@@ -1,14 +1,11 @@
 ﻿using System;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TemplateProject.Core.Domain;
 using TemplateProject.Core.Interfaces.DataAccess;
 
-namespace TemplateProject.Web.Controllers
+namespace TemplateProject.Web.Controllers.App
 {
-    [Authorize(Roles = WebConstants.RoleUser)]
-    [Route("todo")]
-    public sealed class TodoController : Controller
+    public sealed class TodoController : AppController
     {
         private readonly IDatabaseService _databaseService;
 

@@ -42,3 +42,7 @@ import 'rootDir/pages/app/todo/todoIndexController';
 import 'rootDir/pages/app/todo/todoEditController';
 import 'rootDir/pages/app/examples/examplesController';
 import 'rootDir/pages/app/about/aboutController';
+
+import 'rootDir/pages/admin/adminLayoutController';
+import 'rootDir/pages/admin/home/adminHomeController';
+import 'rootDir/pages/admin/users/usersIndexController';

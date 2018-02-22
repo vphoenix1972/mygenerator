@@ -9,8 +9,7 @@ using TemplateProject.Utils.Factories;
 
 namespace TemplateProject.DataAccess.Repositories
 {
-    public sealed class UsersRepository :
-        IUsersRepository
+    public sealed class UsersRepository : IUsersRepository
     {
         private readonly ApplicationDbContext _db;
         private readonly IFactory<User> _usersFactory;
@@ -24,6 +23,15 @@ namespace TemplateProject.DataAccess.Repositories
 
             _db = db;
             _usersFactory = usersFactory;
+        }
+
+        public IList<IUser> GetAll(UsersFilter filter = null)
+        {
+            var query = BuildQuery(filter);
+
+            var result = query.ToList();
+
+            return result.Select(Map).ToList();
         }
 
         public IUser GetById(int id)
@@ -90,6 +98,34 @@ namespace TemplateProject.DataAccess.Repositories
             _db.AddSaveChangesHook(() => user.Id = userDataModel.Id);
 
             return user;
+        }
+
+        public void DeleteById(int id)
+        {
+            var existing = _db.Users.Find(id);
+            if (existing == null)
+                return;
+
+            _db.Users.Remove(existing);
+        }
+
+        private IQueryable<UserDataModel> BuildQuery(UsersFilter filter)
+        {
+            IQueryable<UserDataModel> query = _db.Users
+                .Include(e => e.UserUserRoles)
+                .ThenInclude(e => e.Role);
+
+            if (filter == null)
+                return query;
+
+            if (filter.ExcludeUserRoleNames != null)
+            {
+                query = query.Where(
+                    user => user.UserUserRoles.All(
+                        userUserRole => !filter.ExcludeUserRoleNames.Contains(userUserRole.Role.Name)));
+            }
+
+            return query;
         }
 
         private IUser Map(UserDataModel source)

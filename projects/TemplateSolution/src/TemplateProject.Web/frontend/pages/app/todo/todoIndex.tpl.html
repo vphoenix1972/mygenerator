@@ -22,13 +22,13 @@
             <tr ng-repeat="item in vm.items">
                 <td>{{item.id}}</td>
                 <td>{{item.name}}</td>
-                <td class="app-todo-index-page__table-buttons-column">
+                <td class="app-items-table__buttons-column">
                     <a href
                        ng-click="vm.onEditButtonClicked(item)">
                         Edit&nbsp;<i class="fa fa-pencil"></i>
                     </a>
                 </td>
-                <td class="app-todo-index-page__table-buttons-column">
+                <td class="app-items-table__buttons-column">
                     <a href
                        ng-click="vm.onDeleteButtonClicked(item)">
                         Delete&nbsp;<i class="fa fa-times"></i>

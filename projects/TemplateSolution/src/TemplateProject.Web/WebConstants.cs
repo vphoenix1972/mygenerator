@@ -4,8 +4,5 @@
     {
         public const string NLogConfigPath = "NLog.config";
         public const string ConfigPath = "appsettings.json";
-
-        public const string RoleAdmin = "admin";
-        public const string RoleUser = "user";
     }
 }

@@ -12,6 +12,10 @@ import todoEditTemplateUrl from 'rootDir/pages/app/todo/todoEdit.tpl.html';
 import examplesTemplateUrl from 'rootDir/pages/app/examples/examples.tpl.html';
 import aboutTemplateUrl from 'rootDir/pages/app/about/about.tpl.html';
 
+import adminLayoutTemplateUrl from 'rootDir/pages/admin/adminLayout.tpl.html';
+import adminHomeTemplateUrl from 'rootDir/pages/admin/home/adminHome.tpl.html';
+import usersIndexTemplateUrl from 'rootDir/pages/admin/users/usersIndex.tpl.html';
+
 function config(
     $stateProvider,
     $urlRouterProvider,
@@ -27,10 +31,19 @@ function config(
 }
 
 function configureRoutes($stateProvider, $urlRouterProvider, roles) {
+    const authenticatedUserRoles = [roles.user];
 
-    var appStateName = 'app';
-    var authenticatedUserRoles = [roles.user];
+    configureCommonRoutes($stateProvider, $urlRouterProvider, roles, authenticatedUserRoles);
 
+    configureAppRoutes($stateProvider, $urlRouterProvider, roles, authenticatedUserRoles);
+
+    configureAdminRoutes($stateProvider, $urlRouterProvider, roles);
+
+    // Set default and 404 state
+    $urlRouterProvider.otherwise('/app/home');
+}
+
+function configureCommonRoutes($stateProvider, $urlRouterProvider, roles, authenticatedUserRoles) {
     $stateProvider.state('loading',
         {
             url: '/loading',
@@ -65,6 +78,10 @@ function configureRoutes($stateProvider, $urlRouterProvider, roles) {
             controllerAs: 'vm',
             templateUrl: registerTemplateUrl
         });
+}
+
+function configureAppRoutes($stateProvider, $urlRouterProvider, roles, authenticatedUserRoles) {
+    const appStateName = 'app';    
 
     $stateProvider.state(appStateName,
         {
@@ -126,7 +143,7 @@ function configureRoutes($stateProvider, $urlRouterProvider, roles) {
             controllerAs: 'vm',
             templateUrl: examplesTemplateUrl,
             data: {
-                roles: [roles.admin]
+                roles: authenticatedUserRoles
             }
         });
 
@@ -140,9 +157,42 @@ function configureRoutes($stateProvider, $urlRouterProvider, roles) {
                 roles: authenticatedUserRoles
             }
         });
+}
 
-    // Set default and 404 state
-    $urlRouterProvider.otherwise('/app/home');
+function configureAdminRoutes($stateProvider, $urlRouterProvider, roles) {
+    const adminStateName = 'admin';
+    const adminRoles = [roles.admin];
+
+    $stateProvider.state(adminStateName,
+        {
+            abstract: true,
+            url: '/admin',
+            controller: 'adminLayoutController',
+            controllerAs: 'vm',
+            templateUrl: adminLayoutTemplateUrl
+        });
+
+    $stateProvider.state(`${adminStateName}.home`,
+        {
+            url: '',
+            controller: 'adminHomeController',
+            controllerAs: 'vm',
+            templateUrl: adminHomeTemplateUrl,
+            data: {
+                roles: adminRoles
+            }
+        });
+
+    $stateProvider.state(`${adminStateName}.users-index`,
+        {
+            url: '/users-index',
+            controller: 'usersIndexController',
+            controllerAs: 'vm',
+            templateUrl: usersIndexTemplateUrl,
+            data: {
+                roles: adminRoles
+            }
+        });
 }
 
 

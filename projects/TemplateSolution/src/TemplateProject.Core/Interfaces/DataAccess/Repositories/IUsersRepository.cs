@@ -5,6 +5,8 @@ namespace TemplateProject.Core.Interfaces.DataAccess.Repositories
 {
     public interface IUsersRepository
     {
+        IList<IUser> GetAll(UsersFilter filter = null);
+
         IUser GetById(int id);
 
         IUser Get(string nameOrEMail, string password);
@@ -12,5 +14,7 @@ namespace TemplateProject.Core.Interfaces.DataAccess.Repositories
         IList<IUser> GetByNameOrEMail(string name, string eMail);
 
         IUser Add(IUser user);
+
+        void DeleteById(int id);
     }
 }

@@ -23,32 +23,34 @@ ConnectorService.prototype.setAccessToken = function (accessToken) {
 ConnectorService.prototype.getTodoIndexAsync = function () {
     const self = this;
 
-    return self._get('todo/index');
+    return self._get('app/todo/index');
 }
 
 ConnectorService.prototype.getTodoEditAsync = function (todoItemId) {
     const self = this;
 
-    return self._get(`todo/edit/${todoItemId}`);
+    return self._get(`app/todo/edit/${todoItemId}`);
 }
 
 ConnectorService.prototype.addTodoItemAsync = function (item) {
     const self = this;
 
-    return self._post('todo', item);
+    return self._post('app/todo', item);
 }
 
 ConnectorService.prototype.updateTodoItemAsync = function (todoItemId, item) {
     const self = this;
 
-    return self._put(`todo/${todoItemId}`, item);
+    return self._put(`app/todo/${todoItemId}`, item);
 }
 
 ConnectorService.prototype.deleteTodoItemAsync = function (todoItemId) {
     const self = this;
 
-    return self._delete(`todo/${todoItemId}`);
+    return self._delete(`app/todo/${todoItemId}`);
 }
+
+/* Security */
 
 ConnectorService.prototype.signInAsync = function (data) {
     const self = this;
@@ -76,6 +78,20 @@ ConnectorService.prototype.signOutAsync = function (data) {
     const self = this;
 
     return self._post('security/signout', data);
+}
+
+/* Administration */
+
+ConnectorService.prototype.getUsersIndexAsync = function () {
+    const self = this;
+
+    return self._get('admin/users/index');
+}
+
+ConnectorService.prototype.deleteUserAsync = function (userId) {
+    const self = this;
+
+    return self._delete(`admin/users/${userId}`);
 }
 
 /* Private */

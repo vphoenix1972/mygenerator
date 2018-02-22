@@ -72,3 +72,12 @@ body {
     overflow: hidden;
     vertical-align: top;
 }
+
+.app-navbar__username {
+    max-width: 200px;
+    display: inline-block;
+}
+
+.app-items-table__buttons-column {
+    width: 100px;
+}

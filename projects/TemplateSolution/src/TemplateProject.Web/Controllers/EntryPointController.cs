@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace TemplateProject.Web.Controllers
 {
     [Route("")]
-    public sealed class AppController : Controller
+    public sealed class EntryPointController : Controller
     {
         [AllowAnonymous]
         [HttpGet]
