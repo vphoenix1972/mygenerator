@@ -15,6 +15,8 @@ namespace TemplateProject.Core.Interfaces.DataAccess.Repositories
 
         IUser Add(IUser user);
 
-        void DeleteById(int id);
+        IUser Update(IUser user);
+
+        void DeleteById(int id);        
     }
 }

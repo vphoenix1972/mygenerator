@@ -66,6 +66,7 @@ namespace TemplateProject.Web.Security
         {
             var identity = new ClaimsIdentity();
 
+            identity.AddClaim(new Claim(WebSecurityConstants.AccessTokenUserIdKey, user.Id.Value.ToString()));
             identity.AddClaim(new Claim(ClaimsIdentity.DefaultNameClaimType, user.Name));
 
             var roleClaims = user.Roles.Select(e => new Claim(ClaimsIdentity.DefaultRoleClaimType, e.Name));

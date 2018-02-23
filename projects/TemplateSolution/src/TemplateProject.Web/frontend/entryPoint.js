@@ -37,6 +37,8 @@ import 'rootDir/pages/forbidden/forbiddenController';
 import 'rootDir/pages/register/registerController';
 
 import 'rootDir/pages/app/appLayoutController';
+import 'rootDir/pages/app/userSettings/userSettingsController';
+import 'rootDir/pages/app/userSettings/passwordChange/appUserSettingsPasswordChangeDirective';
 import 'rootDir/pages/app/home/homeController';
 import 'rootDir/pages/app/todo/todoIndexController';
 import 'rootDir/pages/app/todo/todoEditController';

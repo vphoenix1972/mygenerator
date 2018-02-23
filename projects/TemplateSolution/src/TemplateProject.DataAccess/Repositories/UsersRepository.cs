@@ -100,6 +100,47 @@ namespace TemplateProject.DataAccess.Repositories
             return user;
         }
 
+        public IUser Update(IUser user)
+        {
+            if (user == null)
+                throw new ArgumentNullException(nameof(user));
+            if (user.Id == null)
+                throw new ArgumentNullException(nameof(user.Id));
+
+            var userDataModel = _db.Users
+                .Include(e => e.UserUserRoles)
+                .ThenInclude(e => e.Role)
+                .SingleOrDefault(e => e.Id == user.Id.Value);
+            if (userDataModel == null)
+                throw new ArgumentException($"User with id '{user.Id}' doesn't exist in database");
+
+            Map(user, userDataModel);
+
+            foreach (var role in user.Roles)
+            {
+                var roleDataModel = _db.UserRoles
+                    .FirstOrDefault(e => e.Name == role.Name);
+                if (roleDataModel == null)
+                    throw new ArgumentException($"Role '{role.Name}' does not exist in database");
+
+                var isRoleSet = userDataModel.UserUserRoles.Any(e => e.RoleId == roleDataModel.Id);
+                if (isRoleSet)
+                    continue;
+
+                var link = new UserRoleUserDataModel()
+                {
+                    User = userDataModel,
+                    Role = roleDataModel
+                };
+
+                _db.UserRoleUsers.Add(link);
+            }
+
+            _db.Entry(userDataModel).State = EntityState.Modified;
+
+            return user;
+        }
+
         public void DeleteById(int id)
         {
             var existing = _db.Users.Find(id);

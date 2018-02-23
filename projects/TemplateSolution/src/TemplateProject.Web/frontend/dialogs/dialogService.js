@@ -105,6 +105,17 @@ DialogService.prototype.isExecutingShown = function () {
     return self._executingDialog != null;
 }
 
+DialogService.prototype.showExecutingForSaveAsync = function (options) {
+    const self = this;
+
+    var currentOptions = {
+        title: 'Saving...'
+    }
+    angular.extend(currentOptions, options);
+
+    return self.showExecutingAsync(currentOptions);
+}
+
 DialogService.prototype.showErrorAsync = function (options) {
     const self = this;
 

@@ -6,6 +6,7 @@ import forbiddenTemplateUrl from 'rootDir/pages/forbidden/forbidden.tpl.html';
 import registerTemplateUrl from 'rootDir/pages/register/register.tpl.html';
 
 import appLayoutTemplateUrl from 'rootDir/pages/app/appLayout.tpl.html';
+import userSettingsTemplateUrl from 'rootDir/pages/app/userSettings/userSettings.tpl.html';
 import homeTemplateUrl from 'rootDir/pages/app/home/home.tpl.html';
 import todoIndexTemplateUrl from 'rootDir/pages/app/todo/todoIndex.tpl.html';
 import todoEditTemplateUrl from 'rootDir/pages/app/todo/todoEdit.tpl.html';
@@ -81,7 +82,18 @@ function configureCommonRoutes($stateProvider, $urlRouterProvider, roles, authen
 }
 
 function configureAppRoutes($stateProvider, $urlRouterProvider, roles, authenticatedUserRoles) {
-    const appStateName = 'app';    
+    const appStateName = 'app';
+
+    $stateProvider.state(`${appStateName}.userSettings`,
+        {
+            url: '/userSettings',
+            controller: 'userSettingsController',
+            controllerAs: 'vm',
+            templateUrl: userSettingsTemplateUrl,
+            data: {
+                roles: authenticatedUserRoles
+            }
+        });
 
     $stateProvider.state(appStateName,
         {

@@ -24,8 +24,6 @@ function RegisterController($state,
 RegisterController.prototype.onRegisterButtonClicked = function () {
     const self = this;
 
-    self.registrationError = null;
-
     self._validateInput();
     if (self.registrationError)
         return;
@@ -50,6 +48,8 @@ RegisterController.prototype.onRegisterButtonClicked = function () {
 
 RegisterController.prototype._validateInput = function () {
     const self = this;
+
+    self.registrationError = null;
 
     if (String.prototype.isNullOrWhiteSpace(self.email)) {
         self.registrationError = 'Email cannot be empty';

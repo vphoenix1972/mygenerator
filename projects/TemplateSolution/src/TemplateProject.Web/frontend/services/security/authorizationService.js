@@ -80,6 +80,18 @@ AuthorizationService.prototype.registerAsync = function (ticket) {
         });
 }
 
+AuthorizationService.prototype.changePasswordAsync = function (changePasswordRequest) {
+    const self = this;
+
+    if (!self._currentUser.isAuthenticated)
+        return self._$q.reject('Current user is not authenticated');
+
+    return self._connectorService.changePasswordAsync(self._currentUser.id, changePasswordRequest)
+        .catch((response) => {
+            return self._$q.reject(response.data);
+        });
+}
+
 AuthorizationService.prototype.loadUserFromCacheAsync = function () {
     const self = this;
 
@@ -151,6 +163,7 @@ AuthorizationService.prototype._loadUserFromAccessToken = function (accessTokenD
     const self = this;
 
     self._currentUser.isAuthenticated = true;
+    self._currentUser.id = parseInt(accessTokenData[self._jwtClaimTypes.userId]);
     self._currentUser.name = accessTokenData[self._jwtClaimTypes.name];
     self._currentUser.roles = self._parseJwtRole(accessTokenData[self._jwtClaimTypes.role]);
 }
