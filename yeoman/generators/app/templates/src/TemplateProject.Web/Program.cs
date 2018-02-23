@@ -9,7 +9,7 @@ namespace <%= projectNamespace %>.Web
     {
         public static void Main(string[] args)
         {
-            var logger = NLogBuilder.ConfigureNLog(WebProjectConstants.NLogConfigPath).GetCurrentClassLogger();
+            var logger = NLogBuilder.ConfigureNLog(WebConstants.NLogConfigPath).GetCurrentClassLogger();
             try
             {
                 logger.Info("Init main");
