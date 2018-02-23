@@ -64,10 +64,10 @@ ConnectorService.prototype.registerAsync = function (data) {
     return self._post('security/register', data);
 }
 
-ConnectorService.prototype.changePasswordAsync = function (userId, data) {
+ConnectorService.prototype.changePasswordAsync = function (data) {
     const self = this;
 
-    return self._post(`app/user/${userId}/changePassword`, data);
+    return self._post(`app/user/changePassword`, data);
 }
 
 ConnectorService.prototype.refreshToken = function (data) {

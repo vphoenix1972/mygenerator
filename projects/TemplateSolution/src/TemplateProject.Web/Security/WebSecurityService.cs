@@ -5,7 +5,6 @@ using System.Security.Claims;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
 using TemplateProject.Core.Domain;
-using TemplateProject.Utils.Factories;
 using TemplateProject.Web.Configuration;
 
 namespace TemplateProject.Web.Security
@@ -66,7 +65,7 @@ namespace TemplateProject.Web.Security
         {
             var identity = new ClaimsIdentity();
 
-            identity.AddClaim(new Claim(WebSecurityConstants.AccessTokenUserIdKey, user.Id.Value.ToString()));
+            identity.AddClaim(new Claim(WebSecurityConstants.AccessTokenUserIdClaim, user.Id.Value.ToString()));
             identity.AddClaim(new Claim(ClaimsIdentity.DefaultNameClaimType, user.Name));
 
             var roleClaims = user.Roles.Select(e => new Claim(ClaimsIdentity.DefaultRoleClaimType, e.Name));
@@ -80,7 +79,7 @@ namespace TemplateProject.Web.Security
             var now = DateTime.UtcNow;
 
             var identity = new ClaimsIdentity();
-            identity.AddClaim(new Claim(WebSecurityConstants.RefreshTokenTokenIdKey, refreshToken.Id.ToString()));
+            identity.AddClaim(new Claim(WebSecurityConstants.RefreshTokenTokenIdClaim, refreshToken.Id.ToString()));
 
             var jwt = new JwtSecurityToken(
                 issuer: WebSecurityConstants.JwtIssuer,
@@ -114,7 +113,7 @@ namespace TemplateProject.Web.Security
             }
 
             var tokenIdClaim =
-                principal.Claims.FirstOrDefault(e => e.Type == WebSecurityConstants.RefreshTokenTokenIdKey);
+                principal.Claims.FirstOrDefault(e => e.Type == WebSecurityConstants.RefreshTokenTokenIdClaim);
             if (tokenIdClaim == null)
                 throw new JwtTokenInvalidException("Token doesn't have token_id claim");
 
@@ -123,6 +122,22 @@ namespace TemplateProject.Web.Security
                 throw new JwtTokenInvalidException("token_id claim is invalid");
 
             return tokenId;
+        }
+
+        public int? GetUserIdFromIdentity(ClaimsPrincipal user)
+        {
+            if (user == null)
+                throw new ArgumentNullException(nameof(user));
+
+            var userIdClaim = user.Claims.FirstOrDefault(e => e.Type == WebSecurityConstants.AccessTokenUserIdClaim);
+            if (userIdClaim == null)
+                return null;
+
+            int userId;
+            if (!int.TryParse(userIdClaim.Value, out userId))
+                return null;
+
+            return userId;
         }
 
         private SymmetricSecurityKey GetJwtSymmetricSecurityKey()

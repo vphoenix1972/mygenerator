@@ -86,7 +86,7 @@ AuthorizationService.prototype.changePasswordAsync = function (changePasswordReq
     if (!self._currentUser.isAuthenticated)
         return self._$q.reject('Current user is not authenticated');
 
-    return self._connectorService.changePasswordAsync(self._currentUser.id, changePasswordRequest)
+    return self._connectorService.changePasswordAsync(changePasswordRequest)
         .catch((response) => {
             return self._$q.reject(response.data);
         });

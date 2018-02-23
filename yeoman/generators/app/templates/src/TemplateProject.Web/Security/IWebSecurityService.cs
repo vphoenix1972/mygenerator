@@ -15,5 +15,7 @@ namespace <%= projectNamespace %>.Web.Security
         string GetRefreshTokenJwt(IRefreshToken refreshToken);
 
         long GetRefreshTokenId(string refreshTokenJwt);
+
+        int? GetUserIdFromIdentity(ClaimsPrincipal user);
     }
 }

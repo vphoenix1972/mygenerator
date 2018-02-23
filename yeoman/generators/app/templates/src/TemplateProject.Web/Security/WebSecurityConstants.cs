@@ -11,8 +11,8 @@ namespace <%= projectNamespace %>.Web.Security
         public static readonly TimeSpan DefaultJwtRefreshTokenLifetime = TimeSpan.FromHours(24);
         public static readonly TimeSpan DefaultJwtClockSkew = TimeSpan.FromMinutes(5);
 
-        public const string AccessTokenUserIdKey = "userId";
+        public const string AccessTokenUserIdClaim = "userId";
 
-        public const string RefreshTokenTokenIdKey = "tokenId";
+        public const string RefreshTokenTokenIdClaim = "tokenId";
     }
 }

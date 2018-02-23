@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using TemplateProject.Core.Interfaces.DataAccess;
 using TemplateProject.Utils.Md5;
+using TemplateProject.Web.Security;
 
 namespace TemplateProject.Web.Controllers.App.User
 {
@@ -9,20 +11,26 @@ namespace TemplateProject.Web.Controllers.App.User
     {
         private readonly IDatabaseService _db;
         private readonly IMd5Crypter _md5Crypter;
+        private readonly IWebSecurityService _webSecurityService;
 
-        public UserController(IDatabaseService db, IMd5Crypter md5Crypter)
+        public UserController(IDatabaseService db,
+            IMd5Crypter md5Crypter,
+            IWebSecurityService webSecurityService)
         {
             if (db == null)
                 throw new ArgumentNullException(nameof(db));
             if (md5Crypter == null)
                 throw new ArgumentNullException(nameof(md5Crypter));
+            if (webSecurityService == null)
+                throw new ArgumentNullException(nameof(webSecurityService));
 
             _db = db;
             _md5Crypter = md5Crypter;
+            _webSecurityService = webSecurityService;
         }
 
-        [HttpPost("{userId:int}/changePassword")]
-        public IActionResult ChangePassword(int userId, [FromBody] ChangePasswordApiModel model)
+        [HttpPost("changePassword")]
+        public IActionResult ChangePassword([FromBody] ChangePasswordApiModel model)
         {
             if (model == null)
                 return BadRequest();
@@ -31,9 +39,13 @@ namespace TemplateProject.Web.Controllers.App.User
             if (string.IsNullOrWhiteSpace(model.NewPassword))
                 return BadRequest("New password is invalid");
 
-            var user = _db.UsersRepository.GetById(userId);
+            var userId = _webSecurityService.GetUserIdFromIdentity(User);
+            if (!userId.HasValue)
+                return BadRequest();
+
+            var user = _db.UsersRepository.GetById(userId.Value);
             if (user == null)
-                return BadRequest($"User with id '{userId}' doesn't exist");
+                return BadRequest($"User with id '{userId.Value}' doesn't exist");
 
             var oldPasswordEncrypted = _md5Crypter.Encrypt(model.OldPassword);
             if (oldPasswordEncrypted != user.PasswordEncrypted)
