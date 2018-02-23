@@ -1,0 +1,52 @@
+﻿<div class="panel app-register-form">
+    <h3>Register</h3>
+
+    <div class="alert alert-danger"
+         ng-if="vm.registrationError">
+        {{vm.registrationError}}
+    </div>
+
+    <div class="form-group">
+        <label for="email">Email address</label>
+        <input type="email"
+               class="form-control"
+               id="email"
+               placeholder="Email address"
+               ng-model="vm.email">
+    </div>
+
+    <div class="form-group">
+        <label for="username">Username</label>
+        <input type="text"
+               class="form-control"
+               id="username"
+               placeholder="username"
+               ng-model="vm.username">
+    </div>
+
+    <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password"
+               class="form-control"
+               id="password"
+               placeholder="Password"
+               ng-model="vm.password">
+    </div>
+
+    <div class="form-group">
+        <label for="passwordConfirmation">Confirm password</label>
+        <input type="password"
+               class="form-control"
+               id="passwordConfirmation"
+               placeholder="Password"
+               ng-model="vm.passwordConfirmation">
+    </div>
+
+    <div class="text-center">
+        <button type="button"
+                class="btn btn-primary"
+                ng-click="vm.onRegisterButtonClicked()">
+            Register
+        </button>
+    </div>
+</div>

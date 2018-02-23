@@ -56,7 +56,9 @@ class MyGenerator extends Generator {
             destSrcWebProjFolder: this._destSrcWebProjFolder,
             destSrcCoreProjFolder: this._destSrcCoreProjFolder,
             destSrcDataAccessProjFolder: this._destSrcDataAccessProjFolder,
-            destSrcUtilsProjFolder: this._destSrcUtilsProjFolder
+            destSrcUtilsProjFolder: this._destSrcUtilsProjFolder,
+            jwtIssuer: this._projectName,
+            jwtAudience: this._projectName
         }
     }
 

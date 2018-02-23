@@ -5,27 +5,41 @@ using Microsoft.Extensions.DependencyInjection;
 using <%= projectNamespace %>.Core;
 using <%= projectNamespace %>.Core.Interfaces.DataAccess;
 using <%= projectNamespace %>.DataAccess;
+using <%= projectNamespace %>.Utils;
+using <%= projectNamespace %>.Web.Configuration;
+using <%= projectNamespace %>.Web.Security;
 
 namespace <%= projectNamespace %>.Web
 {
     public class Startup
     {
-        // This method gets called by the runtime. Use this method to add services to the container.
-        // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
+        private readonly WebConfiguration _config;
+
+        public Startup()
+        {
+            _config = new WebConfiguration(WebConstants.ConfigPath);
+        }
+
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddWebConfiguration();
+
+            services.AddUtils();
             services.AddCore();
-            services.AddDataAccess("Host=localhost;Port=5432;Username=postgres;Password=12345678;Database=mygenerator");
+            services.AddDataAccess(_config.DbConnectionString);
+
+            services.AddWebSecurity(_config);
 
             services.AddMvc();
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app,
             IHostingEnvironment env,
             IApplicationLifetime applicationLifetime)
         {
             app.UseStaticFiles();
+
+            app.UseSecurity();
 
             app.UseMvc();
 
@@ -37,14 +51,27 @@ namespace <%= projectNamespace %>.Web
             using (var scope = app.ApplicationServices.CreateScope())
             {
                 MigrateDatabaseToLatestVersion(scope.ServiceProvider);
+
+                DeleteExpiredRefreshTokens(scope.ServiceProvider);
             }
         }
 
         private void MigrateDatabaseToLatestVersion(IServiceProvider provider)
         {
-            var databaseService = provider.GetRequiredService<IDatabaseService>();
+            var db = provider.GetRequiredService<IDatabaseService>();
 
-            databaseService.MigrateToLatestVersion();
+            db.MigrateToLatestVersion();
+        }
+
+        private void DeleteExpiredRefreshTokens(IServiceProvider provider)
+        {
+            var db = provider.GetRequiredService<IDatabaseService>();
+
+            var utcNow = DateTime.UtcNow;
+
+            db.RefreshTokensRepository.DeleteExpired(utcNow);
+
+            db.SaveChanges();
         }
     }
 }

@@ -2,6 +2,8 @@
 
 import './progressDialog.css';
 
+import templateUrl from './progressDialog.tpl.html';
+
 import angular from 'angular';
 import appModule from 'rootDir/appModule';
 
@@ -47,4 +49,13 @@ ProgressDialogController.prototype.onCancelButtonClicked = function () {
 
 
 angular.module(appModule)
-    .controller('progressDialogController', ProgressDialogController);
+    .controller('progressDialogController', ProgressDialogController)
+    // Preload dialog's template to show dialog even if server is unavailable
+    .run([
+        '$http', '$templateCache', function ($http, $templateCache) {
+            $http.get(templateUrl)
+                .then(function (response) {
+                    $templateCache.put(templateUrl, response.data);
+                });
+        }
+    ]);

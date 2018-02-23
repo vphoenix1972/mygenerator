@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "<%= csprojName %>.Core", "s
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "<%= csprojName %>.Utils", "src\<%= csprojName %>.Utils\<%= csprojName %>.Utils.csproj", "{729A5600-F858-4FDB-A507-B74986834167}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "<%= csprojName %>.DataAccess", "src\<%= csprojName %>.DataAccess\<%= csprojName %>.DataAccess.csproj", "{C27C176C-5319-46B8-9208-76F67358DA63}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "<%= csprojName %>.DataAccess", "src\<%= csprojName %>.DataAccess\<%= csprojName %>.DataAccess.csproj", "{C27C176C-5319-46B8-9208-76F67358DA63}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

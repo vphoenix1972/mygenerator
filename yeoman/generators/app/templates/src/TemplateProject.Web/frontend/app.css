@@ -65,3 +65,19 @@ body {
 .app-col-90ps {
     width: 90%;
 }
+
+.app-text {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    vertical-align: top;
+}
+
+.app-navbar__username {
+    max-width: 200px;
+    display: inline-block;
+}
+
+.app-items-table__buttons-column {
+    width: 100px;
+}

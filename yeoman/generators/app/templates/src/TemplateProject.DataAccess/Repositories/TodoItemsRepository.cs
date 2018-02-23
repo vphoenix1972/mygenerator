@@ -1,23 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using <%= projectNamespace %>.Core.Domain;
+﻿using <%= projectNamespace %>.Core.Domain;
 using <%= projectNamespace %>.Core.Interfaces.DataAccess.Repositories;
 using <%= projectNamespace %>.DataAccess.Models;
 using <%= projectNamespace %>.Utils.Factories;
 
 namespace <%= projectNamespace %>.DataAccess.Repositories
 {
-    public sealed class TodoItemsRepository : RepositoryBase<ITodoItem, int, TodoItemDataModel>,
+    public sealed class TodoItemsRepository : RepositoryBase<ITodoItem, TodoItem, int, TodoItemDataModel>,
         ITodoItemsRepository
     {
         public TodoItemsRepository(ApplicationDbContext db,
-            IFactory<ITodoItem> todoItemsFactory) :
+            IFactory<TodoItem> todoItemsFactory) :
             base(db, db?.TodoItems, todoItemsFactory)
         {
         }
 
-        protected override void Map(TodoItemDataModel source, ITodoItem dest)
+        protected override void Map(TodoItemDataModel source, TodoItem dest)
         {
             dest.Id = source.Id;
             dest.Name = source.Name;

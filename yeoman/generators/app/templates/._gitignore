@@ -290,3 +290,4 @@ build/
 **/wwwroot/templates/
 
 src/TemplateProject.DataAccess/connectionStringForMigrations
+src/TemplateProject.Web/appsettings.json

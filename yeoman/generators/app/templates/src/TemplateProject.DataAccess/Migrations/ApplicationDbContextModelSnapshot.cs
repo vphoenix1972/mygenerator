@@ -20,6 +20,22 @@ namespace <%= projectNamespace %>.DataAccess.Migrations
                 .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn)
                 .HasAnnotation("ProductVersion", "2.0.1-rtm-125");
 
+            modelBuilder.Entity("<%= projectNamespace %>.DataAccess.Models.RefreshTokenDataModel", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("ExpiresUtc");
+
+                    b.Property<int>("UserId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("RefreshTokens");
+                });
+
             modelBuilder.Entity("<%= projectNamespace %>.DataAccess.Models.TodoItemDataModel", b =>
                 {
                     b.Property<int>("Id")
@@ -30,6 +46,68 @@ namespace <%= projectNamespace %>.DataAccess.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("TodoItems");
+                });
+
+            modelBuilder.Entity("<%= projectNamespace %>.DataAccess.Models.UserDataModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("EMail");
+
+                    b.Property<string>("Name");
+
+                    b.Property<string>("PasswordEncrypted");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("<%= projectNamespace %>.DataAccess.Models.UserRoleDataModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Name");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("UserRoles");
+                });
+
+            modelBuilder.Entity("<%= projectNamespace %>.DataAccess.Models.UserRoleUserDataModel", b =>
+                {
+                    b.Property<int>("UserId");
+
+                    b.Property<int>("RoleId");
+
+                    b.HasKey("UserId", "RoleId");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("UserRoleUsers");
+                });
+
+            modelBuilder.Entity("<%= projectNamespace %>.DataAccess.Models.RefreshTokenDataModel", b =>
+                {
+                    b.HasOne("<%= projectNamespace %>.DataAccess.Models.UserDataModel", "User")
+                        .WithMany("RefreshTokens")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("<%= projectNamespace %>.DataAccess.Models.UserRoleUserDataModel", b =>
+                {
+                    b.HasOne("<%= projectNamespace %>.DataAccess.Models.UserRoleDataModel", "Role")
+                        .WithMany("UserRoleUsers")
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("<%= projectNamespace %>.DataAccess.Models.UserDataModel", "User")
+                        .WithMany("UserUserRoles")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
         }

@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Views\App\" />
+    <Folder Include="Views\EntryPoint\" />
     <Folder Include="wwwroot\" />
   </ItemGroup>
 
@@ -21,6 +21,9 @@
 
   <ItemGroup>
     <Content Update="NLog.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="appsettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
