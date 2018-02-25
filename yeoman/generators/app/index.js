@@ -30,6 +30,7 @@ class MyGenerator extends Generator {
         this._copyNugetConfig();
                 
         this._copySrcFolder();
+        this._copyDeployFolder();
     }
 
     install () {
@@ -142,6 +143,14 @@ class MyGenerator extends Generator {
         this.fs.move(
             this.destinationPath(`${this._destSrcUtilsProjFolder}/TemplateProject.Utils.csproj`),
             this.destinationPath(`${this._destSrcUtilsProjFolder}/${this._csprojName}.Utils.csproj`)
+        );
+    }
+
+    _copyDeployFolder() {
+        this.fs.copyTpl(
+            this.templatePath('deploy'),
+            this.destinationPath('deploy'),
+            this._env
         );
     }
 

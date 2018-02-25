@@ -289,5 +289,6 @@ build/
 **/wwwroot/assets/
 **/wwwroot/templates/
 
+deploy/dist
 src/TemplateProject.DataAccess/connectionStringForMigrations
 src/TemplateProject.Web/appsettings.json
