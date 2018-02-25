@@ -6,6 +6,7 @@ using TemplateProject.Core;
 using TemplateProject.Core.Interfaces.DataAccess;
 using TemplateProject.DataAccess;
 using TemplateProject.Utils;
+using TemplateProject.Web.Common.ExceptionLogger;
 using TemplateProject.Web.Configuration;
 using TemplateProject.Web.Security;
 
@@ -37,6 +38,8 @@ namespace TemplateProject.Web
             IHostingEnvironment env,
             IApplicationLifetime applicationLifetime)
         {
+            app.UseExceptionLogger();
+
             app.UseStaticFiles();
 
             app.UseSecurity();

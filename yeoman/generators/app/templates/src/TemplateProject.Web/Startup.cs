@@ -6,6 +6,7 @@ using <%= projectNamespace %>.Core;
 using <%= projectNamespace %>.Core.Interfaces.DataAccess;
 using <%= projectNamespace %>.DataAccess;
 using <%= projectNamespace %>.Utils;
+using <%= projectNamespace %>.Web.Common.ExceptionLogger;
 using <%= projectNamespace %>.Web.Configuration;
 using <%= projectNamespace %>.Web.Security;
 
@@ -37,6 +38,8 @@ namespace <%= projectNamespace %>.Web
             IHostingEnvironment env,
             IApplicationLifetime applicationLifetime)
         {
+            app.UseExceptionLogger();
+
             app.UseStaticFiles();
 
             app.UseSecurity();
