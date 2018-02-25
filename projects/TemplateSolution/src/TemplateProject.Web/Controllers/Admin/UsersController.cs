@@ -7,7 +7,7 @@ using TemplateProject.Core.Interfaces.DataAccess.Repositories;
 
 namespace TemplateProject.Web.Controllers.Admin
 {
-    public sealed class UsersController : AdminController
+    public sealed class UsersController : AdminControllerBase
     {
         private readonly IDatabaseService _db;
 

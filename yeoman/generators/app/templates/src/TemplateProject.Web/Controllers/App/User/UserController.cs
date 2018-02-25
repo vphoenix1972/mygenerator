@@ -7,7 +7,7 @@ using <%= projectNamespace %>.Web.Security;
 
 namespace <%= projectNamespace %>.Web.Controllers.App.User
 {
-    public sealed class UserController : AppController
+    public sealed class UserController : AppControllerBase
     {
         private readonly IDatabaseService _db;
         private readonly IMd5Crypter _md5Crypter;

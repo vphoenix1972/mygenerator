@@ -6,7 +6,7 @@ namespace TemplateProject.Web.Controllers.App
 {
     [Route("app/[controller]")]
     [Authorize(Roles = UserRoleNames.RoleUser)]
-    public abstract class AppController : Controller
+    public abstract class AppControllerBase : Controller
     {
     }
 }

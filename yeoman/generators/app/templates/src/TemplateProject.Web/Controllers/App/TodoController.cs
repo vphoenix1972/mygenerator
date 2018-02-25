@@ -5,7 +5,7 @@ using <%= projectNamespace %>.Core.Interfaces.DataAccess;
 
 namespace <%= projectNamespace %>.Web.Controllers.App
 {
-    public sealed class TodoController : AppController
+    public sealed class TodoController : AppControllerBase
     {
         private readonly IDatabaseService _databaseService;
 

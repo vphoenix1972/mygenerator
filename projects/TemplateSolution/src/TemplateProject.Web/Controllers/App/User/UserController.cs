@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using TemplateProject.Core.Interfaces.DataAccess;
 using TemplateProject.Utils.Md5;
@@ -7,7 +6,7 @@ using TemplateProject.Web.Security;
 
 namespace TemplateProject.Web.Controllers.App.User
 {
-    public sealed class UserController : AppController
+    public sealed class UserController : AppControllerBase
     {
         private readonly IDatabaseService _db;
         private readonly IMd5Crypter _md5Crypter;

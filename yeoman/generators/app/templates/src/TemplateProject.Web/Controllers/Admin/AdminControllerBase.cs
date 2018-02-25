@@ -6,7 +6,7 @@ namespace <%= projectNamespace %>.Web.Controllers.Admin
 {
     [Route("admin/[controller]")]
     [Authorize(Roles = UserRoleNames.RoleAdmin)]
-    public abstract class AdminController : Controller
+    public abstract class AdminControllerBase : Controller
     {
     }
 }

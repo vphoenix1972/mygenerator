@@ -5,7 +5,7 @@ using TemplateProject.Core.Interfaces.DataAccess;
 
 namespace TemplateProject.Web.Controllers.App
 {
-    public sealed class TodoController : AppController
+    public sealed class TodoController : AppControllerBase
     {
         private readonly IDatabaseService _databaseService;
 
