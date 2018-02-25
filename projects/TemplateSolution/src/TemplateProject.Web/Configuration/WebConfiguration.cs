@@ -20,6 +20,8 @@ namespace TemplateProject.Web.Configuration
             _configurationRoot = configurationBuilder.Build();
         }
 
+        public string ServerUrls => _configurationRoot["serverUrls"] ?? WebConstants.DefaultServerUrls;
+
         public string DbConnectionString => _configurationRoot["dbConnectionString"];
 
         public string JwtKey => _configurationRoot["jwtKey"];

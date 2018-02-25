@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using NLog.Web;
+using <%= projectNamespace %>.Web.Configuration;
 
 namespace <%= projectNamespace %>.Web
 {
@@ -22,11 +23,15 @@ namespace <%= projectNamespace %>.Web
             }
         }
 
-        private static IWebHost BuildWebHost(string[] args) =>
-            WebHost.CreateDefaultBuilder(args)
+        private static IWebHost BuildWebHost(string[] args)
+        {
+            var config = new WebConfiguration(WebConstants.ConfigPath);
+
+            return WebHost.CreateDefaultBuilder(args)
                 .UseNLog()
                 .UseStartup<Startup>()
-                .UseUrls("http://*:8888")
+                .UseUrls(config.ServerUrls)
                 .Build();
+        }
     }
 }
