@@ -6,21 +6,22 @@ using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.EntityFrameworkCore.Storage.Internal;
 using System;
-using <%= projectNamespace %>.DataAccess;
+using TemplateProject.DataAccess;
 
-namespace <%= projectNamespace %>.DataAccess.Migrations
+namespace TemplateProject.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180503044821_Initial")]
+    partial class Initial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn)
                 .HasAnnotation("ProductVersion", "2.0.1-rtm-125");
 
-            modelBuilder.Entity("<%= projectNamespace %>.DataAccess.Models.TodoItemDataModel", b =>
+            modelBuilder.Entity("TemplateProject.DataAccess.Models.TodoItemDataModel", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();

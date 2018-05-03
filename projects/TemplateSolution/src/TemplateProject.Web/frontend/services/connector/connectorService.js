@@ -14,12 +14,6 @@ function ConnectorService(
     self._$http = $http;
 }
 
-ConnectorService.prototype.setAccessToken = function (accessToken) {
-    const self = this;
-
-    self._accessToken = accessToken;
-}
-
 ConnectorService.prototype.getTodoIndexAsync = function () {
     const self = this;
 
@@ -50,67 +44,10 @@ ConnectorService.prototype.deleteTodoItemAsync = function (todoItemId) {
     return self._delete(`app/todo/${todoItemId}`);
 }
 
-/* Security */
-
-ConnectorService.prototype.signInAsync = function (data) {
-    const self = this;
-
-    return self._post('security/signin', data);
-}
-
-ConnectorService.prototype.registerAsync = function (data) {
-    const self = this;
-
-    return self._post('security/register', data);
-}
-
-ConnectorService.prototype.changePasswordAsync = function (data) {
-    const self = this;
-
-    return self._post(`app/user/changePassword`, data);
-}
-
-ConnectorService.prototype.refreshToken = function (data) {
-    const self = this;
-
-    return self._$http({
-        method: 'POST',
-        url: 'security/refreshToken',
-        data: data
-    });
-}
-
-ConnectorService.prototype.signOutAsync = function (data) {
-    const self = this;
-
-    return self._post('security/signout', data);
-}
-
-/* Administration */
-
-ConnectorService.prototype.getUsersIndexAsync = function () {
-    const self = this;
-
-    return self._get('admin/users/index');
-}
-
-ConnectorService.prototype.deleteUserAsync = function (userId) {
-    const self = this;
-
-    return self._delete(`admin/users/${userId}`);
-}
-
 /* Private */
 
 ConnectorService.prototype._http = function (options) {
     const self = this;
-
-    if (angular.isString(self._accessToken)) {
-        if (!angular.isObject(options.headers))
-            options.headers = {};
-
-        options.headers.Authorization = self._createAuthorizationHeader(self._accessToken);
-    }
 
     return self._$http(options).then(
         function (response) {
@@ -154,10 +91,6 @@ ConnectorService.prototype._handleError = function (response) {
 ConnectorService.prototype._createResult = function (response) {
     return response;
 };
-
-ConnectorService.prototype._createAuthorizationHeader = function (accessToken) {
-    return `Bearer ${accessToken}`;
-}
 
 
 angular.module(appModule)

@@ -2,7 +2,6 @@
 using System.Globalization;
 using System.IO;
 using Microsoft.Extensions.Configuration;
-using <%= projectNamespace %>.Web.Security;
 
 namespace <%= projectNamespace %>.Web.Configuration
 {
@@ -23,29 +22,5 @@ namespace <%= projectNamespace %>.Web.Configuration
         public string ServerUrls => _configurationRoot["serverUrls"] ?? WebConstants.DefaultServerUrls;
 
         public string DbConnectionString => _configurationRoot["dbConnectionString"];
-
-        public string JwtKey => _configurationRoot["jwtKey"];
-
-        public TimeSpan JwtAccessTokenLifetime => GetOrDefault("jwtAccessTokenLifetime",
-            WebSecurityConstants.DefaultJwtAccessTokenLifetime);
-
-        public TimeSpan JwtRefreshTokenLifetime => GetOrDefault("jwtRefreshTokenLifetime",
-            WebSecurityConstants.DefaultJwtRefreshTokenLifetime);
-
-        public TimeSpan JwtClockSkew => GetOrDefault("jwtClockSkew",
-            WebSecurityConstants.DefaultJwtClockSkew);
-
-        private TimeSpan GetOrDefault(string key, TimeSpan defaultValue)
-        {
-            var valueStr = _configurationRoot[key];
-            if (string.IsNullOrWhiteSpace(valueStr))
-                return defaultValue;
-
-            TimeSpan result;
-            if (!TimeSpan.TryParse(valueStr, CultureInfo.InvariantCulture, out result))
-                return defaultValue;
-
-            return result;
-        }
     }
 }

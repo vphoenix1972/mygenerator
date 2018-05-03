@@ -8,7 +8,6 @@ using <%= projectNamespace %>.DataAccess;
 using <%= projectNamespace %>.Utils;
 using <%= projectNamespace %>.Web.Common.ExceptionLogger;
 using <%= projectNamespace %>.Web.Configuration;
-using <%= projectNamespace %>.Web.Security;
 
 namespace <%= projectNamespace %>.Web
 {
@@ -29,8 +28,6 @@ namespace <%= projectNamespace %>.Web
             services.AddCore();
             services.AddDataAccess(_config.DbConnectionString);
 
-            services.AddWebSecurity(_config);
-
             services.AddMvc();
         }
 
@@ -42,8 +39,6 @@ namespace <%= projectNamespace %>.Web
 
             app.UseStaticFiles();
 
-            app.UseSecurity();
-
             app.UseMvc();
 
             applicationLifetime.ApplicationStarted.Register(() => OnApplicationStarted(app));
@@ -54,8 +49,6 @@ namespace <%= projectNamespace %>.Web
             using (var scope = app.ApplicationServices.CreateScope())
             {
                 MigrateDatabaseToLatestVersion(scope.ServiceProvider);
-
-                DeleteExpiredRefreshTokens(scope.ServiceProvider);
             }
         }
 
@@ -64,17 +57,6 @@ namespace <%= projectNamespace %>.Web
             var db = provider.GetRequiredService<IDatabaseService>();
 
             db.MigrateToLatestVersion();
-        }
-
-        private void DeleteExpiredRefreshTokens(IServiceProvider provider)
-        {
-            var db = provider.GetRequiredService<IDatabaseService>();
-
-            var utcNow = DateTime.UtcNow;
-
-            db.RefreshTokensRepository.DeleteExpired(utcNow);
-
-            db.SaveChanges();
         }
     }
 }
