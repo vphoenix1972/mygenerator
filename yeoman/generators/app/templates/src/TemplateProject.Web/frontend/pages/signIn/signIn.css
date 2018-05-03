@@ -1,0 +1,17 @@
+﻿.app-signin-form {
+    width: 40%;
+    position: absolute;
+    left: 30%;
+    top: 15%;
+    border: lightgrey 1px solid;
+    padding: 20px;
+}
+
+.app-signin-form__buttons {
+    line-height: 34px;
+    text-align: right;
+}
+
+.app-signin-form__signin-button {
+    margin-right: calc(50% - 79px);
+}

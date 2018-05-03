@@ -8,6 +8,7 @@ using TemplateProject.DataAccess;
 using TemplateProject.Utils;
 using TemplateProject.Web.Common.ExceptionLogger;
 using TemplateProject.Web.Configuration;
+using TemplateProject.Web.Security;
 
 namespace TemplateProject.Web
 {
@@ -28,6 +29,8 @@ namespace TemplateProject.Web
             services.AddCore();
             services.AddDataAccess(_config.DbConnectionString);
 
+            services.AddWebSecurity(_config);
+
             services.AddMvc();
         }
 
@@ -39,6 +42,8 @@ namespace TemplateProject.Web
 
             app.UseStaticFiles();
 
+            app.UseSecurity();
+
             app.UseMvc();
 
             applicationLifetime.ApplicationStarted.Register(() => OnApplicationStarted(app));
@@ -49,6 +54,8 @@ namespace TemplateProject.Web
             using (var scope = app.ApplicationServices.CreateScope())
             {
                 MigrateDatabaseToLatestVersion(scope.ServiceProvider);
+
+                DeleteExpiredRefreshTokens(scope.ServiceProvider);
             }
         }
 
@@ -57,6 +64,17 @@ namespace TemplateProject.Web
             var db = provider.GetRequiredService<IDatabaseService>();
 
             db.MigrateToLatestVersion();
+        }
+
+        private void DeleteExpiredRefreshTokens(IServiceProvider provider)
+        {
+            var db = provider.GetRequiredService<IDatabaseService>();
+
+            var utcNow = DateTime.UtcNow;
+
+            db.RefreshTokensRepository.DeleteExpired(utcNow);
+
+            db.SaveChanges();
         }
     }
 }

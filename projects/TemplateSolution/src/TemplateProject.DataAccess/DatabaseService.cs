@@ -21,10 +21,16 @@ namespace TemplateProject.DataAccess
 
             _db = db;
 
-            TodoItemsRepository = ActivatorUtilities.CreateInstance<TodoItemsRepository>(serviceProvider, _db);            
+            TodoItemsRepository = ActivatorUtilities.CreateInstance<TodoItemsRepository>(serviceProvider, _db);
+            UsersRepository = ActivatorUtilities.CreateInstance<UsersRepository>(serviceProvider, _db);
+            RefreshTokensRepository = ActivatorUtilities.CreateInstance<RefreshTokensRepository>(serviceProvider, _db);
         }
 
         public ITodoItemsRepository TodoItemsRepository { get; }
+
+        public IUsersRepository UsersRepository { get; }
+
+        public IRefreshTokensRepository RefreshTokensRepository { get; }
 
         public void MigrateToLatestVersion()
         {

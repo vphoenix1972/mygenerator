@@ -18,6 +18,25 @@
                     <a ui-sref="app.about">About</a>
                 </li>
             </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li uib-dropdown>
+                    <a href uib-dropdown-toggle>
+                        <span class="app-text app-navbar__username">{{vm.username}}</span>&nbsp;<i class="fa fa-caret-down"></i>
+                    </a>
+                    <ul uib-dropdown-menu>
+                        <li>
+                            <a ui-sref="app.userSettings">
+                                <i class="fa fa-cog"></i>&nbsp;Settings
+                            </a>
+                        </li>
+                        <li>
+                            <a href ng-click="vm.onSignOutClicked()">
+                                <i class="fa fa-sign-out"></i>&nbsp;Sign out
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
         </div>
     </div>
 </nav>

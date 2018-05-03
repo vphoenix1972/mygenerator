@@ -1,0 +1,35 @@
+﻿<div class="panel app-signin-form">
+    <h3>Sign In</h3>
+
+    <div class="alert alert-danger"
+         ng-if="vm.isAuthError">
+        Incorrect username or password
+    </div>
+
+    <div class="form-group">
+        <label for="email">Username or email address</label>
+        <input type="text"
+               class="form-control"
+               id="login"
+               placeholder="Username or email address"
+               ng-model="vm.login">
+    </div>
+    <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password"
+               class="form-control"
+               id="password"
+               placeholder="Password"
+               ng-model="vm.password">
+    </div>
+    <div class="app-signin-form__buttons">
+        <button type="button"
+                class="btn btn-primary app-signin-form__signin-button"
+                ng-click="vm.onSignInButtonClicked()">
+            Sign In
+        </button>
+        <a ui-sref="register">
+            Register
+        </a>
+    </div>
+</div>

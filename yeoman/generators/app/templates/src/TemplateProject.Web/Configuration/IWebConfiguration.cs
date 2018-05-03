@@ -7,5 +7,11 @@ namespace <%= projectNamespace %>.Web.Configuration
         string ServerUrls { get; }
 
         string DbConnectionString { get; }
+
+        string JwtKey { get; }
+
+        TimeSpan JwtAccessTokenLifetime { get; }
+        TimeSpan JwtRefreshTokenLifetime { get; }
+        TimeSpan JwtClockSkew { get; }
     }
 }

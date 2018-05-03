@@ -7,13 +7,13 @@ import templateUrl from './loading.tpl.html';
 import angular from 'angular';
 import appModule from 'rootDir/appModule';
 
-function LoadingController($q, $state, $rootScope) {
+function LoadingController($state, $rootScope, authorizationService) {
     'ngInject';
 
     const self = this;
 
     // Deps
-    self._$q = $q;
+    self._authorizationService = authorizationService;
     self._$state = $state;
 
     // Init
@@ -31,9 +31,15 @@ function LoadingController($q, $state, $rootScope) {
 LoadingController.prototype._loadApplicationAsync = function () {
     const self = this;
 
-    self._$state.go('app.home');
+    return self._authorizationService.loadUserFromCacheAsync()
+        .then(() => {
+            var user = self._authorizationService.currentUser();
 
-    return self._$q.resolve();
+            if (!user.isAuthenticated)
+                self._$state.go('signIn');
+            else
+                self._$state.go('app.home');
+        });
 }
 
 angular

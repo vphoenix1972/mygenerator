@@ -5,7 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="frontend\constants\" />
     <Folder Include="Views\EntryPoint\" />
     <Folder Include="wwwroot\" />
   </ItemGroup>
