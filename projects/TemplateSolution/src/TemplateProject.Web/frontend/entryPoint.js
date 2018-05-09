@@ -31,4 +31,5 @@ import 'rootDir/pages/app/home/homeController';
 import 'rootDir/pages/app/todo/todoIndexController';
 import 'rootDir/pages/app/todo/todoEditController';
 import 'rootDir/pages/app/examples/examplesController';
+import 'rootDir/pages/app/signalr/signalrController';
 import 'rootDir/pages/app/about/aboutController';

@@ -8,6 +8,7 @@
     "webpack-prof": "set NODE_ENV=profiling&&webpack"
   },
   "devDependencies": {
+    "@aspnet/signalr": "^1.0.0-rc1-update1",
     "@uirouter/angularjs": "^1.0.11",
     "angular": "^1.6.7",
     "angular-ui-bootstrap": "^2.5.6",

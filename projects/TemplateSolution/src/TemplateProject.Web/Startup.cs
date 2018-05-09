@@ -8,6 +8,7 @@ using TemplateProject.DataAccess;
 using TemplateProject.Utils;
 using TemplateProject.Web.Common.ExceptionLogger;
 using TemplateProject.Web.Configuration;
+using TemplateProject.Web.Hubs;
 
 namespace TemplateProject.Web
 {
@@ -29,6 +30,8 @@ namespace TemplateProject.Web
             services.AddDataAccess(_config.DbConnectionString);
 
             services.AddMvc();
+
+            services.AddSignalR();
         }
 
         public void Configure(IApplicationBuilder app,
@@ -38,6 +41,11 @@ namespace TemplateProject.Web
             app.UseExceptionLogger();
 
             app.UseStaticFiles();
+
+            app.UseSignalR(routes =>
+            {
+                routes.MapHub<ChatHub>("/chathub");
+            });
 
             app.UseMvc();
 

@@ -7,6 +7,7 @@ import homeTemplateUrl from 'rootDir/pages/app/home/home.tpl.html';
 import todoIndexTemplateUrl from 'rootDir/pages/app/todo/todoIndex.tpl.html';
 import todoEditTemplateUrl from 'rootDir/pages/app/todo/todoEdit.tpl.html';
 import examplesTemplateUrl from 'rootDir/pages/app/examples/examples.tpl.html';
+import signalrTemplateUrl from 'rootDir/pages/app/signalr/signalr.tpl.html';
 import aboutTemplateUrl from 'rootDir/pages/app/about/about.tpl.html';
 
 function config(
@@ -91,6 +92,14 @@ function configureAppRoutes($stateProvider) {
             controller: 'examplesController',
             controllerAs: 'vm',
             templateUrl: examplesTemplateUrl
+        });
+
+    $stateProvider.state(`${appStateName}.signalr`,
+        {
+            url: '/signalr',
+            controller: 'signalrController',
+            controllerAs: 'vm',
+            templateUrl: signalrTemplateUrl
         });
 
     $stateProvider.state(`${appStateName}.about`,
