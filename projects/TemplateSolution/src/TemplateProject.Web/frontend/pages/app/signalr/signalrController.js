@@ -64,13 +64,18 @@ SignalrController.prototype.isConnected = function () {
     return self._isConnected;
 }
 
-SignalrController.prototype.onSendButtonClicked = function () {
+SignalrController.prototype.onSendUsingApiButtonClicked = function () {
     const self = this;
 
     self._connectorService.signalrSendMessageAsync({ user: self.user, text: self.messageText });
+}
 
-    //self._connection.invoke('SendMessage', self.user, self.messageText)
-    //    .catch(err => console.error(err.toString()));
+SignalrController.prototype.onSendUsingSignalrConnectionButtonClicked = function () {
+    const self = this;
+
+    self._connection.invoke('SendMessage', self.user, self.messageText)
+        .then((response) => console.log(response))
+        .catch(err => console.error(err.toString()));
 }
 
 /* Private */
