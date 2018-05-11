@@ -6,7 +6,8 @@ import angular from 'angular';
 import appModule from 'rootDir/appModule';
 
 function SignalrController($scope,
-    $timeout) {
+    $timeout,
+    connectorService) {
     'ngInject';
 
     const self = this;
@@ -14,6 +15,7 @@ function SignalrController($scope,
     // Deps
     self._$scope = $scope;
     self._$timeout = $timeout;
+    self._connectorService = connectorService;
 
     // Init
     self.messages = [];
@@ -65,8 +67,10 @@ SignalrController.prototype.isConnected = function () {
 SignalrController.prototype.onSendButtonClicked = function () {
     const self = this;
 
-    self._connection.invoke('SendMessage', self.user, self.messageText)
-        .catch(err => console.error(err.toString()));
+    self._connectorService.signalrSendMessageAsync({ user: self.user, text: self.messageText });
+
+    //self._connection.invoke('SendMessage', self.user, self.messageText)
+    //    .catch(err => console.error(err.toString()));
 }
 
 /* Private */

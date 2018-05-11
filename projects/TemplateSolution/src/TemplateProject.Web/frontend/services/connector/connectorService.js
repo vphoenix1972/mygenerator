@@ -44,6 +44,12 @@ ConnectorService.prototype.deleteTodoItemAsync = function (todoItemId) {
     return self._delete(`app/todo/${todoItemId}`);
 }
 
+ConnectorService.prototype.signalrSendMessageAsync = function (message) {
+    const self = this;
+
+    return self._post('app/signalr/message', message);
+}
+
 /* Private */
 
 ConnectorService.prototype._http = function (options) {
