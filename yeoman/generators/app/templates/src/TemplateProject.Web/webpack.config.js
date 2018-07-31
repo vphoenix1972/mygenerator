@@ -134,7 +134,11 @@ module.exports = {
             'bootstrap.css': path.join(__dirname, 'node_modules/bootstrap/dist/css/bootstrap.css'),
             'bootstrap.js': path.join(__dirname, 'node_modules/bootstrap/dist/js/bootstrap.js'),
 
-            'font-awesome.css': path.join(__dirname, 'node_modules/font-awesome/css/font-awesome.css'),
+            // Font awesome 5
+            // 'Web Fonts & CSS' version
+            //'font-awesome': path.join(__dirname, 'node_modules/@fortawesome/fontawesome-free/css/all.css'),
+            // 'SVG & JS' version
+            'font-awesome': path.join(__dirname, 'node_modules/@fortawesome/fontawesome-free/js/all.js'),
 
             'angularjs-toaster.css': path.join(__dirname, 'node_modules/angularjs-toaster/toaster.css'),
             'angularjs-toaster.js': path.join(__dirname, 'node_modules/angularjs-toaster/toaster.js')
