@@ -2,7 +2,7 @@
 
 import 'bootstrap.css';
 import 'bootstrap.js';
-import 'font-awesome.css';
+import 'font-awesome';
 import 'angularjs-toaster.css';
 
 
