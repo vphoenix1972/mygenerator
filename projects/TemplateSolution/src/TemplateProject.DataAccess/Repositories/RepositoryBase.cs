@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.SqlTypes;
 using System.Linq;
-using System.Linq.Expressions;
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using TemplateProject.Utils.Entities;
 using TemplateProject.Utils.Factories;
@@ -16,23 +15,19 @@ namespace TemplateProject.DataAccess.Repositories
         where TDataModel : class, IEntity<TKey>, new()
     {
         private readonly ApplicationDbContext _db;
+        private readonly IMapper _mapper;
         private readonly DbSet<TDataModel> _dbSet;
         private readonly IFactory<TEntityImpl> _entitiesFactory;
 
         public RepositoryBase(ApplicationDbContext db,
+            IMapper mapper,
             DbSet<TDataModel> dbSet,
             IFactory<TEntityImpl> entitiesFactory)
         {
-            if (db == null)
-                throw new ArgumentNullException(nameof(db));
-            if (dbSet == null)
-                throw new ArgumentNullException(nameof(dbSet));
-            if (entitiesFactory == null)
-                throw new ArgumentNullException(nameof(entitiesFactory));
-
-            _db = db;
-            _dbSet = dbSet;
-            _entitiesFactory = entitiesFactory;
+            _db = db ?? throw new ArgumentNullException(nameof(db));
+            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+            _dbSet = dbSet ?? throw new ArgumentNullException(nameof(dbSet));
+            _entitiesFactory = entitiesFactory ?? throw new ArgumentNullException(nameof(entitiesFactory));
         }
 
         protected ApplicationDbContext Db => _db;
@@ -90,9 +85,15 @@ namespace TemplateProject.DataAccess.Repositories
             _dbSet.Remove(existing);
         }
 
-        protected abstract void Map(TDataModel source, TEntityImpl dest);
+        protected virtual void Map(TDataModel source, TEntityImpl dest)
+        {
+            _mapper.Map(source, dest);
+        }
 
-        protected abstract void Map(TEntity source, TDataModel dest);
+        protected virtual void Map(TEntity source, TDataModel dest)
+        {
+            _mapper.Map(source, dest);
+        }
 
         private TEntity Map(TDataModel source)
         {
