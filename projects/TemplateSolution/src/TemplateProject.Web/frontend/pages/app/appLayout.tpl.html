@@ -1,21 +1,22 @@
-﻿<nav class="navbar navbar-inverse navbar-fixed-top">
+﻿<nav class="navbar navbar-expand-sm navbar-dark bg-dark">
     <div class="container">
-        <div class="navbar-header">
-            <a ui-sref="app.home" class="navbar-brand">TemplateProject</a>
-        </div>
+        <a ui-sref="app.home" class="navbar-brand">TemplateProject</a>
+        <!--<div class="navbar-header">
+        <a ui-sref="app.home" class="navbar-brand">TemplateProject</a>
+    </div>-->
         <div class="navbar-collapse collapse">
-            <ul class="nav navbar-nav">
-                <li>
-                    <a ui-sref="app.home">Home</a>
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" ui-sref="app.home">Home</a>
                 </li>
-                <li>
-                    <a ui-sref="app.todo-index">ToDo</a>
+                <li class="nav-item">
+                    <a class="nav-link" ui-sref="app.todo-index">ToDo</a>
                 </li>
-                <li>
-                    <a ui-sref="app.examples">Examples</a>
+                <li class="nav-item">
+                    <a class="nav-link" ui-sref="app.examples">Examples</a>
                 </li>
-                <li>
-                    <a ui-sref="app.about">About</a>
+                <li class="nav-item">
+                    <a class="nav-link" ui-sref="app.about">About</a>
                 </li>
             </ul>
         </div>

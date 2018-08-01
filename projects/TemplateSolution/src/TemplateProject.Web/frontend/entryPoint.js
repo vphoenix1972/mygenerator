@@ -1,8 +1,10 @@
 'use strict';
 
-import 'bootstrap.css';
-import 'bootstrap.js';
+import 'bootstrap/dist/css/bootstrap.css';
+import 'bootstrap';
+
 import 'font-awesome';
+
 import 'angularjs-toaster.css';
 
 

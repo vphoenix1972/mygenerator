@@ -130,9 +130,6 @@ module.exports = {
             // Using minified version for remove console.assert()
             // https://github.com/inexorabletash/polyfill#files
             'js-polyfills/min': path.join(__dirname, 'node_modules/js-polyfills/polyfill.min.js'),
-            
-            'bootstrap.css': path.join(__dirname, 'node_modules/bootstrap/dist/css/bootstrap.css'),
-            'bootstrap.js': path.join(__dirname, 'node_modules/bootstrap/dist/js/bootstrap.js'),
 
             // Font awesome 5
             // 'Web Fonts & CSS' version
