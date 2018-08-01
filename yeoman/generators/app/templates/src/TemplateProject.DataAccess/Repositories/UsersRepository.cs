@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using <%= projectNamespace %>.Core.Domain;
 using <%= projectNamespace %>.Core.Interfaces.DataAccess.Repositories;
@@ -12,17 +13,14 @@ namespace <%= projectNamespace %>.DataAccess.Repositories
     public sealed class UsersRepository : IUsersRepository
     {
         private readonly ApplicationDbContext _db;
+        private readonly IMapper _mapper;
         private readonly IFactory<User> _usersFactory;
 
-        public UsersRepository(ApplicationDbContext db, IFactory<User> usersFactory)
+        public UsersRepository(ApplicationDbContext db, IMapper mapper, IFactory<User> usersFactory)
         {
-            if (db == null)
-                throw new ArgumentNullException(nameof(db));
-            if (usersFactory == null)
-                throw new ArgumentNullException(nameof(usersFactory));
-
-            _db = db;
-            _usersFactory = usersFactory;
+            _db = db ?? throw new ArgumentNullException(nameof(db));
+            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+            _usersFactory = usersFactory ?? throw new ArgumentNullException(nameof(usersFactory));
         }
 
         public IList<IUser> GetAll(UsersFilter filter = null)
@@ -180,18 +178,14 @@ namespace <%= projectNamespace %>.DataAccess.Repositories
 
         private void Map(UserDataModel source, User dest)
         {
-            dest.Id = source.Id;
-            dest.Name = source.Name;
-            dest.EMail = source.EMail;
-            dest.PasswordEncrypted = source.PasswordEncrypted;
+            _mapper.Map(source, dest);
+
             dest.Roles = source.UserUserRoles.Select(e => new UserRole() {Name = e.Role.Name} as IUserRole).ToList();
         }
 
         private void Map(IUser source, UserDataModel dest)
         {
-            dest.Name = source.Name;
-            dest.EMail = source.EMail;
-            dest.PasswordEncrypted = source.PasswordEncrypted;
+            _mapper.Map(source, dest);
         }
     }
 }

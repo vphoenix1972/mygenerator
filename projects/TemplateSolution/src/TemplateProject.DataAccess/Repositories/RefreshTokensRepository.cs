@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AutoMapper;
+using System;
 using System.Linq;
 using TemplateProject.Core.Domain;
 using TemplateProject.Core.Interfaces.DataAccess.Repositories;
@@ -11,8 +12,8 @@ namespace TemplateProject.DataAccess.Repositories
             RefreshTokenDataModel>,
         IRefreshTokensRepository
     {
-        public RefreshTokensRepository(ApplicationDbContext db, IFactory<RefreshToken> refreshTokensFactory) :
-            base(db, db.RefreshTokens, refreshTokensFactory)
+        public RefreshTokensRepository(ApplicationDbContext db, IMapper mapper, IFactory<RefreshToken> refreshTokensFactory) :
+            base(db, mapper, db.RefreshTokens, refreshTokensFactory)
         {
         }
 
@@ -24,19 +25,6 @@ namespace TemplateProject.DataAccess.Repositories
         public void DeleteByUserId(int userId)
         {
             Db.RefreshTokens.RemoveRange(Db.RefreshTokens.Where(e => e.UserId == userId));
-        }
-
-        protected override void Map(RefreshTokenDataModel source, RefreshToken dest)
-        {
-            dest.Id = source.Id;
-            dest.UserId = source.UserId;
-            dest.ExpiresUtc = source.ExpiresUtc;
-        }
-
-        protected override void Map(IRefreshToken source, RefreshTokenDataModel dest)
-        {
-            dest.UserId = source.UserId;
-            dest.ExpiresUtc = source.ExpiresUtc;
         }
     }
 }
