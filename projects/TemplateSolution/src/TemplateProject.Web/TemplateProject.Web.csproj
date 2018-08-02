@@ -6,21 +6,22 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="frontend\app\**" />
     <Compile Remove="frontend\constants\**" />
+    <Content Remove="frontend\app\**" />
     <Content Remove="frontend\constants\**" />
+    <EmbeddedResource Remove="frontend\app\**" />
     <EmbeddedResource Remove="frontend\constants\**" />
+    <None Remove="frontend\app\**" />
     <None Remove="frontend\constants\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Remove="frontend\app\appComponent.ts" />
-    <None Remove="frontend\app\appModule.ts" />
     <None Remove="frontend\entryPoint.ts" />
     <None Remove="frontend\polyfills.ts" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Views\EntryPoint\" />
     <Folder Include="wwwroot\" />
   </ItemGroup>
 
@@ -32,13 +33,6 @@
   <ItemGroup>
     <ProjectReference Include="..\TemplateProject.Core\TemplateProject.Core.csproj" />
     <ProjectReference Include="..\TemplateProject.DataAccess\TemplateProject.DataAccess.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <TypeScriptCompile Include="frontend\app\appComponent.ts" />
-    <TypeScriptCompile Include="frontend\app\appModule.ts" />
-    <TypeScriptCompile Include="frontend\entryPoint.ts" />
-    <TypeScriptCompile Include="frontend\polyfills.ts" />
   </ItemGroup>
 
   <ItemGroup>

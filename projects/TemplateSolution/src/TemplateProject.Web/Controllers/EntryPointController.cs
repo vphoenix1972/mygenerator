@@ -10,7 +10,7 @@ namespace TemplateProject.Web.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            return View("App");
+            return Redirect("/index.html");
         }
     }
 }
