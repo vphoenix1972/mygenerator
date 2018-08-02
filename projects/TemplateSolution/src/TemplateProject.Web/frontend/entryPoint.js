@@ -1,36 +1,5 @@
-'use strict';
-
-import 'bootstrap/dist/css/bootstrap.css';
-import 'bootstrap';
-
-import 'font-awesome';
-
-import 'angularjs-toaster.css';
-
-
-import './app.css';
-
-import 'rootDir/utils/arrayExtensions';
-import 'rootDir/utils/stringExtensions';
-
-import './appModule';
-
-import 'rootDir/services/connector/connectorService';
-import 'rootDir/services/storage/localStorage';
-
-import 'rootDir/directives/appSpinner/appSpinnerDirective';
-
-import 'rootDir/dialogs/dialogService';
-import 'rootDir/dialogs/progressDialog/progressDialogController';
-import 'rootDir/dialogs/confirmDialog/confirmDialogController';
-import 'rootDir/dialogs/errorDialog/errorDialogController';
-
-
-import 'rootDir/pages/loading/loadingController';
-
-import 'rootDir/pages/app/appLayoutController';
-import 'rootDir/pages/app/home/homeController';
-import 'rootDir/pages/app/todo/todoIndexController';
-import 'rootDir/pages/app/todo/todoEditController';
-import 'rootDir/pages/app/examples/examplesController';
-import 'rootDir/pages/app/about/aboutController';
+import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
+import { AppModule } from './app/appModule';
+var platform = platformBrowserDynamic();
+platform.bootstrapModule(AppModule);
+//# sourceMappingURL=entryPoint.js.map

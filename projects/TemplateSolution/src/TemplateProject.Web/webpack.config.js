@@ -9,8 +9,11 @@ const NODE_ENV = process.env.NODE_ENV || 'development';
 // ReSharper disable once InconsistentNaming
 const IsDevelopment = NODE_ENV === 'development';
 
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
+
+const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 const autoprefixer = require('autoprefixer');
 
@@ -20,7 +23,8 @@ module.exports = {
     },
     context: path.join(__dirname, '/frontend'),
     entry: {
-        app: './entryPoint'
+        app: './entryPoint.ts',
+        polyfills: './polyfills.ts'
     },
     output: {
         path: __dirname + '/wwwroot/',
@@ -32,23 +36,13 @@ module.exports = {
     module: {
         rules: [
             {
-                test: /\.js$/,
-                include: [path.join(__dirname, '/frontend')],
+                test: /\.ts$/, // определяем тип файлов
                 use: [
                     {
-                        loader: 'ng-annotate-loader',
-                        options: {
-                            single_quotes: true
-                        }
+                        loader: 'awesome-typescript-loader',
+                        options: { configFileName: path.resolve(__dirname, 'tsconfig.json') }
                     },
-                    {
-                        loader: 'babel-loader',
-                        options: {
-                            cacheDirectory: true,
-                            presets: ['es2015'],
-                            plugins: ['transform-runtime']
-                        }
-                    }
+                    'angular2-template-loader'
                 ]
             },
             {
@@ -57,26 +51,24 @@ module.exports = {
             },
             {
                 test: /\.css$/,
-                loader: ExtractTextPlugin.extract({
-                    use: [
-                        {
-                            loader: 'css-loader',
-                            options: {
-                                minimize: !IsDevelopment,
-                                sourceMap: true
-                            }
-                        },
-                        {
-                            loader: 'postcss-loader',
-                            options: {
-                                plugins: function () {
-                                    return [autoprefixer];
-                                }
+                use: [
+                    MiniCssExtractPlugin.loader,
+                    {
+                        loader: 'css-loader',
+                        options: {
+                            minimize: !IsDevelopment,
+                            sourceMap: true
+                        }
+                    },
+                    {
+                        loader: 'postcss-loader',
+                        options: {
+                            plugins: function () {
+                                return [autoprefixer];
                             }
                         }
-                    ],
-                    fallback: 'style-loader'
-                })
+                    }
+                ]
             },
             {
                 test: /\.(png|jpg|gif|woff|woff2|ttf|svg|eot)$/,
@@ -87,7 +79,7 @@ module.exports = {
                 loader: 'file-loader?name=/[name].[ext]'
             }
         ],
-        //Optimization. JQuery and Handsontable are independent libs and don't require resolving dependencies.
+        //Optimization. Put independent libs which don't require resolving dependencies.
         noParse: [
             path.join(__dirname, 'node_modules/jquery/dist/jquery.js')            
         ]
@@ -104,41 +96,33 @@ module.exports = {
         new webpack.DefinePlugin({
             NODE_ENV: JSON.stringify(NODE_ENV)
         }),
-        new ExtractTextPlugin({
-            filename: 'dist/[name].css',
-            allChunks: true
-        }),
         new webpack.ProvidePlugin({
             $: 'jquery',
             jQuery: 'jquery',
             'window.jQuery': 'jquery'
         }),
-        new webpack.PrefetchPlugin('babel-runtime/core-js'),
-        new webpack.PrefetchPlugin('core-js/library')
+        new MiniCssExtractPlugin({
+            filename: "dist/[name].css"
+        }),
     ],
-    resolveLoader: {
-        modules: ['node_modules'],
-        moduleExtensions: ['*'],
-        extensions: ['.js']
-    },
     resolve: {
         modules: ['node_modules'],
-        extensions: ['.js'],
+        extensions: ['.ts', '.js'],
         alias: {
             rootDir: path.join(__dirname, '/frontend'),
 
             // Using minified version for remove console.assert()
             // https://github.com/inexorabletash/polyfill#files
-            'js-polyfills/min': path.join(__dirname, 'node_modules/js-polyfills/polyfill.min.js'),
+            //'js-polyfills/min': path.join(__dirname, 'node_modules/js-polyfills/polyfill.min.js'),
 
             // Font awesome 5
             // 'Web Fonts & CSS' version
             //'font-awesome': path.join(__dirname, 'node_modules/@fortawesome/fontawesome-free/css/all.css'),
             // 'SVG & JS' version
-            'font-awesome': path.join(__dirname, 'node_modules/@fortawesome/fontawesome-free/js/all.js'),
+            //'font-awesome': path.join(__dirname, 'node_modules/@fortawesome/fontawesome-free/js/all.js'),
 
-            'angularjs-toaster.css': path.join(__dirname, 'node_modules/angularjs-toaster/toaster.css'),
-            'angularjs-toaster.js': path.join(__dirname, 'node_modules/angularjs-toaster/toaster.js')
+            //'angularjs-toaster.css': path.join(__dirname, 'node_modules/angularjs-toaster/toaster.css'),
+            //'angularjs-toaster.js': path.join(__dirname, 'node_modules/angularjs-toaster/toaster.js')
         }
     },
     devtool: 'source-map',
