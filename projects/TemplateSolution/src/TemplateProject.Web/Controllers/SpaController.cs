@@ -3,14 +3,13 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace TemplateProject.Web.Controllers
 {
-    [Route("")]
-    public sealed class EntryPointController : Controller
+    public sealed class SpaController : Controller
     {
         [AllowAnonymous]
         [HttpGet]
         public IActionResult Index()
         {
-            return Redirect("/index.html");
+            return File("~/index.html", "text/html");
         }
     }
 }

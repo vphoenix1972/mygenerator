@@ -6,5 +6,7 @@
         public const string ConfigPath = "appsettings.json";
 
         public const string DefaultServerUrls = "http://*:8888";
+
+        public const string SpaApiPathPrefix = "app";
     }
 }

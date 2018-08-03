@@ -2,7 +2,7 @@
 
 namespace TemplateProject.Web.Controllers.App
 {
-    [Route("app/[controller]")]
+    [Route(WebConstants.SpaApiPathPrefix + "/[controller]")]
     public abstract class AppControllerBase : Controller
     {
     }
