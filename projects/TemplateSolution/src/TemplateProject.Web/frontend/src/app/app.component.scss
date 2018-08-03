@@ -1,3 +1,18 @@
-.app-header {
-  color: blue;
+/* Sticky footer styles
+-------------------------------------------------- */
+/deep/ html {
+  position: relative;
+  min-height: 100%;
+}
+
+/deep/ body {
+  margin-bottom: 84px; /* Margin bottom by footer height = 60px for footer + 24px for app content */
+}
+
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 60px; /* Set the fixed height of the footer here */
+  line-height: 59px; /* Vertically center the text there */
 }
