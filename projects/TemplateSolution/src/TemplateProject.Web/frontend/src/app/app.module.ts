@@ -8,6 +8,7 @@ import { HomeComponent } from './home/home.component';
 import { ExamplesComponent } from './examples/examples.component';
 import { AboutComponent } from './about/about.component';
 import { TodoIndexComponent } from './todo-index/todo-index.component';
+import { SpinnerComponent } from './components/spinner/spinner.component';
 
 @NgModule({
   declarations: [
@@ -15,7 +16,8 @@ import { TodoIndexComponent } from './todo-index/todo-index.component';
     HomeComponent,
     ExamplesComponent,
     AboutComponent,
-    TodoIndexComponent
+    TodoIndexComponent,
+    SpinnerComponent
   ],
   imports: [
     BrowserModule,
