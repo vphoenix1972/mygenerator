@@ -1,3 +1,41 @@
-<p>
-  todo-index works!
-</p>
+<div *ngIf="isLoading">
+    <app-spinner></app-spinner>
+</div>
+
+<div *ngIf="!isLoading">
+    <h3>ToDo items</h3>
+    <div class="app-todo-index-page__new">
+        <a href
+           (click)="onAddButtonClicked()">
+            New&nbsp;<i class="fa fa-plus"></i>
+        </a>
+    </div>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th></th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let item of items">
+            <td>{{item.id}}</td>
+            <td>{{item.name}}</td>
+            <td class="app-table__button-column">
+                <a href
+                   (click)="onEditButtonClicked(item)">
+                    Edit&nbsp;<i class="fa fa-edit"></i>
+                </a>
+            </td>
+            <td class="app-table__button-column">
+                <a href
+                   (click)="onDeleteButtonClicked(item)">
+                    Delete&nbsp;<i class="fa fa-times"></i>
+                </a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>

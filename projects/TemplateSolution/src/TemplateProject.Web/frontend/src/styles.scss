@@ -1,2 +1,8 @@
 @import 'variables';
 @import '../node_modules/bootstrap/scss/bootstrap';
+
+/* Common styles */
+
+.app-table__button-column {
+    width: 100px;
+}
