@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 import { TodoItemsService } from 'src/app/services/todo-items.service';
-import { TodoItem } from '../models/todo-item';
+import { TodoItem } from 'src/app/models/todo-item';
 
 @Component({
     selector: 'app-todo-index',
