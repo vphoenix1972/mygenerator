@@ -2,15 +2,18 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import { HomeComponent } from './pages/home/home.component';
-import { TodoIndexComponent } from './pages/todo/index/todo-index.component';
 import { ExamplesComponent } from './pages/examples/examples.component';
 import { AboutComponent } from './pages/about/about.component';
+import { TodoIndexComponent } from './pages/todo/index/todo-index.component';
+import { TodoEditComponent } from './pages/todo/edit/todo-edit.component';
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
-  { path: 'todo/index', component: TodoIndexComponent },
   { path: 'examples', component: ExamplesComponent },
   { path: 'about', component: AboutComponent },
+  { path: 'todo/index', component: TodoIndexComponent },
+  { path: 'todo/new', component: TodoEditComponent },
+  { path: 'todo/edit/:id', component: TodoEditComponent },
 
   { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: '**', redirectTo: '/home' }
