@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 
 import { TodoItem } from 'src/app/models/todo-item';
@@ -7,63 +8,27 @@ import { TodoItem } from 'src/app/models/todo-item';
     providedIn: 'root'
 })
 export class TodoItemsService {
-    private _items: TodoItem[];
-    private _index: number;
+    constructor(private _http: HttpClient) {
 
-    constructor() {
-        this._items = [
-            { id: 1, name: "Item 1" },
-            { id: 2, name: "Item 2" },
-            { id: 3, name: "Item 3" }
-        ];
-
-        this._index = 4;
     }
 
     getAll(): Observable<TodoItem[]> {
-        return of(this._items.slice(0));
+        return this._http.get<TodoItem[]>('/app/todo/index');
     }
 
     getById(id: number): Observable<TodoItem> {
-        return Observable.create(observer => {
-            let item: TodoItem = this._items.find(e => e.id == id);
-
-            if (item == null)
-                throw new Error(`Item '${id}' was not found.`);
-
-            observer.next(item);
-        });
+        return this._http.get<TodoItem>(`/app/todo/edit/${id}`);
     }
 
     add(item: TodoItem): Observable<TodoItem> {
-        return Observable.create(observer => {
-            item.id = this._index;
-
-            this._items.push(item);
-
-            this._index++;
-
-            observer.next(item);
-        });
+        return this._http.post<TodoItem>('/app/todo', item);
     }
 
     update(id: number, item: TodoItem): Observable<any> {
-        return Observable.create(observer => {
-            const existng = this._items.find(e => e.id == id);
-            if (existng == null)
-                throw new Error(`Item '${id}' was not found.`);
-
-            existng.name = item.name;
-
-            observer.next();
-        });
+        return this._http.put(`/app/todo/${id}`, item);
     }
 
-    delete(item: TodoItem): Observable<any> {
-        return Observable.create(observer => {
-            this._items.splice(this._items.indexOf(item), 1);
-
-            observer.next();
-        });
+    delete(id: number): Observable<any> {
+        return this._http.delete(`/app/todo/${id}`);
     }
 }

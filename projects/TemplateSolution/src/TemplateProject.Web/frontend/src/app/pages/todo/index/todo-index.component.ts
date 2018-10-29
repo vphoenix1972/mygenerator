@@ -27,10 +27,12 @@ export class TodoIndexComponent implements OnInit {
     }
 
     onDeleteButtonClicked(item: any): boolean {
-        this.items.splice(this.items.indexOf(item), 1);
+        this._todoItemsService.delete(item.id)
+            .subscribe(() => {
+                this.items.splice(this.items.indexOf(item), 1);
 
-        this._todoItemsService.delete(item)
-            .subscribe(() => this._dialogService.showSuccess());
+                this._dialogService.showSuccess();
+            });
 
         return false;
     }
