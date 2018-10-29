@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FormGroup, FormControl } from '@angular/forms';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 import { DialogService } from 'src/app/services/dialog/dialog.service';
 import { TodoItemsService } from 'src/app/services/todo/todo-items.service';
@@ -16,6 +16,7 @@ export class TodoEditComponent implements OnInit {
     private _id: number;
 
     isLoading: boolean;
+    nameControl: FormControl;
     itemForm: FormGroup;
 
     constructor(private _dialogService: DialogService,
@@ -23,8 +24,10 @@ export class TodoEditComponent implements OnInit {
         private _todoItemsService: TodoItemsService,
         route: ActivatedRoute) {
 
+        this.nameControl = new FormControl('', [ Validators.required ]);
+
         this.itemForm = new FormGroup({
-            name: new FormControl()
+            name: this.nameControl
         });
 
         route.params.subscribe(params => {
@@ -75,7 +78,7 @@ export class TodoEditComponent implements OnInit {
 
         this._todoItemsService.getById(this._id)
             .subscribe(item => {
-                this.itemForm.controls['name'].setValue(item.name);
+                this.nameControl.setValue(item.name);
 
                 this.isLoading = false;
             }, error => {
