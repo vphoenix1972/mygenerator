@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 
-import { DialogService } from 'src/app/services/dialog/dialog.service';
+import { DialogService } from 'src/app/dialogs/dialog.service';
 import { TodoItemsService } from 'src/app/services/todo/todo-items.service';
 import { TodoItem } from 'src/app/models/todo-item';
 
