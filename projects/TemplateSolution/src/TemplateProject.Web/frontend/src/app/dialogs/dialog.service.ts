@@ -1,12 +1,15 @@
 import { Injectable } from '@angular/core';
+
 import { NgbModal, NgbModalOptions, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { Toast, ToasterService } from 'angular2-toaster';
+
+import { SuccessOptions } from './success/success-options';
+import { ErrorDialogComponent } from './error/error-dialog.component';
+import { ErrorDialogOptions } from './error/error-dialog-options';
 import { ExecutingDialogComponent } from './executing/executing-dialog.component';
 import { ExecutingDialogOptions } from './executing/executing-dialog-options';
 import { ConfirmDialogComponent } from './confirm/confirm-dialog.component';
 import { ConfirmDialogOptions } from './confirm/confirm-dialog-options';
-import { ErrorDialogComponent } from './error/error-dialog.component';
-import { ErrorDialogOptions } from './error/error-dialog-options';
-
 
 @Injectable({
     providedIn: 'root'
@@ -14,23 +17,25 @@ import { ErrorDialogOptions } from './error/error-dialog-options';
 export class DialogService {
     private _executingDialog: NgbModalRef;
 
-    constructor(private _modalService: NgbModal) {
+    constructor(private _modalService: NgbModal,
+        private _toasterService: ToasterService
+    ) {
 
     }
 
-    showSuccess(options: any = null) {
-        let defaultOptions = {
-            text: 'Operation has completed successfully.'
+    showSuccess(optionsPartial?: Partial<SuccessOptions>) {
+        this.hideExecuting();
+
+        const options = new SuccessOptions(optionsPartial);
+
+        const toast: Toast = {
+            type: 'success',
+            title: options.title,
+            body: options.text,
+            timeout: 3000
         };
 
-        if (options != null && typeof options === 'object') {
-            if (options.text == null)
-                options.text = defaultOptions.text;
-        } else {
-            options = defaultOptions;
-        }
-
-        alert(options.text);
+        this._toasterService.pop(toast);
     }
 
     showErrorAsync(optionsPartial?: Partial<ErrorDialogOptions>): Promise<void> {

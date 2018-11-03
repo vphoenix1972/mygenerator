@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { DialogService } from 'src/app/dialogs/dialog.service';
-import { ExecutingDialogOptions } from 'src/app/dialogs/executing/executing-dialog-options';
 
 @Component({
     selector: 'app-examples',
@@ -23,7 +22,7 @@ export class ExamplesComponent implements OnInit {
     }
 
     onShowSuccessButtonClicked(): void {
-        console.log('onShowSuccessButtonClicked');
+        this._dialogService.showSuccess();
     }
 
     onShowErrorButtonClicked(): void {
