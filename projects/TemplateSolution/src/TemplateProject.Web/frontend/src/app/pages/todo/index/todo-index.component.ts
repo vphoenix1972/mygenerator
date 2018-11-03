@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 import { TodoItemsService } from 'src/app/services/todo/todo-items.service';
-import { DialogService } from 'src/app/dialogs/dialog.service';
+import { DialogService } from 'src/app/shared/dialogs/dialog.service';
 
 @Component({
     selector: 'app-todo-index',

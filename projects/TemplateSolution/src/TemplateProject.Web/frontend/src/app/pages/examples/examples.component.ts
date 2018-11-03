@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { DialogService } from 'src/app/dialogs/dialog.service';
+import { DialogService } from 'src/app/shared/dialogs/dialog.service';
 
 @Component({
     selector: 'app-examples',

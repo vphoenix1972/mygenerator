@@ -1,22 +1,14 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 
-
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ToasterModule } from 'angular2-toaster';
 
-
 import { EntryPointComponent } from './entry-point.component';
-import { AppRoutingModule } from './/app-routing.module';
-
-import { SpinnerComponent } from './components/spinner/spinner.component';
-
-import { ExecutingDialogComponent } from './dialogs/executing/executing-dialog.component';
-import { ConfirmDialogComponent } from './dialogs/confirm/confirm-dialog.component';
-import { ErrorDialogComponent } from './dialogs/error/error-dialog.component';
+import { SharedModule } from './shared/shared.module';
+import { AppRoutingModule } from './app-routing.module';
 
 import { HomeComponent } from './pages/home/home.component';
 import { ExamplesComponent } from './pages/examples/examples.component';
@@ -27,10 +19,6 @@ import { TodoEditComponent } from './pages/todo/edit/todo-edit.component';
 @NgModule({
     declarations: [
         EntryPointComponent,
-        SpinnerComponent,
-        ExecutingDialogComponent,
-        ConfirmDialogComponent,
-        ErrorDialogComponent,
         HomeComponent,
         ExamplesComponent,
         AboutComponent,
@@ -39,20 +27,17 @@ import { TodoEditComponent } from './pages/todo/edit/todo-edit.component';
     ],
     imports: [
         BrowserModule,
-        BrowserAnimationsModule,
         FormsModule,
         ReactiveFormsModule,
         HttpClientModule,
         NgbModule.forRoot(),
         ToasterModule.forRoot(),
+        SharedModule,
         AppRoutingModule
     ],
     providers: [],
     bootstrap: [EntryPointComponent],
     entryComponents: [
-        ExecutingDialogComponent,
-        ConfirmDialogComponent,
-        ErrorDialogComponent
     ]
 })
 export class EntryPointModule { }
