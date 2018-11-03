@@ -17,9 +17,9 @@ export class ExamplesComponent implements OnInit {
     }
 
     onShowExecutingButtonClicked(): void {
-        this._dialogService.showExecuting(new ExecutingDialogOptions({
+        this._dialogService.showExecuting({
             onCancelAsync: () => this._dialogService.showConfirmAsync()
-        }));
+        });
     }
 
     onShowSuccessButtonClicked(): void {
@@ -27,6 +27,7 @@ export class ExamplesComponent implements OnInit {
     }
 
     onShowErrorButtonClicked(): void {
-        console.log('onShowErrorButtonClicked');
+        this._dialogService.showErrorAsync()
+            .then(() => console.log('Error dialog has been closed!'));
     }
 }

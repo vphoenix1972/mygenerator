@@ -11,6 +11,7 @@ import { SpinnerComponent } from './components/spinner/spinner.component';
 
 import { ExecutingDialogComponent } from './dialogs/executing/executing-dialog.component';
 import { ConfirmDialogComponent } from './dialogs/confirm/confirm-dialog.component';
+import { ErrorDialogComponent } from './dialogs/error/error-dialog.component';
 
 import { HomeComponent } from './pages/home/home.component';
 import { ExamplesComponent } from './pages/examples/examples.component';
@@ -24,6 +25,7 @@ import { TodoEditComponent } from './pages/todo/edit/todo-edit.component';
         SpinnerComponent,
         ExecutingDialogComponent,
         ConfirmDialogComponent,
+        ErrorDialogComponent,
         HomeComponent,
         ExamplesComponent,
         AboutComponent,
@@ -42,7 +44,8 @@ import { TodoEditComponent } from './pages/todo/edit/todo-edit.component';
     bootstrap: [AppComponent],
     entryComponents: [
         ExecutingDialogComponent,
-        ConfirmDialogComponent
+        ConfirmDialogComponent,
+        ErrorDialogComponent
     ]
 })
 export class AppModule { }

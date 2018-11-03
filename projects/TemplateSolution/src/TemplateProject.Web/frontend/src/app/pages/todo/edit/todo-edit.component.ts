@@ -36,7 +36,7 @@ export class TodoEditComponent implements OnInit {
             if (!this._isNew) {
                 let id = parseInt(params['id'], 10);
                 if (isNaN(id)) {
-                    this._dialogService.showError({ text: 'Invalid item id' });
+                    this._dialogService.showErrorAsync({ text: 'Invalid item id' });
 
                     this._router.navigate(['/todo/index']);
 
@@ -67,7 +67,7 @@ export class TodoEditComponent implements OnInit {
 
             this._router.navigate(['/todo/index']);
         }, error => {
-            this._dialogService.showError({ text: error.message });
+            this._dialogService.showErrorAsync({ text: error.message });
 
             this._router.navigate(['/todo/index']);
         });
@@ -82,7 +82,7 @@ export class TodoEditComponent implements OnInit {
 
                 this.isLoading = false;
             }, error => {
-                this._dialogService.showError({ text: error.message });
+                this._dialogService.showErrorAsync({ text: error.message });
 
                 this._router.navigate(['/todo/index']);
             });

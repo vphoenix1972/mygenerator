@@ -4,6 +4,9 @@ import { ExecutingDialogComponent } from './executing/executing-dialog.component
 import { ExecutingDialogOptions } from './executing/executing-dialog-options';
 import { ConfirmDialogComponent } from './confirm/confirm-dialog.component';
 import { ConfirmDialogOptions } from './confirm/confirm-dialog-options';
+import { ErrorDialogComponent } from './error/error-dialog.component';
+import { ErrorDialogOptions } from './error/error-dialog-options';
+
 
 @Injectable({
     providedIn: 'root'
@@ -30,13 +33,34 @@ export class DialogService {
         alert(options.text);
     }
 
-    showError(options: any) {
-        alert(options.text);
+    showErrorAsync(optionsPartial?: Partial<ErrorDialogOptions>): Promise<void> {
+        this.hideExecuting();
+
+        const options = new ErrorDialogOptions(optionsPartial);
+
+        let dialog: NgbModalRef;
+
+        const modalOptions: NgbModalOptions = {
+            backdrop: 'static',
+            beforeDismiss: () => {
+                // Return 'resolved' promise if closed by 'ESC'
+
+                dialog.close();
+
+                return false;
+            }
+        };
+
+        dialog = this._modalService.open(ErrorDialogComponent, modalOptions);
+
+        dialog.componentInstance.title = options.title;
+        dialog.componentInstance.text = options.text;
+
+        return dialog.result;
     }
 
-    showExecuting(options?: ExecutingDialogOptions): void {
-        if (options == null)
-            options = new ExecutingDialogOptions();
+    showExecuting(optionsPartial?: Partial<ExecutingDialogOptions>): void {
+        const options = new ExecutingDialogOptions(optionsPartial);
 
         const modalOptions: NgbModalOptions = {
             backdrop: 'static',
@@ -58,9 +82,8 @@ export class DialogService {
         this._executingDialog = null;
     }
 
-    showConfirmAsync(options?: ConfirmDialogOptions): Promise<void> {
-        if (options == null)
-            options = new ConfirmDialogOptions();
+    showConfirmAsync(optionsPartial?: Partial<ConfirmDialogOptions>): Promise<void> {
+        const options = new ConfirmDialogOptions(optionsPartial);
 
         const modalOptions: NgbModalOptions = {
             backdrop: 'static'
