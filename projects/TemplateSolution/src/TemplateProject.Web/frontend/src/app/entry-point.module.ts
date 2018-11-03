@@ -9,7 +9,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ToasterModule } from 'angular2-toaster';
 
 
-import { AppComponent } from './app.component';
+import { EntryPointComponent } from './entry-point.component';
 import { AppRoutingModule } from './/app-routing.module';
 
 import { SpinnerComponent } from './components/spinner/spinner.component';
@@ -26,7 +26,7 @@ import { TodoEditComponent } from './pages/todo/edit/todo-edit.component';
 
 @NgModule({
     declarations: [
-        AppComponent,
+        EntryPointComponent,
         SpinnerComponent,
         ExecutingDialogComponent,
         ConfirmDialogComponent,
@@ -48,7 +48,7 @@ import { TodoEditComponent } from './pages/todo/edit/todo-edit.component';
         AppRoutingModule
     ],
     providers: [],
-    bootstrap: [AppComponent],
+    bootstrap: [EntryPointComponent],
     entryComponents: [
         ExecutingDialogComponent,
         ConfirmDialogComponent,

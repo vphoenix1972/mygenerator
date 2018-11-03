@@ -2,11 +2,11 @@ import { Component } from '@angular/core';
 import { ToasterConfig } from 'angular2-toaster';
 
 @Component({
-    selector: 'app-root',
-    templateUrl: './app.component.html',
-    styleUrls: ['./app.component.scss']
+    selector: 'entry-point',
+    templateUrl: './entry-point.component.html',
+    styleUrls: ['./entry-point.component.scss']
 })
-export class AppComponent {
+export class EntryPointComponent {
     isNavbarNavCollapsed = true;
     toasterConfig: ToasterConfig = new ToasterConfig({ positionClass: 'toast-bottom-right' });
 }
