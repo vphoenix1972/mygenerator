@@ -6,7 +6,7 @@
     <h3>ToDo items</h3>
     <div class="app-todo-index-page__new">
         <a href
-        [routerLink]="['/todo/new']">
+        [routerLink]="['../new']">
             New&nbsp;<i class="fa fa-plus"></i>
         </a>
     </div>
@@ -25,7 +25,7 @@
             <td>{{item.name}}</td>
             <td class="app-table__button-column">
                 <a href
-                   [routerLink]="['/todo/edit', item.id]">
+                   [routerLink]="['../edit', item.id]">
                     Edit&nbsp;<i class="fa fa-edit"></i>
                 </a>
             </td>

@@ -3,8 +3,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 import { DialogService } from 'src/app/shared/dialogs/dialog.service';
-import { TodoItemsService } from 'src/app/services/todo/todo-items.service';
-import { TodoItem } from 'src/app/models/todo-item';
+import { TodoItemsService } from 'src/app/main/services/todo/todo-items.service';
+import { TodoItem } from 'src/app/main/models/todo-item';
 
 @Component({
     selector: 'app-todo-edit',
@@ -38,7 +38,7 @@ export class TodoEditComponent implements OnInit {
                 if (isNaN(id)) {
                     this._dialogService.showErrorAsync({ text: 'Invalid item id' });
 
-                    this._router.navigate(['/todo/index']);
+                    this._router.navigate(['/main/todo/index']);
 
                     return;
                 }
@@ -65,11 +65,11 @@ export class TodoEditComponent implements OnInit {
         saveObservable.subscribe(() => {
             this._dialogService.showSuccess();
 
-            this._router.navigate(['/todo/index']);
+            this._router.navigate(['/main/todo/index']);
         }, error => {
             this._dialogService.showErrorAsync({ text: error.message });
 
-            this._router.navigate(['/todo/index']);
+            this._router.navigate(['/main/todo/index']);
         });
     }
 
@@ -84,7 +84,7 @@ export class TodoEditComponent implements OnInit {
             }, error => {
                 this._dialogService.showErrorAsync({ text: error.message });
 
-                this._router.navigate(['/todo/index']);
+                this._router.navigate(['/main/todo/index']);
             });
     }
 }
