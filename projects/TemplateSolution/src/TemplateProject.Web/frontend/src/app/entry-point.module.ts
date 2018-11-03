@@ -55,4 +55,4 @@ import { TodoEditComponent } from './pages/todo/edit/todo-edit.component';
         ErrorDialogComponent
     ]
 })
-export class AppModule { }
+export class EntryPointModule { }
