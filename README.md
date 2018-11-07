@@ -8,7 +8,19 @@ NodeJS 8 or higher
 npm install -g @angular/cli
 ```
 
-To build frontend run the following
+To build the template project run
+```
+cd projects\TemplateSolution
+deploy\publish\windows\publish.cmd
+```
+
+To run it
+```
+cd projects\TemplateSolution\dist
+run.cmd
+```
+
+To build frontend for debug run the following
 ```
 cd projects\TemplateSolution\src\TemplateProject.Web\frontend
 ng build --watch
