@@ -1,0 +1,15 @@
+@import 'variables';
+@import '../node_modules/bootstrap/scss/bootstrap';
+@import '../node_modules/angular2-toaster/toaster';
+
+/* Common styles */
+
+.app-table__button-column {
+    width: 100px;
+}
+
+/* Dialogs */
+
+.app-dialog__title {
+    margin: 0;
+}

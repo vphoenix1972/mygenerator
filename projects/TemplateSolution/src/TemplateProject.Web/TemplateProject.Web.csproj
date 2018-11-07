@@ -6,22 +6,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="frontend\app\**" />
-    <Compile Remove="frontend\constants\**" />
-    <Content Remove="frontend\app\**" />
-    <Content Remove="frontend\constants\**" />
-    <EmbeddedResource Remove="frontend\app\**" />
-    <EmbeddedResource Remove="frontend\constants\**" />
-    <None Remove="frontend\app\**" />
-    <None Remove="frontend\constants\**" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Remove="frontend\entryPoint.ts" />
-    <None Remove="frontend\polyfills.ts" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Folder Include="wwwroot\" />
   </ItemGroup>
 
