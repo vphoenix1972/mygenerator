@@ -5,7 +5,7 @@ var Generator = require('yeoman-generator');
 class MyGenerator extends Generator {
     constructor(args, opts) {
         // Calling the super constructor is important so our generator is correctly set up
-        super(args, opts);  
+        super(args, opts);
     }
 
       prompting() {
@@ -28,7 +28,7 @@ class MyGenerator extends Generator {
         this._copyReadme();
         this._copyGitignore();
         this._copyNugetConfig();
-                
+
         this._copySrcFolder();
         this._copyDeployFolder();
     }
@@ -47,10 +47,11 @@ class MyGenerator extends Generator {
         this._destSrcUtilsProjFolder = `src/${this._csprojName}.Utils`;
     }
 
-    _makeEnv() {      
+    _makeEnv() {
         this._env = {
             projectName: this._projectName,
             npmPackageName: this._jsLcfirst(this._projectName),
+            angularProjectName: this._jsUcfirst(this._projectName),
             angularModuleName: this._jsLcfirst(this._projectName),
             csprojName: this._csprojName,
             projectNamespace: this._jsUcfirst(this._projectName),
@@ -154,7 +155,7 @@ class MyGenerator extends Generator {
         );
     }
 
-    _jsUcfirst(string) 
+    _jsUcfirst(string)
     {
         if (string.length < 1)
             return string;
@@ -162,7 +163,7 @@ class MyGenerator extends Generator {
         return string.charAt(0).toUpperCase() + string.slice(1);
     }
 
-    _jsLcfirst(string) 
+    _jsLcfirst(string)
     {
         if (string.length < 1)
             return string;

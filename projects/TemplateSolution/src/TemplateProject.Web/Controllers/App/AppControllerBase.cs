@@ -4,7 +4,7 @@ using TemplateProject.Core.Domain;
 
 namespace TemplateProject.Web.Controllers.App
 {
-    [Route("app/[controller]")]
+    [Route(WebConstants.SpaApiPathPrefix + "/[controller]")]
     [Authorize(Roles = UserRoleNames.RoleUser)]
     public abstract class AppControllerBase : Controller
     {
