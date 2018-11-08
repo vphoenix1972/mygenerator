@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 import { TodoItemsService } from 'src/app/main/services/todo/todo-items.service';
 import { DialogService } from 'src/app/shared/dialogs/dialog.service';
@@ -13,7 +14,8 @@ export class TodoIndexComponent implements OnInit {
     items: Array<any>;
 
     constructor(private _todoItemsService: TodoItemsService,
-        private _dialogService: DialogService) { }
+        private _dialogService: DialogService,
+        private _router: Router) { }
 
     ngOnInit() {
         this.isLoading = true;
@@ -23,6 +25,9 @@ export class TodoIndexComponent implements OnInit {
                 this.items = items;
 
                 this.isLoading = false;
+            }, error => {
+                this._dialogService.showErrorAsync({ text: error.message })
+                    .then(() => this._router.navigate(['/main']));
             });
     }
 
@@ -32,7 +37,7 @@ export class TodoIndexComponent implements OnInit {
                 this.items.splice(this.items.indexOf(item), 1);
 
                 this._dialogService.showSuccess();
-            });
+            }, error => this._dialogService.showErrorAsync({ text: error.message }));
 
         return false;
     }

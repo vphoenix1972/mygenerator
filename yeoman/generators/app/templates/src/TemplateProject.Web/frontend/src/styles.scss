@@ -8,8 +8,27 @@
     width: 100px;
 }
 
+.app-text {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    vertical-align: top;
+}
+
+.app-word-break {
+    -ms-word-break: break-all;
+    word-break: break-all;
+    word-break: break-word;
+}
+
 /* Dialogs */
 
 .app-dialog__title {
+    @extend .app-word-break;
+
     margin: 0;
+    overflow: hidden;
+    word-break: break-word;
+    -ms-word-break: break-all;
+    max-height: 100px;
 }

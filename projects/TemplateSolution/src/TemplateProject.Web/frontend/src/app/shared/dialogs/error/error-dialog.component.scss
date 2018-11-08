@@ -15,5 +15,7 @@
 
 .app-error-dialog__text {
     padding: 5px;
-    padding-top: 20px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    max-height: 150px;
 }
