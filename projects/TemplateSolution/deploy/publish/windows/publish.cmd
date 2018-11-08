@@ -1,13 +1,6 @@
 @echo off
 
-rem Compile
-echo.
-echo Compilation...
-echo.
-
-cd src\TemplateProject.Web
-dotnet build
-cd ..\..
+set current_dir=%cd%
 
 
 rem Publish
@@ -18,18 +11,30 @@ echo.
 rem Cleanup
 rd deploy\dist /q /s
 
-rem Publish
-cd src\TemplateProject.Web
+rem Build frontend
+cd src\TemplateProject.Web\frontend
 call npm install
 
-set NODE_ENV=production
+call ng build --prod
 
-call webpack
+if %ERRORLEVEL% NEQ 0 (
+    goto error
+)    
 
-set NODE_ENV=
+cd ..\..\..
 
+rem Build backend and copy files
+cd src\TemplateProject.Web
 dotnet publish -c Release -o ..\..\deploy\dist
 cd ..\..
 
-rem Copy run.cmd
+rem Include run.cmd
 copy deploy\publish\windows\run.cmd deploy\dist\run.cmd
+
+goto end
+
+:error
+cd %current_dir%
+exit /B %ERRORLEVEL%%
+
+:end

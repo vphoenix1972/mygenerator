@@ -4,7 +4,7 @@ using <%= projectNamespace %>.Core.Domain;
 
 namespace <%= projectNamespace %>.Web.Controllers.App
 {
-    [Route("app/[controller]")]
+    [Route(WebConstants.SpaApiPathPrefix + "/[controller]")]
     public abstract class AppControllerBase : Controller
     {
     }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -39,9 +40,12 @@ namespace TemplateProject.Web
         {
             app.UseExceptionLogger();
 
+            app.UseDefaultFiles();
             app.UseStaticFiles();
 
-            app.UseMvc();
+            app.UseMvc(routes => {
+                routes.MapSpaFallbackRoute("spaFallback", new { controller = "Spa", action = "Index" });
+            });
 
             applicationLifetime.ApplicationStarted.Register(() => OnApplicationStarted(app));
         }
