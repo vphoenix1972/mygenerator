@@ -9,7 +9,22 @@
     </div>
 </div>
 
-<div *ngIf="!isLoading">
+<div *ngIf="isError" class="card app-loading-error">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-2 mt-2">
+                <error-icon></error-icon>
+            </div>
+            <div class="col-10">
+                <h4 class="card-title">Application loading error</h4>
+                Sorry, a error occurred during application loading. <br>
+                Try again later.
+            </div>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="!isLoading && !isError">
     <router-outlet></router-outlet>
 </div>
 

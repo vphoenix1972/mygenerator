@@ -13,6 +13,7 @@ import { AuthService } from 'src/app/auth/services/auth.service';
 })
 export class EntryPointComponent {
     isLoading: boolean = true;
+    isError: boolean = false;
     toasterConfig: ToasterConfig = new ToasterConfig({ positionClass: 'toast-bottom-right' });
 
     constructor(private _router: Router,
@@ -27,8 +28,8 @@ export class EntryPointComponent {
         this._authService.loadUserFromCacheAsync()
             .then(() => {
                 this._router.navigateByUrl(path);
-            }, error => {
-                // TODO: Handle error
+            }, () => {
+                this.isError = true;
             })
             .finally(() => this.isLoading = false);
     }
