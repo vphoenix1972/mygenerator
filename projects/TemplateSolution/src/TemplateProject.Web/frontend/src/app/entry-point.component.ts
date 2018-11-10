@@ -4,6 +4,8 @@ import { Location } from "@angular/common";
 
 import { ToasterConfig } from 'angular2-toaster';
 
+import { AuthService } from 'src/app/auth/services/auth.service';
+
 @Component({
     selector: 'entry-point',
     templateUrl: './entry-point.component.html',
@@ -13,15 +15,21 @@ export class EntryPointComponent {
     isLoading: boolean = true;
     toasterConfig: ToasterConfig = new ToasterConfig({ positionClass: 'toast-bottom-right' });
 
-    constructor(private _router: Router, private _location: Location) {
+    constructor(private _router: Router,
+        private _location: Location,
+        private _authService: AuthService) {
         const path = this._location.path(true);
+
+        // Startup logic
 
         this.isLoading = true;
 
-        setTimeout(() => {
-            this._router.navigateByUrl(path);
-
-            this.isLoading = false;
-        }, 500);
+        this._authService.loadUserFromCacheAsync()
+            .then(() => {
+                this._router.navigateByUrl(path);
+            }, error => {
+                // TODO: Handle error
+            })
+            .finally(() => this.isLoading = false);
     }
 }

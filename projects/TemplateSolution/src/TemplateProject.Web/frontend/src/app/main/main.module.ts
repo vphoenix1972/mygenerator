@@ -7,6 +7,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { SharedModule } from 'src/app/shared/shared.module';
+import { AuthModule } from 'src/app/auth/auth.module';
 import { MainRoutingModule } from './main-routing.module';
 
 import { MainComponent } from './main.component';
@@ -32,6 +33,7 @@ import { TodoEditComponent } from './pages/todo/edit/todo-edit.component';
         HttpClientModule,
         NgbModule,
         SharedModule,
+        AuthModule,
         MainRoutingModule
     ],
     exports: [
