@@ -13,6 +13,12 @@
     <router-outlet></router-outlet>
 </div>
 
+<app-panel-page-centered *ngIf="isError"
+                         title="Application loading error"
+                         text="Sorry, a error occurred during application loading. Try again later."
+                         [iconType]="IconType.Error">
+</app-panel-page-centered>
+
 <footer class="footer border-top">
     <div class="ml-4">
         <span class="text-muted">Template Project © 2018</span>

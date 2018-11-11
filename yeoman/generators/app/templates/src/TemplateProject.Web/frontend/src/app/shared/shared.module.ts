@@ -6,19 +6,22 @@ import { ConfirmDialogComponent } from './dialogs/confirm/confirm-dialog.compone
 import { ErrorDialogComponent } from './dialogs/error/error-dialog.component';
 
 import { SpinnerComponent } from './components/spinner/spinner.component';
+import { PanelPageCenteredComponent } from './components/panel-page-centered/panel-page-centered.component';
 
 @NgModule({
     declarations: [
         ExecutingDialogComponent,
         ConfirmDialogComponent,
         ErrorDialogComponent,
-        SpinnerComponent
+        SpinnerComponent,
+        PanelPageCenteredComponent
     ],
     imports: [
         BrowserAnimationsModule
     ],
     exports: [
-        SpinnerComponent
+        SpinnerComponent,
+        PanelPageCenteredComponent
     ],
     entryComponents: [
         ExecutingDialogComponent,
