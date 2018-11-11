@@ -4,6 +4,8 @@ import { Location } from "@angular/common";
 
 import { ToasterConfig } from 'angular2-toaster';
 
+import { IconType } from 'src/app/shared/components/panel-page-centered/icon-type';
+
 import { AuthService } from 'src/app/auth/services/auth.service';
 
 @Component({
@@ -12,6 +14,8 @@ import { AuthService } from 'src/app/auth/services/auth.service';
     styleUrls: ['./entry-point.component.scss']
 })
 export class EntryPointComponent {
+    IconType = IconType;
+
     isLoading: boolean = true;
     isError: boolean = false;
     toasterConfig: ToasterConfig = new ToasterConfig({ positionClass: 'toast-bottom-right' });

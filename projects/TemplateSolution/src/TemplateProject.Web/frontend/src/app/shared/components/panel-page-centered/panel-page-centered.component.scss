@@ -1,0 +1,24 @@
+.panel-page-centered {
+    position: absolute;
+    top: calc(50% - 100px);
+    left: calc(50% - 250px);
+    width: 500px;
+}
+
+.error-icon {
+    font-size: 48px;
+    color: #d9534f;;
+}
+
+@media screen and (max-width: 500px) {
+    .panel-page-centered {
+        width: 300px;
+        left: calc(50% - 150px);
+    }
+
+    .error-icon {
+        padding-left: 7px;
+        padding-right: 0;
+        font-size: 44px;
+    }
+}

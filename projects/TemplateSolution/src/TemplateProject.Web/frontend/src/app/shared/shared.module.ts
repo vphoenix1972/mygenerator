@@ -7,6 +7,7 @@ import { ErrorDialogComponent } from './dialogs/error/error-dialog.component';
 
 import { SpinnerComponent } from './components/spinner/spinner.component';
 import { ErrorIconComponent } from './components/error-icon/error-icon.component';
+import { PanelPageCenteredComponent } from './components/panel-page-centered/panel-page-centered.component';
 
 @NgModule({
     declarations: [
@@ -14,14 +15,16 @@ import { ErrorIconComponent } from './components/error-icon/error-icon.component
         ConfirmDialogComponent,
         ErrorDialogComponent,
         SpinnerComponent,
-        ErrorIconComponent
+        ErrorIconComponent,
+        PanelPageCenteredComponent
     ],
     imports: [
         BrowserAnimationsModule
     ],
     exports: [
         SpinnerComponent,
-        ErrorIconComponent
+        ErrorIconComponent,
+        PanelPageCenteredComponent
     ],
     entryComponents: [
         ExecutingDialogComponent,

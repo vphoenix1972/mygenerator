@@ -31,8 +31,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
         return this.checkAuthorized(roles);
     }
 
-    private findRolesAscendingPathTree(route: ActivatedRouteSnapshot): Roles[]
-    {
+    private findRolesAscendingPathTree(route: ActivatedRouteSnapshot): Roles[] {
         const roles = route.data.roles as Roles[];
         if (roles != null)
             return roles;
@@ -61,11 +60,9 @@ export class AuthGuard implements CanActivate, CanActivateChild {
         );
 
         if (!isAccessAllowed) {
-            console.log('forbidden');
+            this._router.navigate(['/forbidden']);
             return false;
         }
-
-        console.log('allowed');
 
         return true;
     }
