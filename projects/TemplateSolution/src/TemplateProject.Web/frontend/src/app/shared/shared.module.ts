@@ -6,7 +6,6 @@ import { ConfirmDialogComponent } from './dialogs/confirm/confirm-dialog.compone
 import { ErrorDialogComponent } from './dialogs/error/error-dialog.component';
 
 import { SpinnerComponent } from './components/spinner/spinner.component';
-import { ErrorIconComponent } from './components/error-icon/error-icon.component';
 import { PanelPageCenteredComponent } from './components/panel-page-centered/panel-page-centered.component';
 
 @NgModule({
@@ -15,7 +14,6 @@ import { PanelPageCenteredComponent } from './components/panel-page-centered/pan
         ConfirmDialogComponent,
         ErrorDialogComponent,
         SpinnerComponent,
-        ErrorIconComponent,
         PanelPageCenteredComponent
     ],
     imports: [
@@ -23,7 +21,6 @@ import { PanelPageCenteredComponent } from './components/panel-page-centered/pan
     ],
     exports: [
         SpinnerComponent,
-        ErrorIconComponent,
         PanelPageCenteredComponent
     ],
     entryComponents: [
