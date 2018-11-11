@@ -5,7 +5,6 @@ import { Location } from "@angular/common";
 import { ToasterConfig } from 'angular2-toaster';
 
 import { IconType } from 'src/app/shared/components/panel-page-centered/icon-type';
-
 import { AuthService } from 'src/app/auth/services/auth.service';
 
 @Component({
