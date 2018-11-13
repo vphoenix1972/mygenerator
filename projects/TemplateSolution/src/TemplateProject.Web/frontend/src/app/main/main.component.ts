@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 
 import { DialogService } from 'src/app/shared/dialogs/dialog.service';
 import { AuthService } from 'src/app/auth/services/auth.service';
+import { ConfirmResult } from 'src/app/shared/dialogs/confirm/confirm-result';
 
 @Component({
     selector: 'main-component',
@@ -22,7 +23,10 @@ export class MainComponent {
     onSignOutClicked(): boolean {
 
         this._dialogService.showConfirmAsync({ title: 'Are you sure to sign out?' })
-            .then(() => {
+            .then(result => {
+                if (result != ConfirmResult.Yes)
+                    return;
+
                 this._dialogService.showExecuting();
 
                 this._authService.signOutAsync()
