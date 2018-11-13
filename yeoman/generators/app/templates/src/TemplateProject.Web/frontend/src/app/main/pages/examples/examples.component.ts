@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { DialogService } from 'src/app/shared/dialogs/dialog.service';
+import { ConfirmResult } from 'src/app/shared/dialogs/confirm/confirm-result';
 
 @Component({
     selector: 'app-examples',
@@ -17,7 +18,10 @@ export class ExamplesComponent implements OnInit {
 
     onShowExecutingButtonClicked(): void {
         this._dialogService.showExecuting({
-            onCancelAsync: () => this._dialogService.showConfirmAsync()
+            onCancelAsync: () => {
+                return this._dialogService.showConfirmAsync()
+                    .then(result => result == ConfirmResult.Yes);
+            }
         });
     }
 

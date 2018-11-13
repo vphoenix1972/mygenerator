@@ -9,7 +9,7 @@ export class ExecutingDialogComponent {
     private _isCancelling: boolean = false;
 
     @Input() title: string;
-    @Input() onCancelAsync: () => Promise<void>;
+    @Input() onCancelAsync: () => Promise<boolean>;
 
     constructor(private _modalInstance: NgbActiveModal) {
 
@@ -27,11 +27,11 @@ export class ExecutingDialogComponent {
         return Promise.resolve(false);
     }
 
-    isCancelButtonVisible() : boolean {
+    isCancelButtonVisible(): boolean {
         return this.isCancellationAllowed();
     }
 
-    onCancelButtonClicked() : void {
+    onCancelButtonClicked(): void {
         this.cancel();
     }
 
@@ -46,7 +46,10 @@ export class ExecutingDialogComponent {
         this._isCancelling = true;
 
         this.onCancelAsync()
-            .then(() => this._modalInstance.close())
+            .then(isCancelled => {
+                if (isCancelled)
+                    this._modalInstance.close();
+            })
             .finally(() => this._isCancelling = false);
     }
 }
