@@ -1,28 +1,34 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <a class="navbar-brand" routerLink="./home">
-      <img src="/favicon.ico" width="30" height="30" class="d-inline-block align-top" alt="">
-      Template Project
+        <img src="/favicon.ico" width="30" height="30" class="d-inline-block align-top" alt="">
+        Template Project
     </a>
 
-    <button class="navbar-toggler"
-            type="button"
-            (click)="isNavbarNavCollapsed = !isNavbarNavCollapsed"
-            [attr.aria-expanded]="!isNavbarNavCollapsed"
-            aria-controls="navbarNavAltMarkup"
-            aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
+    <button class="navbar-toggler" type="button" (click)="isNavbarNavCollapsed = !isNavbarNavCollapsed"
+            [attr.aria-expanded]="!isNavbarNavCollapsed" aria-controls="navbarNavAltMarkup" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
     </button>
 
     <div id="navbarNavAltMarkup" class="collapse navbar-collapse" [ngbCollapse]="isNavbarNavCollapsed">
-      <div class="navbar-nav">
-        <a class="nav-item nav-link" routerLink="./home">Home</a>
-        <a class="nav-item nav-link" routerLink="./todo/index">Todo</a>
-        <a class="nav-item nav-link" routerLink="./examples">Examples</a>
-        <a class="nav-item nav-link" routerLink="./about">About</a>
-      </div>
+        <div class="navbar-nav mr-auto">
+            <a class="nav-item nav-link" routerLink="./home">Home</a>
+            <a class="nav-item nav-link" routerLink="./todo/index">Todo</a>
+            <a class="nav-item nav-link" routerLink="./examples">Examples</a>
+            <a class="nav-item nav-link" routerLink="./about">About</a>
+        </div>
+        <div class="navbar-nav" ngbDropdown placement="bottom-right">
+            <a role="button" class="nav-item nav-link dropdown-toggle app-user-dropdown-toggle" tabindex="0" title="{{username}}" ngbDropdownToggle>
+                <span class="app-text app-username">{{username}}</span>
+            </a>
+            <div ngbDropdownMenu>
+                <a href class="dropdown-item" (click)="onSignOutClicked()">
+                    <i class="fa fa-sign-out-alt"></i>&nbsp;Sign out
+                </a>
+            </div>
+        </div>
     </div>
-  </nav>
+</nav>
 
-  <div class="m-4">
+<div class="m-4">
     <router-outlet></router-outlet>
-  </div>
+</div>

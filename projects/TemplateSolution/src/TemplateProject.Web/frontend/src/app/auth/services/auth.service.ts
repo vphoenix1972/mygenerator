@@ -10,10 +10,7 @@ export class AuthService {
     private _currentUser: User;
 
     constructor() {
-        this._currentUser = new User({
-            isAuthenticated: false,
-            roles: null
-        })
+        this._currentUser = this._createUnauthenticatedUser();
     }
 
     get currentUser(): User {
@@ -23,12 +20,31 @@ export class AuthService {
     loadUserFromCacheAsync(): Promise<void> {
         const promise = new Promise<void>((resolve, reject) => {
             setTimeout(() => {
-                this._currentUser = new User({ isAuthenticated: true, roles: [Roles.User] })
+                this._currentUser = new User({ isAuthenticated: true, name: "User", roles: [Roles.User] })
 
                 resolve();
             }, 500);
         });
 
         return promise;
+    }
+
+    signOutAsync(): Promise<void> {
+        const promise = new Promise<void>((resolve, reject) => {
+            setTimeout(() => {
+                this._currentUser = this._createUnauthenticatedUser();
+
+                resolve();
+            }, 500);
+        });
+
+        return promise;
+    }
+
+    _createUnauthenticatedUser(): User {
+        return new User({
+            isAuthenticated: false,
+            roles: null
+        });
     }
 }
