@@ -1,6 +1,6 @@
 export class ExecutingDialogOptions {
     title: string = 'Executing...';
-    onCancelAsync: () => Promise<void> = null;
+    onCancelAsync: () => Promise<boolean> = null;
 
     constructor(initializers?:Partial<ExecutingDialogOptions>) {
         Object.assign(this, initializers);

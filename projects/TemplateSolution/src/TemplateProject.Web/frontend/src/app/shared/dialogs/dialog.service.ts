@@ -10,6 +10,7 @@ import { ExecutingDialogComponent } from './executing/executing-dialog.component
 import { ExecutingDialogOptions } from './executing/executing-dialog-options';
 import { ConfirmDialogComponent } from './confirm/confirm-dialog.component';
 import { ConfirmDialogOptions } from './confirm/confirm-dialog-options';
+import { ConfirmResult } from './confirm/confirm-result';
 
 @Injectable({
     providedIn: 'root'
@@ -87,14 +88,17 @@ export class DialogService {
         this._executingDialog = null;
     }
 
-    showConfirmAsync(optionsPartial?: Partial<ConfirmDialogOptions>): Promise<void> {
+    showConfirmAsync(optionsPartial?: Partial<ConfirmDialogOptions>): Promise<ConfirmResult> {
         const options = new ConfirmDialogOptions(optionsPartial);
 
+        let dialog;
+
         const modalOptions: NgbModalOptions = {
-            backdrop: 'static'
+            backdrop: 'static',
+            beforeDismiss: () => dialog.componentInstance.closeByEsc()
         };
 
-        const dialog = this._modalService.open(ConfirmDialogComponent, modalOptions);
+        dialog = this._modalService.open(ConfirmDialogComponent, modalOptions);
 
         dialog.componentInstance.title = options.title;
         dialog.componentInstance.yesButtonText = options.yesButtonText;
