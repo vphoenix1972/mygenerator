@@ -19,7 +19,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
 
         const roles = route.data.roles as Roles[];
 
-        return this.checkAuthorized(roles)
+        return this.authorize(roles, state.url);
     }
 
     canActivateChild(
@@ -28,7 +28,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
 
         const roles = this.findRolesAscendingPathTree(route);
 
-        return this.checkAuthorized(roles);
+        return this.authorize(roles, state.url);
     }
 
     private findRolesAscendingPathTree(route: ActivatedRouteSnapshot): Roles[] {
@@ -42,7 +42,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
         return null;
     }
 
-    private checkAuthorized(roles: Roles[]): boolean {
+    private authorize(roles: Roles[], returnUrl: string): boolean {
         const allowAnonymous = roles == null || roles.length < 1;
 
         if (allowAnonymous)
@@ -51,7 +51,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
         const user = this._authService.currentUser;
 
         if (!user.isAuthenticated) {
-            console.log('signIn');
+            this._router.navigate(['/sign-in'], { queryParams: { returnUrl: returnUrl } });
             return false;
         }
 

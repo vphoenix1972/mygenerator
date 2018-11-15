@@ -20,7 +20,17 @@ export class AuthService {
     loadUserFromCacheAsync(): Promise<void> {
         const promise = new Promise<void>((resolve, reject) => {
             setTimeout(() => {
-                this._currentUser = new User({ isAuthenticated: true, name: "User", roles: [Roles.User] })
+                resolve();
+            }, 500);
+        });
+
+        return promise;
+    }
+
+    signInAsync(): Promise<void> {
+        const promise = new Promise<void>((resolve, reject) => {
+            setTimeout(() => {
+                this._currentUser = new User({ isAuthenticated: true, name: "User", roles: [Roles.User] });
 
                 resolve();
             }, 500);

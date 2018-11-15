@@ -47,7 +47,7 @@ export class TodoEditComponent implements OnInit {
 
                 this.loadItem();
             }
-        })
+        });
     }
 
     ngOnInit() {

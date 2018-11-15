@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
 import { DialogService } from 'src/app/shared/dialogs/dialog.service';
 import { AuthService } from 'src/app/auth/services/auth.service';
@@ -12,7 +13,9 @@ import { ConfirmResult } from 'src/app/shared/dialogs/confirm/confirm-result';
 export class MainComponent {
     isNavbarNavCollapsed = true;
 
-    constructor(private _authService: AuthService, private _dialogService: DialogService) {
+    constructor(private _authService: AuthService,
+        private _dialogService: DialogService,
+        private _router: Router) {
 
     }
 
@@ -31,7 +34,7 @@ export class MainComponent {
 
                 this._authService.signOutAsync()
                     .then(
-                        () => console.log('Goto signIn'),
+                        () => this._router.navigate(['/sign-in']),
                         () => this._dialogService.showErrorAsync({ title: 'Sign out error' })
                     )
                     .finally(() => this._dialogService.hideExecuting());
