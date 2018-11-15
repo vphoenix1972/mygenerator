@@ -19,3 +19,11 @@
     overflow-y: auto;
     max-height: 150px;
 }
+
+@media screen and (max-width: 400px) {
+    .app-error-dialog__icon  {
+        padding-left: 7px;
+        padding-right: 7px;
+        font-size: 44px;
+    }
+}
