@@ -1,10 +1,17 @@
 import { NgModule } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+
+import { JwtModule } from '@auth0/angular-jwt';
+import { JwtHelperService } from '@auth0/angular-jwt';
+import { JWT_OPTIONS } from '@auth0/angular-jwt';
 
 import { SharedModule } from 'src/app/shared/shared.module';
 import { AuthRoutingModule } from './auth-routing.module';
 
 import { ForbiddenComponent } from './pages/forbidden/forbidden.component';
 import { SignInComponent } from './pages/sign-in/sign-in.component';
+import { SetAccessTokenInterceptor } from './interceptors/set-access-token.interceptor';
 
 @NgModule({
     declarations: [
@@ -12,6 +19,9 @@ import { SignInComponent } from './pages/sign-in/sign-in.component';
         SignInComponent
     ],
     imports: [
+        FormsModule,
+        ReactiveFormsModule,
+        JwtModule,
         SharedModule,
         AuthRoutingModule
     ],
@@ -20,6 +30,18 @@ import { SignInComponent } from './pages/sign-in/sign-in.component';
     ],
     entryComponents: [
 
-    ]
+    ],
+    providers: [
+        {
+          provide: HTTP_INTERCEPTORS,
+          useClass: SetAccessTokenInterceptor,
+          multi: true
+        },
+        JwtHelperService,
+        {
+            provide: JWT_OPTIONS,
+            useValue: null
+        }
+      ]
 })
 export class AuthModule { }

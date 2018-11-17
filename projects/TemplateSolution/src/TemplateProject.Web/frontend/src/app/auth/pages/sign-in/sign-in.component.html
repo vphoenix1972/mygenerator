@@ -1,24 +1,26 @@
 <div class="card app-sign-in-form">
     <div class="card-body app-sign-in-form__body">
-        <h3 class="card-title">Sign In</h3>
+        <form [formGroup]="signInForm" (ngSubmit)="onSubmit()">
+                <h3 class="card-title">Sign In</h3>
 
-        <div class="form-group">
-            <label class="control-label" for="login">Username or email address</label>
-            <input type="text" class="form-control" id="login" placeholder="Username or email address">
-        </div>
+                <div class="form-group">
+                    <label class="control-label" for="login">Username or email address</label>
+                    <input type="text" class="form-control" id="login" placeholder="Username or email address" [formControl]="loginControl">
+                </div>
 
-        <div class="form-group">
-            <label class="control-label" for="password">Password</label>
-            <input type="password" class="form-control" id="password" placeholder="Password">
-        </div>
+                <div class="form-group">
+                    <label class="control-label" for="password">Password</label>
+                    <input type="password" class="form-control" id="password" placeholder="Password" [formControl]="passwordControl">
+                </div>
 
-        <div class="app-sign-in-form__buttons">
-            <button type="button" class="btn btn-primary mr-1" (click)="onSignInButtonClicked()">
-                Sign In
-            </button>
-            <a routerLink="/register">
-                Register
-            </a>
-        </div>
+                <div class="app-sign-in-form__buttons">
+                    <button type="submit" class="btn btn-primary mr-1">
+                        Sign In
+                    </button>
+                    <a routerLink="/register">
+                        Register
+                    </a>
+                </div>
+        </form>
     </div>
 </div>
