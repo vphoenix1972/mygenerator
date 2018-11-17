@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { CanActivate, CanActivateChild, Router, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 
 import { AuthModule } from 'src/app/auth/auth.module';
-import { Roles } from 'src/app/auth/models/roles';
+import { Role } from 'src/app/auth/models/role';
 import { AuthService } from 'src/app/auth/services/auth.service';
 
 @Injectable({
@@ -17,7 +17,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
     canActivate(route: ActivatedRouteSnapshot,
         state: RouterStateSnapshot): boolean {
 
-        const roles = route.data.roles as Roles[];
+        const roles = route.data.roles as Role[];
 
         return this.authorize(roles, state.url);
     }
@@ -31,8 +31,8 @@ export class AuthGuard implements CanActivate, CanActivateChild {
         return this.authorize(roles, state.url);
     }
 
-    private findRolesAscendingPathTree(route: ActivatedRouteSnapshot): Roles[] {
-        const roles = route.data.roles as Roles[];
+    private findRolesAscendingPathTree(route: ActivatedRouteSnapshot): Role[] {
+        const roles = route.data.roles as Role[];
         if (roles != null)
             return roles;
 
@@ -42,7 +42,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
         return null;
     }
 
-    private authorize(roles: Roles[], returnUrl: string): boolean {
+    private authorize(roles: Role[], returnUrl: string): boolean {
         const allowAnonymous = roles == null || roles.length < 1;
 
         if (allowAnonymous)

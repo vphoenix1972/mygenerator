@@ -5,7 +5,7 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 import { isString, isArray } from 'src/utils/type-utils';
 
 import { User } from 'src/app/auth/models/user';
-import { Roles } from 'src/app/auth/models/roles';
+import { Role } from 'src/app/auth/models/role';
 import { JwtClaimTypes } from 'src/app/auth/models/jwtClaimTypes';
 
 @Injectable({
@@ -84,7 +84,7 @@ export class AuthService {
         });
     }
 
-    private parseJwtRole(jwtRole: string | string[]): Roles[] {
+    private parseJwtRole(jwtRole: string | string[]): Role[] {
 
         if (isString(jwtRole)) {
             const parseResult = this.parseServerRole(jwtRole as string);
@@ -93,7 +93,7 @@ export class AuthService {
         }
 
         if (isArray(jwtRole)) {
-            const result: Roles[] = [];
+            const result: Role[] = [];
 
             for (const jwtRoleStr of jwtRole as string[]) {
                 if (!isString(jwtRoleStr))
@@ -112,13 +112,13 @@ export class AuthService {
         return [];
     }
 
-    private parseServerRole(serverRole: string): { isSuccess: boolean, value: Roles } {
-        const enumKey = Object.keys(Roles).find(key => Roles[key] === serverRole);
+    private parseServerRole(serverRole: string): { isSuccess: boolean, value: Role } {
+        const enumKey = Object.keys(Role).find(key => Role[key] === serverRole);
 
         if (enumKey == null)
             return { isSuccess: false, value: null };
 
-        return { isSuccess: true, value: Roles[enumKey] };
+        return { isSuccess: true, value: Role[enumKey] };
     }
 
     private createUnauthenticatedUser(): User {
