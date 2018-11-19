@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
 import { JwtHelperService } from '@auth0/angular-jwt';
 
 import { isString, isArray } from 'src/utils/type-utils';
@@ -14,6 +16,7 @@ import { JwtClaimTypes } from 'src/app/auth/models/jwtClaimTypes';
 export class AuthService {
     private _currentUser: User;
     private _accessToken: string;
+    private _refreshToken: string;
 
     constructor(private _http: HttpClient, private _jwt: JwtHelperService) {
         this._currentUser = this.createUnauthenticatedUser();
@@ -57,12 +60,20 @@ export class AuthService {
         return this.onSignedOut();
     }
 
+    refreshTokens(): Observable<any> {
+        return this._http.post('/security/refreshToken', { refreshToken: this._refreshToken })
+            .pipe(
+                tap(serverData => this.onSignIn(serverData))
+            );
+    }
+
     private get isSignedOut(): boolean {
         return this._accessToken == null;
     }
 
     private onSignIn(serverData: any): void {
         this._accessToken = serverData.accessToken;
+        this._refreshToken = serverData.refreshToken;
 
         const accessTokenData = this._jwt.decodeToken(this._accessToken);
 
@@ -73,6 +84,7 @@ export class AuthService {
         this._currentUser = this.createUnauthenticatedUser();
 
         this._accessToken = null;
+        this._refreshToken = null;
     }
 
     private loadUserFromAccessToken(accessTokenData: any): void {
