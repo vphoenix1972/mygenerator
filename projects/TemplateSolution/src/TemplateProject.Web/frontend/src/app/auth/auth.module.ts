@@ -11,7 +11,7 @@ import { AuthRoutingModule } from './auth-routing.module';
 
 import { ForbiddenComponent } from './pages/forbidden/forbidden.component';
 import { SignInComponent } from './pages/sign-in/sign-in.component';
-import { SetAccessTokenInterceptor } from './interceptors/set-access-token.interceptor';
+import { AuthInterceptor } from './interceptors/auth.interceptor';
 
 @NgModule({
     declarations: [
@@ -34,7 +34,7 @@ import { SetAccessTokenInterceptor } from './interceptors/set-access-token.inter
     providers: [
         {
           provide: HTTP_INTERCEPTORS,
-          useClass: SetAccessTokenInterceptor,
+          useClass: AuthInterceptor,
           multi: true
         },
         JwtHelperService,

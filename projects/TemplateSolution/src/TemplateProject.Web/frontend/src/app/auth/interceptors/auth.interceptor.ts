@@ -13,7 +13,7 @@ import { AuthService } from 'src/app/auth/services/auth.service';
 import { DialogService } from 'src/app/shared/dialogs/dialog.service';
 
 @Injectable()
-export class SetAccessTokenInterceptor implements HttpInterceptor {
+export class AuthInterceptor implements HttpInterceptor {
     private _isTokenRefreshInProgress: boolean = false;
     private _tokenRefreshingSubject: Subject<any>;
 
