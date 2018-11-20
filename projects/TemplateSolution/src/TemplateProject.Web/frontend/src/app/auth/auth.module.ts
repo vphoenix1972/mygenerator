@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 
@@ -9,16 +10,20 @@ import { JWT_OPTIONS } from '@auth0/angular-jwt';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { AuthRoutingModule } from './auth-routing.module';
 
+import { AuthInterceptor } from './interceptors/auth.interceptor';
+
 import { ForbiddenComponent } from './pages/forbidden/forbidden.component';
 import { SignInComponent } from './pages/sign-in/sign-in.component';
-import { AuthInterceptor } from './interceptors/auth.interceptor';
+import { RegisterComponent } from './pages/register/register.component';
 
 @NgModule({
     declarations: [
         ForbiddenComponent,
-        SignInComponent
+        SignInComponent,
+        RegisterComponent
     ],
     imports: [
+        CommonModule,
         FormsModule,
         ReactiveFormsModule,
         JwtModule,

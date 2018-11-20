@@ -1,0 +1,12 @@
+.app-register-form {
+    width: 40%;
+    margin: auto;
+    margin-top: 50px;
+    min-width: 400px;
+}
+
+@media screen and (max-width: 400px) {
+    .app-register-form {
+        min-width: 340px;
+    }
+}

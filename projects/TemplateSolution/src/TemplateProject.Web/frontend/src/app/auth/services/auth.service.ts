@@ -60,6 +60,13 @@ export class AuthService {
         return this.onSignedOut();
     }
 
+    async registerAsync(ticket: { name: string, email: string, password: string }): Promise<void> {
+        const data = await this._http.post('/security/register2', ticket)
+            .toPromise();
+
+        this.onSignIn(data);
+    }
+
     refreshTokens(): Observable<any> {
         return this._http.post('/security/refreshToken', { refreshToken: this._refreshToken })
             .pipe(
