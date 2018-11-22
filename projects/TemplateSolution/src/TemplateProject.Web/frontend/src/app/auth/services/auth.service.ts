@@ -17,7 +17,8 @@ const paths = {
     signIn: '/security/signin',
     signOut: '/security/signout',
     register: '/security/register',
-    refreshToken: '/security/refreshToken'
+    refreshToken: '/security/refreshToken',
+    changePassword: '/app/user/changePassword'
 };
 
 @Injectable({
@@ -81,6 +82,14 @@ export class AuthService {
             .toPromise();
 
         return this.onSignedOut();
+    }
+
+    async changePasswordAsync(request: { oldPassword: string, newPassword: string}): Promise<void> {
+        if (this.isSignedOut)
+            return Promise.reject('Current user is not authenticated');
+
+        await this._http.post(paths.changePassword, request)
+            .toPromise();
     }
 
     async registerAsync(ticket: { name: string, email: string, password: string }): Promise<void> {

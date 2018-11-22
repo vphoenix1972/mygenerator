@@ -16,11 +16,14 @@ import { ForbiddenComponent } from './pages/forbidden/forbidden.component';
 import { SignInComponent } from './pages/sign-in/sign-in.component';
 import { RegisterComponent } from './pages/register/register.component';
 
+import { PasswordChangeComponent } from './components/password-change/password-change.component';
+
 @NgModule({
     declarations: [
         ForbiddenComponent,
         SignInComponent,
-        RegisterComponent
+        RegisterComponent,
+        PasswordChangeComponent
     ],
     imports: [
         CommonModule,
@@ -31,7 +34,7 @@ import { RegisterComponent } from './pages/register/register.component';
         AuthRoutingModule
     ],
     exports: [
-
+        PasswordChangeComponent
     ],
     entryComponents: [
 

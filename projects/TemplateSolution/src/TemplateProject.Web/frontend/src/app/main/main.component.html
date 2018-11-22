@@ -17,10 +17,14 @@
             <a class="nav-item nav-link" routerLink="./about">About</a>
         </div>
         <div class="navbar-nav" ngbDropdown placement="bottom-right">
-            <a role="button" class="nav-item nav-link dropdown-toggle app-user-dropdown-toggle" tabindex="0" title="{{username}}" ngbDropdownToggle>
+            <a role="button" class="nav-item nav-link dropdown-toggle app-user-dropdown-toggle" tabindex="0" title="{{username}}"
+               ngbDropdownToggle>
                 <span class="app-text app-username">{{username}}</span>
             </a>
             <div ngbDropdownMenu>
+                <a href class="dropdown-item" routerLink="./user-settings">
+                    <i class="fa fa-cog"></i>&nbsp;Settings
+                </a>
                 <a href class="dropdown-item" (click)="onSignOutClicked()">
                     <i class="fa fa-sign-out-alt"></i>&nbsp;Sign out
                 </a>

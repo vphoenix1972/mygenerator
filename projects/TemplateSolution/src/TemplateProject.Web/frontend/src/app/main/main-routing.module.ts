@@ -10,6 +10,7 @@ import { ExamplesComponent } from './pages/examples/examples.component';
 import { AboutComponent } from './pages/about/about.component';
 import { TodoIndexComponent } from './pages/todo/index/todo-index.component';
 import { TodoEditComponent } from './pages/todo/edit/todo-edit.component';
+import { UserSettingsComponent } from './pages/user-settings/user-settings.component';
 
 const routes: Routes = [
 
@@ -25,6 +26,7 @@ const routes: Routes = [
             { path: 'todo/index', component: TodoIndexComponent },
             { path: 'todo/new', component: TodoEditComponent },
             { path: 'todo/edit/:id', component: TodoEditComponent },
+            { path: 'user-settings', component: UserSettingsComponent },
 
             { path: '', redirectTo: 'home', pathMatch: 'full' },
             { path: '**', redirectTo: 'home' }

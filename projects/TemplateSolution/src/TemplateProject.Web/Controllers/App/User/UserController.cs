@@ -33,10 +33,8 @@ namespace TemplateProject.Web.Controllers.App.User
         {
             if (model == null)
                 return BadRequest();
-            if (string.IsNullOrWhiteSpace(model.OldPassword))
-                return BadRequest("Old password is invalid");
-            if (string.IsNullOrWhiteSpace(model.NewPassword))
-                return BadRequest("New password is invalid");
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
             var userId = _webSecurityService.GetUserIdFromIdentity(User);
             if (!userId.HasValue)
