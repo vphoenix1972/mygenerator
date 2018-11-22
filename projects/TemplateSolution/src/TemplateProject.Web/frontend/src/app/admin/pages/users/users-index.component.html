@@ -1,0 +1,28 @@
+<div *ngIf="isLoading">
+    <app-spinner></app-spinner>
+</div>
+
+<div *ngIf="!isLoading">
+    <h3>Users</h3>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let user of users">
+                <td>{{user.id}}</td>
+                <td>{{user.name}}</td>
+                <td class="app-table__button-column">
+                    <a href (click)="onDeleteButtonClicked(user)">
+                        Delete&nbsp;<i class="fa fa-times"></i>
+                    </a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

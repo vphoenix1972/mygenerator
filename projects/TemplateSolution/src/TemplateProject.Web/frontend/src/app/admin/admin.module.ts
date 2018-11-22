@@ -12,11 +12,13 @@ import { AdminRoutingModule } from './admin-routing.module';
 
 import { AdminComponent } from './admin.component';
 import { HomeComponent } from './pages/home/home.component';
+import { UsersIndexComponent } from './pages/users/users-index.component';
 
 @NgModule({
     declarations: [
         AdminComponent,
-        HomeComponent
+        HomeComponent,
+        UsersIndexComponent
     ],
     imports: [
         CommonModule,

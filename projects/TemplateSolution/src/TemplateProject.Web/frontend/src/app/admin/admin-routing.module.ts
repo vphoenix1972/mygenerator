@@ -6,16 +6,18 @@ import { Role } from 'src/app/auth/models/role';
 
 import { AdminComponent } from './admin.component';
 import { HomeComponent } from './pages/home/home.component';
+import { UsersIndexComponent } from './pages/users/users-index.component';
 
 const routes: Routes = [
 
     {
-        path: 'admin',
+        path: 'administration',
         component: AdminComponent,
         canActivateChild: [AuthGuard],
         data: { roles: [Role.User, Role.Admin] },
         children: [
             { path: 'home', component: HomeComponent },
+            { path: 'users/index', component: UsersIndexComponent },
 
             { path: '', redirectTo: 'home', pathMatch: 'full' },
             { path: '**', redirectTo: 'home' }
