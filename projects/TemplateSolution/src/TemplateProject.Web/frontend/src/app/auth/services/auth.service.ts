@@ -15,6 +15,7 @@ const localStorageRefreshTokenKey: string = 'authService.refreshToken';
 
 const paths = {
     signIn: '/security/signin',
+    signOut: '/security/signout',
     register: '/security/register',
     refreshToken: '/security/refreshToken'
 };
@@ -76,7 +77,8 @@ export class AuthService {
         if (this.isSignedOut)
             return Promise.resolve();
 
-        await Promise.resolve();
+        await this._http.post(paths.signOut, { refreshToken: this._refreshToken })
+            .toPromise();
 
         return this.onSignedOut();
     }
@@ -96,7 +98,7 @@ export class AuthService {
     }
 
     private get isSignedOut(): boolean {
-        return this._accessToken == null;
+        return this._refreshToken == null;
     }
 
     private onSignIn(serverData: any): void {
