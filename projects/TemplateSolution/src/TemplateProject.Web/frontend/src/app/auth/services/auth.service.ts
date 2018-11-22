@@ -1,14 +1,23 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { Observable, empty } from 'rxjs';
+import { tap, catchError, map } from 'rxjs/operators';
 import { JwtHelperService } from '@auth0/angular-jwt';
 
 import { isString, isArray } from 'src/utils/type-utils';
+import { LocalStorageService } from 'src/app/shared/services/storage/localStorageService';
 
 import { User } from 'src/app/auth/models/user';
 import { Role } from 'src/app/auth/models/role';
 import { JwtClaimTypes } from 'src/app/auth/models/jwtClaimTypes';
+
+const localStorageRefreshTokenKey: string = 'authService.refreshToken';
+
+const paths = {
+    signIn: '/security/signin',
+    register: '/security/register',
+    refreshToken: '/security/refreshToken'
+};
 
 @Injectable({
     providedIn: 'root'
@@ -18,7 +27,9 @@ export class AuthService {
     private _accessToken: string;
     private _refreshToken: string;
 
-    constructor(private _http: HttpClient, private _jwt: JwtHelperService) {
+    constructor(private _http: HttpClient,
+        private _jwt: JwtHelperService,
+        private _localStorageService: LocalStorageService) {
         this._currentUser = this.createUnauthenticatedUser();
     }
 
@@ -31,18 +42,28 @@ export class AuthService {
     }
 
     loadUserFromCacheAsync(): Promise<void> {
-        const promise = new Promise<void>((resolve, reject) => {
-            setTimeout(() => {
-                resolve();
-            }, 500);
-        });
+        const refreshToken = this._localStorageService.getValue<string>(localStorageRefreshTokenKey);
 
-        return promise;
+        if (isString(refreshToken)) {
+            return this._http.post(paths.refreshToken, { refreshToken: refreshToken })
+                .pipe(
+                    tap(serverData => this.onSignIn(serverData)),
+                    catchError(() => {
+                        this.onSignedOut();
+
+                        return empty();
+                    }),
+                    map(() => { }) // Make Observable<void>
+                )
+                .toPromise();
+        }
+
+        return Promise.resolve();
     }
 
     async signInAsync(login: string, password: string): Promise<void> {
 
-        const data = await this._http.post('/security/signin', {
+        const data = await this._http.post(paths.signIn, {
             login: login,
             password: password
         }).toPromise();
@@ -61,14 +82,14 @@ export class AuthService {
     }
 
     async registerAsync(ticket: { name: string, email: string, password: string }): Promise<void> {
-        const data = await this._http.post('/security/register2', ticket)
+        const data = await this._http.post(paths.register, ticket)
             .toPromise();
 
         this.onSignIn(data);
     }
 
     refreshTokens(): Observable<any> {
-        return this._http.post('/security/refreshToken', { refreshToken: this._refreshToken })
+        return this._http.post(paths.refreshToken, { refreshToken: this._refreshToken })
             .pipe(
                 tap(serverData => this.onSignIn(serverData))
             );
@@ -80,18 +101,24 @@ export class AuthService {
 
     private onSignIn(serverData: any): void {
         this._accessToken = serverData.accessToken;
-        this._refreshToken = serverData.refreshToken;
 
         const accessTokenData = this._jwt.decodeToken(this._accessToken);
 
         this.loadUserFromAccessToken(accessTokenData);
+
+        this._refreshToken = serverData.refreshToken;
+
+        this._localStorageService.setValue(localStorageRefreshTokenKey, this._refreshToken);
     }
 
     private onSignedOut(): void {
         this._currentUser = this.createUnauthenticatedUser();
 
         this._accessToken = null;
+
         this._refreshToken = null;
+
+        this._localStorageService.removeValue(localStorageRefreshTokenKey);
     }
 
     private loadUserFromAccessToken(accessTokenData: any): void {
