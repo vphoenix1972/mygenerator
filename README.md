@@ -2,7 +2,7 @@
 
 VS 2017    
 ASP.NET Core 2.1.403 SDK, 2.1.5 Runtime    
-NodeJS 8 or higher
+NodeJS 10 or higher
 
 ```
 npm install -g @angular/cli
