@@ -6,11 +6,11 @@ import { AuthService } from 'src/app/auth/services/auth.service';
 import { ConfirmResult } from 'src/app/shared/dialogs/confirm/confirm-result';
 
 @Component({
-    selector: 'main-component',
-    templateUrl: './main.component.html',
-    styleUrls: ['./main.component.scss']
+    selector: 'admin-component',
+    templateUrl: './admin.component.html',
+    styleUrls: ['./admin.component.scss']
 })
-export class MainComponent {
+export class AdminComponent {
     isNavbarNavCollapsed = true;
 
     constructor(private _authService: AuthService,

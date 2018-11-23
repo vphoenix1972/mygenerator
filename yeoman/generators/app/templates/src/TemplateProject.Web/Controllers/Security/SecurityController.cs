@@ -88,10 +88,8 @@ namespace <%= projectNamespace %>.Web.Controllers.Security
         {
             if (model == null)
                 return BadRequest();
-            if (string.IsNullOrWhiteSpace(model.Name) ||
-                string.IsNullOrWhiteSpace(model.EMail) ||
-                string.IsNullOrWhiteSpace(model.Password))
-                return BadRequest();
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
             var users = _db.UsersRepository.GetByNameOrEMail(model.Name, model.EMail);
             if (users.Count > 0)

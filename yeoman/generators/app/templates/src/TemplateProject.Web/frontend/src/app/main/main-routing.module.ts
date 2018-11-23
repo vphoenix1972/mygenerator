@@ -1,18 +1,24 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
+import { AuthGuard } from 'src/app/auth/guards/auth.guard';
+import { Role } from 'src/app/auth/models/role';
+
 import { MainComponent } from './main.component';
 import { HomeComponent } from './pages/home/home.component';
 import { ExamplesComponent } from './pages/examples/examples.component';
 import { AboutComponent } from './pages/about/about.component';
 import { TodoIndexComponent } from './pages/todo/index/todo-index.component';
 import { TodoEditComponent } from './pages/todo/edit/todo-edit.component';
+import { UserSettingsComponent } from './pages/user-settings/user-settings.component';
 
 const routes: Routes = [
 
     {
         path: 'main',
         component: MainComponent,
+        canActivateChild: [AuthGuard],
+        data: { roles: [Role.User] },
         children: [
             { path: 'home', component: HomeComponent },
             { path: 'examples', component: ExamplesComponent },
@@ -20,6 +26,7 @@ const routes: Routes = [
             { path: 'todo/index', component: TodoIndexComponent },
             { path: 'todo/new', component: TodoEditComponent },
             { path: 'todo/edit/:id', component: TodoEditComponent },
+            { path: 'user-settings', component: UserSettingsComponent },
 
             { path: '', redirectTo: 'home', pathMatch: 'full' },
             { path: '**', redirectTo: 'home' }
@@ -28,7 +35,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+    imports: [RouterModule.forChild(routes)],
+    exports: [RouterModule]
 })
 export class MainRoutingModule { }

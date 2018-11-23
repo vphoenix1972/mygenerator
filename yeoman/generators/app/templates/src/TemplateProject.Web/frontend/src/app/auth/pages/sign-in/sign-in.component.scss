@@ -1,0 +1,28 @@
+.app-sign-in-form {
+    width: 500px;
+    position: absolute;
+    left: calc(50% - 250px);
+    top: 15%;
+}
+
+.app-sign-in-form__buttons {
+    line-height: 34px;
+    text-align: right;
+}
+
+@media screen and (max-width: 500px) {
+    .app-sign-in-form {
+        width: 300px;
+        left: calc(50% - 150px);
+    }
+}
+
+@media screen and (max-height: 360px) {
+    .app-sign-in-form {
+        top: 3%;
+    }
+
+    .app-sign-in-form__body {
+        padding: 10px;
+    }
+}

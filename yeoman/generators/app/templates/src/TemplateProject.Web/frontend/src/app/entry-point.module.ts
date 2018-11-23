@@ -6,6 +6,8 @@ import { ToasterModule } from 'angular2-toaster';
 
 import { EntryPointComponent } from './entry-point.component';
 import { SharedModule } from './shared/shared.module';
+import { AuthModule } from './auth/auth.module';
+import { AdminModule } from './admin/admin.module';
 import { MainModule } from './main/main.module';
 import { EntryPointRoutingModule } from './entry-point-routing.module';
 
@@ -18,6 +20,8 @@ import { EntryPointRoutingModule } from './entry-point-routing.module';
         NgbModule.forRoot(),
         ToasterModule.forRoot(),
         SharedModule,
+        AuthModule,
+        AdminModule,
         MainModule,
         EntryPointRoutingModule
     ],

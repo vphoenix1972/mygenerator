@@ -17,6 +17,11 @@ export class PanelPageCenteredComponent implements OnInit {
     }
 
     get iconClass(): string {
+        switch (this.iconType) {
+            case IconType.Forbidden:
+                return 'fa-lock';
+        }
+
         return 'fa-exclamation-circle';
     }
 

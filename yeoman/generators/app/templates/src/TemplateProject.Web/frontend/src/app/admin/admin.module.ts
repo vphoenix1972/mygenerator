@@ -8,25 +8,17 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { SharedModule } from 'src/app/shared/shared.module';
 import { AuthModule } from 'src/app/auth/auth.module';
-import { MainRoutingModule } from './main-routing.module';
+import { AdminRoutingModule } from './admin-routing.module';
 
-import { MainComponent } from './main.component';
+import { AdminComponent } from './admin.component';
 import { HomeComponent } from './pages/home/home.component';
-import { ExamplesComponent } from './pages/examples/examples.component';
-import { AboutComponent } from './pages/about/about.component';
-import { TodoIndexComponent } from './pages/todo/index/todo-index.component';
-import { TodoEditComponent } from './pages/todo/edit/todo-edit.component';
-import { UserSettingsComponent } from './pages/user-settings/user-settings.component';
+import { UsersIndexComponent } from './pages/users/users-index.component';
 
 @NgModule({
     declarations: [
-        MainComponent,
+        AdminComponent,
         HomeComponent,
-        ExamplesComponent,
-        AboutComponent,
-        TodoIndexComponent,
-        TodoEditComponent,
-        UserSettingsComponent
+        UsersIndexComponent
     ],
     imports: [
         CommonModule,
@@ -36,7 +28,7 @@ import { UserSettingsComponent } from './pages/user-settings/user-settings.compo
         NgbModule,
         SharedModule,
         AuthModule,
-        MainRoutingModule
+        AdminRoutingModule
     ],
     exports: [
 
@@ -45,4 +37,4 @@ import { UserSettingsComponent } from './pages/user-settings/user-settings.compo
 
     ]
 })
-export class MainModule { }
+export class AdminModule { }

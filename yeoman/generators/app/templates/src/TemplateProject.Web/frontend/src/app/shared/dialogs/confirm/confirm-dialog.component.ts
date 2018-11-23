@@ -31,6 +31,6 @@ export class ConfirmDialogComponent {
     }
 
     onNoButtonClicked(): void {
-        this._modalInstance.dismiss(ConfirmResult.No);
+        this._modalInstance.close(ConfirmResult.No);
     }
 }
