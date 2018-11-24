@@ -48,7 +48,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
         if (allowAnonymous)
             return true;
 
-        const user = this._authService.currentUser;
+        const user = this._authService.currentUser.value;
 
         if (!user.isAuthenticated) {
             this._router.navigate(['/sign-in'], { queryParams: { returnUrl: returnUrl } });

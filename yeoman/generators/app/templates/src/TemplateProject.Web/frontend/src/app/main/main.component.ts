@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 
 import { DialogService } from 'src/app/shared/dialogs/dialog.service';
 import { AuthService } from 'src/app/auth/services/auth.service';
+import { Role } from 'src/app/auth/models/role';
 import { ConfirmResult } from 'src/app/shared/dialogs/confirm/confirm-result';
 
 @Component({
@@ -11,16 +12,21 @@ import { ConfirmResult } from 'src/app/shared/dialogs/confirm/confirm-result';
     styleUrls: ['./main.component.scss']
 })
 export class MainComponent {
-    isNavbarNavCollapsed = true;
+    isNavbarNavCollapsed: boolean = true;
+    username: string;
+    isGotoAdminLinkVisible: boolean;
 
     constructor(private _authService: AuthService,
         private _dialogService: DialogService,
         private _router: Router) {
 
-    }
+        this._authService.currentUser.subscribe(currentUser => {
+            if (!currentUser.isAuthenticated)
+                return;
 
-    get username(): string {
-        return this._authService.currentUser.name;
+            this.username = currentUser.name;
+            this.isGotoAdminLinkVisible = currentUser.roles.any(role => role == Role.Admin);
+        });
     }
 
     onSignOutClicked(): boolean {

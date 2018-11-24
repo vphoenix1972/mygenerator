@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, empty } from 'rxjs';
+import { Observable, empty, BehaviorSubject } from 'rxjs';
 import { tap, catchError, map } from 'rxjs/operators';
 import { JwtHelperService } from '@auth0/angular-jwt';
 
@@ -25,18 +25,19 @@ const paths = {
     providedIn: 'root'
 })
 export class AuthService {
-    private _currentUser: User;
+    private _currentUserSubject: BehaviorSubject<User>;
     private _accessToken: string;
     private _refreshToken: string;
 
     constructor(private _http: HttpClient,
         private _jwt: JwtHelperService,
         private _localStorageService: LocalStorageService) {
-        this._currentUser = this.createUnauthenticatedUser();
+
+        this._currentUserSubject = new BehaviorSubject<User>(this.createUnauthenticatedUser());
     }
 
-    get currentUser(): User {
-        return new User(this._currentUser);
+    get currentUser(): BehaviorSubject<User> {
+        return this._currentUserSubject;
     }
 
     get accessToken(): string {
@@ -84,7 +85,7 @@ export class AuthService {
         return this.onSignedOut();
     }
 
-    async changePasswordAsync(request: { oldPassword: string, newPassword: string}): Promise<void> {
+    async changePasswordAsync(request: { oldPassword: string, newPassword: string }): Promise<void> {
         if (this.isSignedOut)
             return Promise.reject('Current user is not authenticated');
 
@@ -123,7 +124,7 @@ export class AuthService {
     }
 
     private onSignedOut(): void {
-        this._currentUser = this.createUnauthenticatedUser();
+        this._currentUserSubject.next(this.createUnauthenticatedUser());
 
         this._accessToken = null;
 
@@ -133,12 +134,12 @@ export class AuthService {
     }
 
     private loadUserFromAccessToken(accessTokenData: any): void {
-        this._currentUser = new User({
+        this._currentUserSubject.next(new User({
             isAuthenticated: true,
             id: parseInt(accessTokenData[JwtClaimTypes.UserId]),
             name: accessTokenData[JwtClaimTypes.Name],
             roles: this.parseJwtRole(accessTokenData[JwtClaimTypes.Role])
-        });
+        }));
     }
 
     private parseJwtRole(jwtRole: string | string[]): Role[] {

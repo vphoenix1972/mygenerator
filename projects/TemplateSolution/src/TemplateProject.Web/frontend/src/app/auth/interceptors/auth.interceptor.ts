@@ -23,7 +23,7 @@ export class AuthInterceptor implements HttpInterceptor {
 
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
-        const isSignedIn = this._authService.currentUser.isAuthenticated;
+        const isSignedIn = this._authService.currentUser.value.isAuthenticated;
 
         if (isSignedIn) {
             request = this.addAuthHeader(request);

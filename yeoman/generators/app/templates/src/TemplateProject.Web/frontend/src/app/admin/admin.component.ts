@@ -11,16 +11,18 @@ import { ConfirmResult } from 'src/app/shared/dialogs/confirm/confirm-result';
     styleUrls: ['./admin.component.scss']
 })
 export class AdminComponent {
-    isNavbarNavCollapsed = true;
+    isNavbarNavCollapsed: boolean = true;
+    username: string;
 
     constructor(private _authService: AuthService,
         private _dialogService: DialogService,
         private _router: Router) {
+            this._authService.currentUser.subscribe(currentUser => {
+                if (!currentUser.isAuthenticated)
+                    return;
 
-    }
-
-    get username(): string {
-        return this._authService.currentUser.name;
+                this.username = currentUser.name;
+            });
     }
 
     onSignOutClicked(): boolean {
