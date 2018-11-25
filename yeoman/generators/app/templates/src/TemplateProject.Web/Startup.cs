@@ -1,5 +1,5 @@
 ﻿using System;
-using System.IO;
+using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -25,6 +25,8 @@ namespace <%= projectNamespace %>.Web
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddAutoMapper();
+
             services.AddWebConfiguration();
 
             services.AddUtils();
