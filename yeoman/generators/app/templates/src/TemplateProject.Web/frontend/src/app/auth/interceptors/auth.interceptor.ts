@@ -6,7 +6,7 @@ import {
     HttpInterceptor
 } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { Observable, Subject } from 'rxjs';
+import { Observable, Subject, throwError } from 'rxjs';
 import { catchError, switchMap } from 'rxjs/operators'
 
 import { AuthService } from 'src/app/auth/services/auth.service';
@@ -42,7 +42,7 @@ export class AuthInterceptor implements HttpInterceptor {
                             );
                     }
 
-                    return Observable.throw(error);
+                    return throwError(error);
                 }));
         }
 

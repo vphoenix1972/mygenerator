@@ -2,7 +2,7 @@
 
 namespace <%= projectNamespace %>.Web.Controllers.Security
 {
-    public sealed class RegisterApiModel
+    public sealed class RegisterModel
     {
         [Required]
         public string Name { get; set; }

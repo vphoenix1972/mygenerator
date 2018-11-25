@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace <%= projectNamespace %>.Web.Controllers.App.User
+namespace TemplateProject.Web.Controllers.App.User
 {
-    public sealed class ChangePasswordApiModel
+    public sealed class ChangePasswordModel
     {
         [Required]
         public string OldPassword { get; set; }

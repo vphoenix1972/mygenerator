@@ -3,6 +3,7 @@ import { FormGroup, FormControl, Validators, AbstractControl, ValidationErrors }
 
 import { AuthService } from 'src/app/auth/services/auth.service';
 import { DialogService } from 'src/app/shared/dialogs/dialog.service';
+import { asModelState } from 'src/app/shared/model-state/model-state';
 
 @Component({
     selector: 'app-password-change',
@@ -61,10 +62,16 @@ export class PasswordChangeComponent {
         try {
             await this._authService.changePasswordAsync(request);
         }
-        catch {
+        catch (error) {
+            let errorText = 'A error occured during password change. Please try again later.';
+
+            const modelState = asModelState(error);
+            if (modelState != null)
+                errorText = modelState.convertToString();
+
             this._dialogService.showErrorAsync({
                 title: 'Change password error',
-                text: 'A error occured during password change. Please try again later.'
+                text: errorText
             });
 
             return;

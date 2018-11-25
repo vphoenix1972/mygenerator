@@ -1,7 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Collections.Generic;
 using TemplateProject.Core.Domain;
 using TemplateProject.Core.Interfaces.DataAccess;
 using TemplateProject.Utils.Factories;
@@ -57,19 +57,16 @@ namespace TemplateProject.Web.Controllers.Security
         [Route("signin")]
         [AllowAnonymous]
         [HttpPost]
-        public IActionResult SignIn([FromBody] SignInApiModel model)
+        public IActionResult SignIn([FromBody] SignInModel model)
         {
-            if (model == null)
-                return BadRequest();
-            if (string.IsNullOrWhiteSpace(model.Login) ||
-                string.IsNullOrWhiteSpace(model.Password))
-                return BadRequest();
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
             var passwordEncrypted = _md5Crypter.Encrypt(model.Password);
 
             var user = _db.UsersRepository.Get(model.Login, passwordEncrypted);
             if (user == null)
-                return BadRequest();
+                return UserNotFound();
 
             var accessToken = _webSecurityService.GetAccessTokenJwt(user);
             var refreshToken = GetRefreshTokenJwt(user);
@@ -84,16 +81,17 @@ namespace TemplateProject.Web.Controllers.Security
         [Route("register")]
         [AllowAnonymous]
         [HttpPost]
-        public IActionResult Register([FromBody] RegisterApiModel model)
+        public IActionResult Register([FromBody] RegisterModel model)
         {
-            if (model == null)
-                return BadRequest();
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
             var users = _db.UsersRepository.GetByNameOrEMail(model.Name, model.EMail);
             if (users.Count > 0)
-                return BadRequest();
+            {
+                ModelState.AddModelError(string.Empty, "Such user already exists");
+                return BadRequest(ModelState);
+            }
 
             var newUser = _usersFactory.Create();
             newUser.Name = model.Name;
@@ -118,12 +116,10 @@ namespace TemplateProject.Web.Controllers.Security
         [Route("refreshToken")]
         [AllowAnonymous]
         [HttpPost]
-        public IActionResult RefreshToken([FromBody] RefreshTokenApiModel model)
+        public IActionResult RefreshToken([FromBody] RefreshTokenModel model)
         {
-            if (model == null)
-                return BadRequest();
-            if (string.IsNullOrWhiteSpace(model.RefreshToken))
-                return BadRequest();
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
             long tokenId;
             try
@@ -132,12 +128,12 @@ namespace TemplateProject.Web.Controllers.Security
             }
             catch (JwtTokenInvalidException e)
             {
-                return BadRequest(e.Message);
+                return TokenInvalid(e);
             }
 
             var refreshToken = _db.RefreshTokensRepository.GetById(tokenId);
             if (refreshToken == null)
-                return BadRequest("Token not found");
+                return TokenNotFound();
 
             var utcNow = DateTime.UtcNow;
 
@@ -146,7 +142,7 @@ namespace TemplateProject.Web.Controllers.Security
                 _db.RefreshTokensRepository.DeleteById(refreshToken.Id.Value);
                 _db.SaveChanges();
 
-                return BadRequest("Token is expired");
+                return TokenExpired();
             }
 
             refreshToken.ExpiresUtc = utcNow.Add(_webConfig.JwtRefreshTokenLifetime);
@@ -169,12 +165,10 @@ namespace TemplateProject.Web.Controllers.Security
         [Route("signout")]
         [AllowAnonymous]
         [HttpPost]
-        public IActionResult SignOut([FromBody] SignOutApiModel model)
+        public IActionResult SignOut([FromBody] SignOutModel model)
         {
-            if (model == null)
-                return BadRequest();
-            if (string.IsNullOrWhiteSpace(model.RefreshToken))
-                return BadRequest();
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
             long tokenId;
             try
@@ -183,12 +177,12 @@ namespace TemplateProject.Web.Controllers.Security
             }
             catch (JwtTokenInvalidException e)
             {
-                return BadRequest(e.Message);
+                return TokenInvalid(e);
             }
 
             var refreshToken = _db.RefreshTokensRepository.GetById(tokenId);
             if (refreshToken == null)
-                return BadRequest("Token not found");
+                return TokenNotFound();
 
             _db.RefreshTokensRepository.DeleteById(refreshToken.Id.Value);
             _db.SaveChanges();
@@ -224,6 +218,30 @@ namespace TemplateProject.Web.Controllers.Security
             {
                 userRole
             };
+        }
+
+        private IActionResult UserNotFound()
+        {
+            ModelState.AddModelError(string.Empty, "User is not found");
+            return BadRequest(ModelState);
+        }
+
+        private IActionResult TokenInvalid(JwtTokenInvalidException e)
+        {
+            ModelState.AddModelError(string.Empty, e.Message);
+            return BadRequest(ModelState);
+        }
+
+        private IActionResult TokenNotFound()
+        {
+            ModelState.AddModelError(string.Empty, "Token is not found");
+            return BadRequest(ModelState);
+        }
+
+        private IActionResult TokenExpired()
+        {
+            ModelState.AddModelError(string.Empty, "Token is expired");
+            return BadRequest(ModelState);
         }
     }
 }
