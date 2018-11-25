@@ -66,8 +66,8 @@ export class TodoEditComponent implements OnInit {
             this._dialogService.showSuccess();
 
             this._router.navigate(['/main/todo/index']);
-        }, error => {
-            this._dialogService.showErrorAsync({ text: error.message });
+        }, () => {
+            this._dialogService.showErrorAsync({ text: 'A error occured while saving the item.' });
 
             this._router.navigate(['/main/todo/index']);
         });
@@ -81,8 +81,8 @@ export class TodoEditComponent implements OnInit {
                 this.nameControl.setValue(item.name);
 
                 this.isLoading = false;
-            }, error => {
-                this._dialogService.showErrorAsync({ text: error.message });
+            }, () => {
+                this._dialogService.showErrorAsync({ text: 'A error occured while loading the item.' });
 
                 this._router.navigate(['/main/todo/index']);
             });
