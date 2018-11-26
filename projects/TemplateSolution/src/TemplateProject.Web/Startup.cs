@@ -77,10 +77,11 @@ namespace TemplateProject.Web
         private void DeleteExpiredRefreshTokens(IServiceProvider provider)
         {
             var db = provider.GetRequiredService<IDatabaseService>();
+            var config = provider.GetRequiredService<IWebConfiguration>();
 
-            var utcNow = DateTime.UtcNow;
+            var beforeUtc = DateTime.UtcNow - config.JwtClockSkew;
 
-            db.RefreshTokensRepository.DeleteExpired(utcNow);
+            db.RefreshTokensRepository.DeleteExpired(beforeUtc);
 
             db.SaveChanges();
         }

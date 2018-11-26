@@ -137,14 +137,6 @@ namespace TemplateProject.Web.Controllers.Security
 
             var utcNow = DateTime.UtcNow;
 
-            if (refreshToken.ExpiresUtc <= utcNow)
-            {
-                _db.RefreshTokensRepository.DeleteById(refreshToken.Id.Value);
-                _db.SaveChanges();
-
-                return TokenExpired();
-            }
-
             refreshToken.ExpiresUtc = utcNow.Add(_webConfig.JwtRefreshTokenLifetime);
 
             _db.RefreshTokensRepository.AddOrUpdate(refreshToken);
@@ -235,12 +227,6 @@ namespace TemplateProject.Web.Controllers.Security
         private IActionResult TokenNotFound()
         {
             ModelState.AddModelError(string.Empty, "Token is not found");
-            return BadRequest(ModelState);
-        }
-
-        private IActionResult TokenExpired()
-        {
-            ModelState.AddModelError(string.Empty, "Token is expired");
             return BadRequest(ModelState);
         }
     }
