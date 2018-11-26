@@ -4,6 +4,7 @@ import { FormGroup, FormControl, Validators, AbstractControl, ValidationErrors }
 
 import { AuthService } from 'src/app/auth/services/auth.service';
 import { DialogService } from 'src/app/shared/dialogs/dialog.service';
+import { asModelState } from 'src/app/shared/model-state/model-state';
 
 @Component({
     selector: 'register-component',
@@ -67,10 +68,16 @@ export class RegisterComponent {
         try {
             await this._authService.registerAsync(ticket);
         }
-        catch {
+        catch (error) {
+            let errorText = 'A error occured during password change. Please try again later.';
+
+            const modelState = asModelState(error);
+            if (modelState != null)
+                errorText = modelState.convertToString();
+
             this._dialogService.showErrorAsync({
                 title: 'Registration error',
-                text: 'A error occured during registration. Please try again later.'
+                text: errorText
             });
 
             return;
