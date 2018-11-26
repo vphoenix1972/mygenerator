@@ -5,6 +5,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { DialogService } from 'src/app/shared/dialogs/dialog.service';
 import { TodoItemsService } from 'src/app/main/services/todo/todo-items.service';
 import { TodoItem } from 'src/app/main/models/todo-item';
+import { asModelState } from 'src/app/shared/model-state/model-state';
 
 @Component({
     selector: 'app-todo-edit',
@@ -66,8 +67,14 @@ export class TodoEditComponent implements OnInit {
             this._dialogService.showSuccess();
 
             this._router.navigate(['/main/todo/index']);
-        }, () => {
-            this._dialogService.showErrorAsync({ text: 'A error occured while saving the item.' });
+        }, error => {
+            let errorText = 'A error occured while saving the item.';
+
+            const modelState = asModelState(error);
+            if (modelState != null)
+                errorText = modelState.convertToString();
+
+            this._dialogService.showErrorAsync({ text: errorText });
 
             this._router.navigate(['/main/todo/index']);
         });
