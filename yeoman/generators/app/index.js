@@ -60,7 +60,8 @@ class MyGenerator extends Generator {
             destSrcDataAccessProjFolder: this._destSrcDataAccessProjFolder,
             destSrcUtilsProjFolder: this._destSrcUtilsProjFolder,
             jwtIssuer: this._projectName,
-            jwtAudience: this._projectName
+            jwtAudience: this._projectName,
+            dockerImageName: this._projectName.toLowerCase()
         }
     }
 
