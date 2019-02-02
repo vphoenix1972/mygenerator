@@ -17,7 +17,7 @@ RUN npm install
 RUN npm run build
 
 # Build backend
-FROM microsoft/dotnet:2.1-sdk AS backend-build
+FROM microsoft/dotnet:2.2-sdk AS backend-build
 WORKDIR /app
 
 RUN apt-get update && apt-get install -y dos2unix
@@ -38,7 +38,7 @@ RUN rm -rf /app/publish/wwwroot
 ### Build docker image ###
 ##########################
 
-FROM microsoft/dotnet:2.1-aspnetcore-runtime-bionic
+FROM microsoft/dotnet:2.2-aspnetcore-runtime-bionic
 
 ### Install packages
 
