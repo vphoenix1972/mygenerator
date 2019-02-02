@@ -9,3 +9,16 @@ cd deploy\dist
 run.cmd
 ```
 
+## Docker
+Copy the project to PC with docker    
+Run
+```
+dos2unix deploy/docker/*.sh
+dos2unix deploy/docker/scripts/*.sh
+
+chmod +x deploy/docker/*.sh
+
+sudo deploy/docker/build.sh
+sudo deploy/docker/run.sh
+```
+
