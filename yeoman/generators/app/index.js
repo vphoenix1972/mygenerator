@@ -30,6 +30,7 @@ class MyGenerator extends Generator {
         this._copyNugetConfig();
 
         this._copySrcFolder();
+        this._copyTestsFolder();
         this._copyDeployFolder();
     }
 
@@ -45,6 +46,11 @@ class MyGenerator extends Generator {
         this._destSrcCoreProjFolder = `src/${this._csprojName}.Core`;
         this._destSrcDataAccessProjFolder = `src/${this._csprojName}.DataAccess`;
         this._destSrcUtilsProjFolder = `src/${this._csprojName}.Utils`;
+
+        this._destTestsWebProjFolder = `tests/${this._csprojName}.Web.Tests`;
+        this._destTestsCoreProjFolder = `tests/${this._csprojName}.Core.Tests`;
+        this._destTestsDataAccessProjFolder = `tests/${this._csprojName}.DataAccess.Tests`;
+        this._destTestsUtilsProjFolder = `tests/${this._csprojName}.Utils.Tests`;
     }
 
     _makeEnv() {
@@ -145,6 +151,52 @@ class MyGenerator extends Generator {
         this.fs.move(
             this.destinationPath(`${this._destSrcUtilsProjFolder}/TemplateProject.Utils.csproj`),
             this.destinationPath(`${this._destSrcUtilsProjFolder}/${this._csprojName}.Utils.csproj`)
+        );
+    }
+
+    _copyTestsFolder() {
+        // Web
+        this.fs.copyTpl(
+            this.templatePath('tests/TemplateProject.Web.Tests'),
+            this.destinationPath(this._destTestsWebProjFolder),
+            this._env
+        );
+        this.fs.move(
+            this.destinationPath(`${this._destTestsWebProjFolder}/TemplateProject.Web.Tests.csproj`),
+            this.destinationPath(`${this._destTestsWebProjFolder}/${this._csprojName}.Web.Tests.csproj`)
+        );
+
+        // Core
+        this.fs.copyTpl(
+            this.templatePath('tests/TemplateProject.Core.Tests'),
+            this.destinationPath(this._destTestsCoreProjFolder),
+            this._env
+        );
+        this.fs.move(
+            this.destinationPath(`${this._destTestsCoreProjFolder}/TemplateProject.Core.Tests.csproj`),
+            this.destinationPath(`${this._destTestsCoreProjFolder}/${this._csprojName}.Core.Tests.csproj`)
+        );
+
+        // DataAccess
+        this.fs.copyTpl(
+            this.templatePath('tests/TemplateProject.DataAccess.Tests'),
+            this.destinationPath(this._destTestsDataAccessProjFolder),
+            this._env
+        );
+        this.fs.move(
+            this.destinationPath(`${this._destTestsDataAccessProjFolder}/TemplateProject.DataAccess.Tests.csproj`),
+            this.destinationPath(`${this._destTestsDataAccessProjFolder}/${this._csprojName}.DataAccess.Tests.csproj`)
+        );
+
+        // Utils
+        this.fs.copyTpl(
+            this.templatePath('tests/TemplateProject.Utils.Tests'),
+            this.destinationPath(this._destTestsUtilsProjFolder),
+            this._env
+        );
+        this.fs.move(
+            this.destinationPath(`${this._destTestsUtilsProjFolder}/TemplateProject.Utils.Tests.csproj`),
+            this.destinationPath(`${this._destTestsUtilsProjFolder}/${this._csprojName}.Utils.Tests.csproj`)
         );
     }
 
