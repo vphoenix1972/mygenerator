@@ -11,9 +11,11 @@ namespace <%= projectNamespace %>.DataAccess
             services.AddDbContext<ApplicationDbContext>(o => o.UseNpgsql(connectionString));
 
             /*
-             * Uncomment the following line if you want to use SQLite instead of PostgreSQL.
-             * Don't forget to change connection string for SQLite in appsettings.json
-             * (example: "dbConnectionString": "Data Source=app.db").
+             * To use SQLite do the following:
+             * - Uncomment the following line
+             * - Change connection string for SQLite in appsettings.json
+             * (example: "dbConnectionString": "Data Source=app.db")
+             * - Uncomment SQLite section in SeedUsers in Initial migration
              *
              * Note: SQLite support is not implemented in docker build, so if you want to use docker, choose PostgreSQL.
              *

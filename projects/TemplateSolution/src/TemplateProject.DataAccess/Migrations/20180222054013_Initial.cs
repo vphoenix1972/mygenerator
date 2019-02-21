@@ -1,8 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using System;
-using System.Collections.Generic;
 
 namespace TemplateProject.DataAccess.Migrations
 {
@@ -144,6 +142,7 @@ namespace TemplateProject.DataAccess.Migrations
             mb.Sql(@"INSERT INTO ""UserRoles"" (""Name"") VALUES ('admin'), ('user');");
             mb.Sql(@"INSERT INTO ""Users"" (""Name"", ""EMail"", ""PasswordEncrypted"") VALUES ('admin', 'admin@gmail.com', '81dc9bdb52d04dc20036dbd8313ed055'), ('user', 'user@gmail.com', 'c4ca4238a0b923820dcc509a6f75849b');");
 
+            // For PostgreSQL
             mb.Sql(@"DO $$
                      DECLARE 
                          adminId integer;
@@ -162,6 +161,12 @@ namespace TemplateProject.DataAccess.Migrations
                          (userId, userRoleId);
     
                      END$$;");
+
+            // For SQLite
+            //mb.Sql(@"INSERT INTO ""UserRoleUsers""
+            //         SELECT ""Users"".""Id"" AS UserId, ""UserRoles"".""Id"" AS UserRoleId
+            //         FROM ""UserRoles"", ""Users""
+            //         WHERE ""Users"".""Name"" = 'admin' OR (""Users"".""Name"" = 'user' AND ""UserRoles"".""Name"" == 'user')");
         }
     }
 }
