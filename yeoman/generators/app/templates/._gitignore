@@ -285,9 +285,7 @@ build/
 ### PROJECT SPECIFIC ###
 ########################
 
-**/wwwroot/dist/
-**/wwwroot/assets/
-**/wwwroot/templates/
+**/wwwroot
 
 deploy/dist
 src/TemplateProject.DataAccess/connectionStringForMigrations
