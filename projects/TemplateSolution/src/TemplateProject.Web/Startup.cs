@@ -8,6 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using TemplateProject.Core;
 using TemplateProject.Core.Interfaces.DataAccess;
 using TemplateProject.DataAccess;
+using TemplateProject.DataAccess.SQLServer;
 using TemplateProject.Utils;
 using TemplateProject.Web.Common.ExceptionLogger;
 using TemplateProject.Web.Configuration;
@@ -33,7 +34,8 @@ namespace TemplateProject.Web
 
             services.AddUtils();
             services.AddCore();
-            services.AddDataAccess(_config.DbConnectionString);
+            //services.AddDataAccess(_config.DbConnectionString);
+            services.AddSQLServer(_config.DbConnectionString);
 
             services.AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
