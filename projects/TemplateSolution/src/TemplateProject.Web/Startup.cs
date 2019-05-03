@@ -1,14 +1,13 @@
-﻿using System;
-using System.Linq;
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
+using System;
+using System.Linq;
 using TemplateProject.Core;
 using TemplateProject.Core.Interfaces.DataAccess;
-using TemplateProject.DataAccess;
-using TemplateProject.DataAccess.SQLServer;
+using TemplateProject.DataAccess.PostgreSQL;
 using TemplateProject.Utils;
 using TemplateProject.Web.Common.ExceptionLogger;
 using TemplateProject.Web.Configuration;
@@ -34,8 +33,9 @@ namespace TemplateProject.Web
 
             services.AddUtils();
             services.AddCore();
-            //services.AddDataAccess(_config.DbConnectionString);
-            services.AddSQLServer(_config.DbConnectionString);
+
+            /* Change database backend here */
+            services.AddPostgreSQL(_config.DbConnectionString);
 
             services.AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
@@ -50,7 +50,8 @@ namespace TemplateProject.Web
             app.UseDefaultFiles();
             app.UseStaticFiles();
 
-            app.UseMvc(routes => {
+            app.UseMvc(routes =>
+            {
                 routes.MapSpaFallbackRoute("spaFallback", new { controller = "Spa", action = "Index" });
             });
 

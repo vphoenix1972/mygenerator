@@ -27,6 +27,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TemplateProject.DataAccess.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TemplateProject.Utils.EntityFrameworkCore", "src\TemplateProject.Utils.EntityFrameworkCore\TemplateProject.Utils.EntityFrameworkCore.csproj", "{CD3703BD-922A-4F03-8F6B-0E641929F81D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TemplateProject.DataAccess.PostgreSQL", "src\TemplateProject.DataAccess.PostgreSQL\TemplateProject.DataAccess.PostgreSQL.csproj", "{E8B5A640-BF03-49D1-9B89-DAF977B11301}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -73,6 +75,10 @@ Global
 		{CD3703BD-922A-4F03-8F6B-0E641929F81D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CD3703BD-922A-4F03-8F6B-0E641929F81D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CD3703BD-922A-4F03-8F6B-0E641929F81D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E8B5A640-BF03-49D1-9B89-DAF977B11301}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E8B5A640-BF03-49D1-9B89-DAF977B11301}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E8B5A640-BF03-49D1-9B89-DAF977B11301}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E8B5A640-BF03-49D1-9B89-DAF977B11301}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -88,6 +94,7 @@ Global
 		{FE143FE4-799D-4328-A987-B4983F9DBB0E} = {D1AD2D11-41E8-4143-9485-2B69D46A00CE}
 		{8F976B95-632F-4088-9BDA-7AE44A2E609A} = {B008DFA9-0258-45D4-A185-BA77107C90C5}
 		{CD3703BD-922A-4F03-8F6B-0E641929F81D} = {B008DFA9-0258-45D4-A185-BA77107C90C5}
+		{E8B5A640-BF03-49D1-9B89-DAF977B11301} = {B008DFA9-0258-45D4-A185-BA77107C90C5}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {27E0AB35-46C4-4566-B08A-6E19A0FAF1F3}
