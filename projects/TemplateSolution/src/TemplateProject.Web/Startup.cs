@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -24,7 +25,9 @@ namespace TemplateProject.Web
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddAutoMapper();
+            services.AddAutoMapper(
+                AppDomain.CurrentDomain.GetAssemblies().Where(x => x.FullName.StartsWith("TemplateProject"))
+            );
 
             services.AddWebConfiguration();
 
