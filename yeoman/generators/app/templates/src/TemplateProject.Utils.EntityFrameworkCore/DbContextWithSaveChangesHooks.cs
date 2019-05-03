@@ -1,20 +1,23 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore;
-using <%= projectNamespace %>.DataAccess.Models;
 
-namespace <%= projectNamespace %>.DataAccess
+namespace <%= projectNamespace %>.Utils.EntityFrameworkCore
 {
-    public sealed class ApplicationDbContext : DbContext
+    public class DbContextWithSaveChangesHooks : DbContext
     {
         private readonly IList<Action> _hooks = new List<Action>();
 
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) :
-            base(options)
+        public DbContextWithSaveChangesHooks()
         {
+
         }
 
-        public DbSet<TodoItemDataModel> TodoItems { get; set; }
+        public DbContextWithSaveChangesHooks(DbContextOptions options) :
+            base(options)
+        {
+
+        }
 
         public void AddSaveChangesHook(Action func)
         {
@@ -28,11 +31,6 @@ namespace <%= projectNamespace %>.DataAccess
             OnSaveChangesExecuted();
 
             return result;
-        }
-
-        protected override void OnModelCreating(ModelBuilder mb)
-        {
-            base.OnModelCreating(mb);
         }
 
         private void OnSaveChangesExecuted()

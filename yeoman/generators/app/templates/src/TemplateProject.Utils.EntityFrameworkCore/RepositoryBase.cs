@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using <%= projectNamespace %>.Utils.Entities;
 using <%= projectNamespace %>.Utils.Factories;
 
-namespace <%= projectNamespace %>.DataAccess.Repositories
+namespace <%= projectNamespace %>.Utils.EntityFrameworkCore
 {
     public abstract class RepositoryBase<TEntity, TEntityImpl, TKey, TDataModel>
         where TEntity : class, IEntity<TKey?>
@@ -14,12 +14,12 @@ namespace <%= projectNamespace %>.DataAccess.Repositories
         where TKey : struct
         where TDataModel : class, IEntity<TKey>, new()
     {
-        private readonly ApplicationDbContext _db;
+        private readonly DbContextWithSaveChangesHooks _db;
         private readonly IMapper _mapper;
         private readonly DbSet<TDataModel> _dbSet;
         private readonly IFactory<TEntityImpl> _entitiesFactory;
 
-        public RepositoryBase(ApplicationDbContext db,
+        public RepositoryBase(DbContextWithSaveChangesHooks db,
             IMapper mapper,
             DbSet<TDataModel> dbSet,
             IFactory<TEntityImpl> entitiesFactory)
@@ -30,7 +30,7 @@ namespace <%= projectNamespace %>.DataAccess.Repositories
             _entitiesFactory = entitiesFactory ?? throw new ArgumentNullException(nameof(entitiesFactory));
         }
 
-        protected ApplicationDbContext Db => _db;
+        protected DbContextWithSaveChangesHooks Db => _db;
 
         protected DbSet<TDataModel> DbSet => _dbSet;
 

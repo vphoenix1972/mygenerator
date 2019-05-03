@@ -1,10 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
-using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
-using System;
-using System.Collections.Generic;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace <%= projectNamespace %>.DataAccess.Migrations
+namespace <%= projectNamespace %>.DataAccess.SQLite.Migrations
 {
     public partial class Initial : Migration
     {
@@ -15,7 +11,7 @@ namespace <%= projectNamespace %>.DataAccess.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
+                        .Annotation("Sqlite:Autoincrement", true),
                     Name = table.Column<string>(nullable: true)
                 },
                 constraints: table =>

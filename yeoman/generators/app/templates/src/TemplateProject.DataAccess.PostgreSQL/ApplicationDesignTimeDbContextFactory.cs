@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 
-namespace <%= projectNamespace %>.DataAccess
+namespace <%= projectNamespace %>.DataAccess.PostgreSQL
 {
     internal sealed class ApplicationDesignTimeDbContextFactory : IDesignTimeDbContextFactory<ApplicationDbContext>
     {

@@ -1,6 +1,6 @@
 ﻿using <%= projectNamespace %>.Utils.Entities;
 
-namespace <%= projectNamespace %>.DataAccess.Models
+namespace <%= projectNamespace %>.DataAccess.PostgreSQL.TodoItems
 {
     public sealed class TodoItemDataModel : IEntity<int>
     {

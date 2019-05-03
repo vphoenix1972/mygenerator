@@ -3,11 +3,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using <%= projectNamespace %>.Core.Interfaces.DataAccess;
 using <%= projectNamespace %>.Core.Interfaces.DataAccess.Repositories;
-using <%= projectNamespace %>.DataAccess.Repositories;
+using <%= projectNamespace %>.DataAccess.SQLServer.TodoItems;
 
-namespace <%= projectNamespace %>.DataAccess
+namespace <%= projectNamespace %>.DataAccess.SQLServer
 {
-    public sealed class DatabaseService : IDatabaseService
+    internal sealed class DatabaseService : IDatabaseService
     {
         private readonly ApplicationDbContext _db;
 

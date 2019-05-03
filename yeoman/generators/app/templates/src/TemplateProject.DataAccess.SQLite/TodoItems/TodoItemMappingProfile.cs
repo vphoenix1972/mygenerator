@@ -1,8 +1,7 @@
-using AutoMapper;
+﻿using AutoMapper;
 using <%= projectNamespace %>.Core.Domain;
-using <%= projectNamespace %>.DataAccess.Models;
 
-namespace <%= projectNamespace %>.DataAccess.Mapping
+namespace <%= projectNamespace %>.DataAccess.SQLite.TodoItems
 {
     public class TodoItemMappingProfile : Profile
     {

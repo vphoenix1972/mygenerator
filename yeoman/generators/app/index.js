@@ -35,22 +35,13 @@ class MyGenerator extends Generator {
     }
 
     install () {
-        var cwd = this.destinationPath(this._env.destSrcWebProjFolder);
+        var cwd = this.destinationPath(`src/${this._csprojName}.Web`);
 
-        this.spawnCommand("npm", ["install"], { cwd: cwd})
+        this.spawnCommand("npm", ["install"], { cwd: cwd })
     }
 
     _prepare() {
         this._csprojName = this._jsUcfirst(this._projectName);
-        this._destSrcWebProjFolder = `src/${this._csprojName}.Web`;
-        this._destSrcCoreProjFolder = `src/${this._csprojName}.Core`;
-        this._destSrcDataAccessProjFolder = `src/${this._csprojName}.DataAccess`;
-        this._destSrcUtilsProjFolder = `src/${this._csprojName}.Utils`;
-
-        this._destTestsWebProjFolder = `tests/${this._csprojName}.Web.Tests`;
-        this._destTestsCoreProjFolder = `tests/${this._csprojName}.Core.Tests`;
-        this._destTestsDataAccessProjFolder = `tests/${this._csprojName}.DataAccess.Tests`;
-        this._destTestsUtilsProjFolder = `tests/${this._csprojName}.Utils.Tests`;
     }
 
     _makeEnv() {
@@ -61,10 +52,6 @@ class MyGenerator extends Generator {
             angularModuleName: this._jsLcfirst(this._projectName),
             csprojName: this._csprojName,
             projectNamespace: this._jsUcfirst(this._projectName),
-            destSrcWebProjFolder: this._destSrcWebProjFolder,
-            destSrcCoreProjFolder: this._destSrcCoreProjFolder,
-            destSrcDataAccessProjFolder: this._destSrcDataAccessProjFolder,
-            destSrcUtilsProjFolder: this._destSrcUtilsProjFolder,
             jwtIssuer: this._projectName,
             jwtAudience: this._projectName,
             dockerImageName: this._projectName.toLowerCase()
@@ -109,95 +96,53 @@ class MyGenerator extends Generator {
     }
 
     _copySrcFolder() {
-        // Web
-        this.fs.copyTpl(
-            this.templatePath('src/TemplateProject.Web'),
-            this.destinationPath(this._destSrcWebProjFolder),
-            this._env
-        );
-        this.fs.move(
-            this.destinationPath(`${this._destSrcWebProjFolder}/TemplateProject.Web.csproj`),
-            this.destinationPath(`${this._destSrcWebProjFolder}/${this._csprojName}.Web.csproj`)
-        );
+        const projects = [
+            { name: 'Web' },
+            { name: 'Core' },
+            { name: 'DataAccess.PostgreSQL' },
+            { name: 'DataAccess.SQLite' },
+            { name: 'DataAccess.SQLServer' },
+            { name: 'Utils' },
+            { name: 'Utils.EntityFrameworkCore' },
+        ];
 
-        // Core
-        this.fs.copyTpl(
-            this.templatePath('src/TemplateProject.Core'),
-            this.destinationPath(this._destSrcCoreProjFolder),
-            this._env
-        );
-        this.fs.move(
-            this.destinationPath(`${this._destSrcCoreProjFolder}/TemplateProject.Core.csproj`),
-            this.destinationPath(`${this._destSrcCoreProjFolder}/${this._csprojName}.Core.csproj`)
-        );
+        for (const project of projects) {
+            // Copy project's folder and apply template parameters
+            this.fs.copyTpl(
+                this.templatePath(`src/TemplateProject.${project.name}`),
+                this.destinationPath(`src/${this._csprojName}.${project.name}`),
+                this._env
+            );
 
-        // DataAccess
-        this.fs.copyTpl(
-            this.templatePath('src/TemplateProject.DataAccess'),
-            this.destinationPath(this._destSrcDataAccessProjFolder),
-            this._env
-        );
-        this.fs.move(
-            this.destinationPath(`${this._destSrcDataAccessProjFolder}/TemplateProject.DataAccess.csproj`),
-            this.destinationPath(`${this._destSrcDataAccessProjFolder}/${this._csprojName}.DataAccess.csproj`)
-        );
-
-        // Utils
-        this.fs.copyTpl(
-            this.templatePath('src/TemplateProject.Utils'),
-            this.destinationPath(this._destSrcUtilsProjFolder),
-            this._env
-        );
-        this.fs.move(
-            this.destinationPath(`${this._destSrcUtilsProjFolder}/TemplateProject.Utils.csproj`),
-            this.destinationPath(`${this._destSrcUtilsProjFolder}/${this._csprojName}.Utils.csproj`)
-        );
+            // Rename csproj name
+            this.fs.move(
+                this.destinationPath(`src/${this._csprojName}.${project.name}/TemplateProject.${project.name}.csproj`),
+                this.destinationPath(`src/${this._csprojName}.${project.name}/${this._csprojName}.${project.name}.csproj`)
+            );
+        }
     }
 
     _copyTestsFolder() {
-        // Web
-        this.fs.copyTpl(
-            this.templatePath('tests/TemplateProject.Web.Tests'),
-            this.destinationPath(this._destTestsWebProjFolder),
-            this._env
-        );
-        this.fs.move(
-            this.destinationPath(`${this._destTestsWebProjFolder}/TemplateProject.Web.Tests.csproj`),
-            this.destinationPath(`${this._destTestsWebProjFolder}/${this._csprojName}.Web.Tests.csproj`)
-        );
+        const projects = [
+            { name: 'Web' },
+            { name: 'Core' },
+            { name: 'Utils' }
+        ];
 
-        // Core
-        this.fs.copyTpl(
-            this.templatePath('tests/TemplateProject.Core.Tests'),
-            this.destinationPath(this._destTestsCoreProjFolder),
-            this._env
-        );
-        this.fs.move(
-            this.destinationPath(`${this._destTestsCoreProjFolder}/TemplateProject.Core.Tests.csproj`),
-            this.destinationPath(`${this._destTestsCoreProjFolder}/${this._csprojName}.Core.Tests.csproj`)
-        );
+        for (const project of projects) {
+            // Copy project's folder and apply template parameters
+            this.fs.copyTpl(
+                this.templatePath(`tests/TemplateProject.${project.name}.Tests`),
+                this.destinationPath(`tests/${this._csprojName}.${project.name}.Tests`),
+                this._env
+            );
 
-        // DataAccess
-        this.fs.copyTpl(
-            this.templatePath('tests/TemplateProject.DataAccess.Tests'),
-            this.destinationPath(this._destTestsDataAccessProjFolder),
-            this._env
-        );
-        this.fs.move(
-            this.destinationPath(`${this._destTestsDataAccessProjFolder}/TemplateProject.DataAccess.Tests.csproj`),
-            this.destinationPath(`${this._destTestsDataAccessProjFolder}/${this._csprojName}.DataAccess.Tests.csproj`)
-        );
-
-        // Utils
-        this.fs.copyTpl(
-            this.templatePath('tests/TemplateProject.Utils.Tests'),
-            this.destinationPath(this._destTestsUtilsProjFolder),
-            this._env
-        );
-        this.fs.move(
-            this.destinationPath(`${this._destTestsUtilsProjFolder}/TemplateProject.Utils.Tests.csproj`),
-            this.destinationPath(`${this._destTestsUtilsProjFolder}/${this._csprojName}.Utils.Tests.csproj`)
-        );
+            // Rename csproj name
+            this.fs.move(
+                this.destinationPath(`tests/${this._csprojName}.${project.name}.Tests/TemplateProject.${project.name}.Tests.csproj`),
+                this.destinationPath(`tests/${this._csprojName}.${project.name}.Tests/${this._csprojName}.${project.name}.Tests.csproj`)
+            );
+        }
     }
 
     _copyDeployFolder() {
