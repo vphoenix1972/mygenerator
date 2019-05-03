@@ -19,9 +19,6 @@
   <ItemGroup>
     <ProjectReference Include="..\TemplateProject.Core\TemplateProject.Core.csproj" />
     <ProjectReference Include="..\TemplateProject.DataAccess.PostgreSQL\TemplateProject.DataAccess.PostgreSQL.csproj" />
-    <ProjectReference Include="..\TemplateProject.DataAccess.SQLite\TemplateProject.DataAccess.SQLite.csproj" />
-    <ProjectReference Include="..\TemplateProject.DataAccess.SQLServer\TemplateProject.DataAccess.SQLServer.csproj" />
-    <ProjectReference Include="..\TemplateProject.DataAccess\TemplateProject.DataAccess.csproj" />
   </ItemGroup>
 
   <ItemGroup>

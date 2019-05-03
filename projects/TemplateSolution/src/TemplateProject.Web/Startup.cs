@@ -8,7 +8,6 @@ using System.Linq;
 using TemplateProject.Core;
 using TemplateProject.Core.Interfaces.DataAccess;
 using TemplateProject.DataAccess.PostgreSQL;
-using TemplateProject.DataAccess.SQLite;
 using TemplateProject.Utils;
 using TemplateProject.Web.Common.ExceptionLogger;
 using TemplateProject.Web.Configuration;
@@ -36,8 +35,7 @@ namespace TemplateProject.Web
             services.AddCore();
 
             /* Change database backend here */
-            //services.AddPostgreSQL(_config.DbConnectionString);
-            services.AddSQLite(_config.DbConnectionString);
+            services.AddPostgreSQL(_config.DbConnectionString);
 
             services.AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
