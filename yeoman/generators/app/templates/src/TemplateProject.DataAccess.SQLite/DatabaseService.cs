@@ -3,7 +3,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using <%= projectNamespace %>.Core.Interfaces.DataAccess;
 using <%= projectNamespace %>.Core.Interfaces.DataAccess.Repositories;
+using <%= projectNamespace %>.DataAccess.SQLite.RefreshTokens;
 using <%= projectNamespace %>.DataAccess.SQLite.TodoItems;
+using <%= projectNamespace %>.DataAccess.SQLite.Users;
 
 namespace <%= projectNamespace %>.DataAccess.SQLite
 {

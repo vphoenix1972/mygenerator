@@ -3,7 +3,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using TemplateProject.Core.Interfaces.DataAccess;
 using TemplateProject.Core.Interfaces.DataAccess.Repositories;
+using TemplateProject.DataAccess.SQLite.RefreshTokens;
 using TemplateProject.DataAccess.SQLite.TodoItems;
+using TemplateProject.DataAccess.SQLite.Users;
 
 namespace TemplateProject.DataAccess.SQLite
 {

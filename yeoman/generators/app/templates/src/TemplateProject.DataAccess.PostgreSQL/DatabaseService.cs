@@ -3,7 +3,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using <%= projectNamespace %>.Core.Interfaces.DataAccess;
 using <%= projectNamespace %>.Core.Interfaces.DataAccess.Repositories;
+using <%= projectNamespace %>.DataAccess.PostgreSQL.RefreshTokens;
 using <%= projectNamespace %>.DataAccess.PostgreSQL.TodoItems;
+using <%= projectNamespace %>.DataAccess.PostgreSQL.Users;
 
 namespace <%= projectNamespace %>.DataAccess.PostgreSQL
 {
@@ -22,9 +24,15 @@ namespace <%= projectNamespace %>.DataAccess.PostgreSQL
             _db = db;
 
             TodoItemsRepository = ActivatorUtilities.CreateInstance<TodoItemsRepository>(serviceProvider, _db);
+            UsersRepository = ActivatorUtilities.CreateInstance<UsersRepository>(serviceProvider, _db);
+            RefreshTokensRepository = ActivatorUtilities.CreateInstance<RefreshTokensRepository>(serviceProvider, _db);
         }
 
         public ITodoItemsRepository TodoItemsRepository { get; }
+
+        public IUsersRepository UsersRepository { get; }
+
+        public IRefreshTokensRepository RefreshTokensRepository { get; }
 
         public void MigrateToLatestVersion()
         {
