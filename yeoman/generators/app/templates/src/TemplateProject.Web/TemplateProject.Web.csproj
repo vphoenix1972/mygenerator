@@ -18,7 +18,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\<%= csprojName %>.Core\<%= csprojName %>.Core.csproj" />
-    <ProjectReference Include="..\<%= csprojName %>.DataAccess\<%= csprojName %>.DataAccess.csproj" />
+    <ProjectReference Include="..\<%= csprojName %>.DataAccess.PostgreSQL\<%= csprojName %>.DataAccess.PostgreSQL.csproj" />
   </ItemGroup>
 
   <ItemGroup>

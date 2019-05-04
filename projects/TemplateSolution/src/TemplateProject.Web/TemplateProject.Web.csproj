@@ -18,7 +18,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\TemplateProject.Core\TemplateProject.Core.csproj" />
-    <ProjectReference Include="..\TemplateProject.DataAccess\TemplateProject.DataAccess.csproj" />
+    <ProjectReference Include="..\TemplateProject.DataAccess.PostgreSQL\TemplateProject.DataAccess.PostgreSQL.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -30,3 +30,7 @@ To install generator into yeoman run the following command in root directory
 ```
 npm link
 ```
+
+# Database support
+Project supports several database backends.    
+To choose a database backend, add the project reference to 'Web' project and change dependency injection in Startup.cs
