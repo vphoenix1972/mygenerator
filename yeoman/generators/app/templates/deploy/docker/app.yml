@@ -1,0 +1,35 @@
+version: "3.2"
+
+services:
+  <%= dockerImageName %>:
+    image: <%= dockerImageName %>:${APP_TAG:-v1}
+    container_name: <%= dockerImageName %>
+    ports:
+      - "8888:8888"
+    volumes:
+      - ${DATA_DIR}/<%= dockerImageName %>:/mnt/volume
+    tty: true
+    stdin_open: true
+    environment:
+      - STARTUP_LOG_DIR=/var/log
+      - RUN_BASH_AFTER_STARTUP=true
+    restart: always
+    depends_on:
+      - postgres
+  postgres:
+    image: postgres:9.4
+    container_name: postgres
+    restart: always
+    ports:
+      - "127.0.0.1:5432:5432"
+    environment:
+      POSTGRES_PASSWORD: postgres
+  #sqlserver:
+  #  image: mcr.microsoft.com/mssql/server:2017-latest-ubuntu
+  #  container_name: sqlserver
+  #  restart: always
+  #  ports:
+  #    - "127.0.0.1:1433:1433"
+  #  environment:
+  #    ACCEPT_EULA: Y
+  #    SA_PASSWORD: Qwerty_12345678

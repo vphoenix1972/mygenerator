@@ -1,4 +1,6 @@
-﻿namespace <%= projectNamespace %>.Web
+﻿using System;
+
+namespace <%= projectNamespace %>.Web
 {
     public static class WebConstants
     {
@@ -8,5 +10,7 @@
         public const string DefaultServerUrls = "http://*:8888";
 
         public const string SpaApiPathPrefix = "app";
+
+        public static readonly TimeSpan MaxAllowedTimeToPerformStartup = TimeSpan.FromSeconds(30);
     }
 }

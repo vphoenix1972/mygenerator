@@ -3,8 +3,10 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Linq;
+using System.Threading;
 using TemplateProject.Core;
 using TemplateProject.Core.Interfaces.DataAccess;
 using TemplateProject.DataAccess.PostgreSQL;
@@ -17,10 +19,12 @@ namespace TemplateProject.Web
 {
     public class Startup
     {
+        private readonly ILogger<Startup> _logger;
         private readonly WebConfiguration _config;
 
-        public Startup()
+        public Startup(ILoggerFactory loggerFactory)
         {
+            _logger = loggerFactory.CreateLogger<Startup>();
             _config = new WebConfiguration(WebConstants.ConfigPath);
         }
 
@@ -63,6 +67,35 @@ namespace TemplateProject.Web
         }
 
         private void OnApplicationStarted(IApplicationBuilder app)
+        {
+            var timePassed = TimeSpan.Zero;
+            var delay = TimeSpan.FromSeconds(1);
+
+            do
+            {
+                var isStartupProcedureSuccessfull = true;
+
+                try
+                {
+                    PerformStartup(app);
+                }
+                catch (Exception e)
+                {
+                    _logger.LogCritical(e, "Startup procedure has failed.");
+
+                    isStartupProcedureSuccessfull = false;
+                }
+
+                if (isStartupProcedureSuccessfull)
+                    break;
+
+                Thread.Sleep(delay);
+
+                timePassed = timePassed.Add(delay);
+            } while (timePassed < WebConstants.MaxAllowedTimeToPerformStartup);
+        }
+
+        private void PerformStartup(IApplicationBuilder app)
         {
             using (var scope = app.ApplicationServices.CreateScope())
             {
