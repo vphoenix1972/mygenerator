@@ -23,4 +23,4 @@ if [ -v $TAG ]; then
   TAG="v1"
 fi
 
-docker build --pull -f deploy/docker/Dockerfile -t <%= dockerImageName %>:$TAG .
+docker build --pull -f deploy/docker/appImage/Dockerfile -t template-project:$TAG .

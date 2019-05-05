@@ -47,11 +47,8 @@ if [ -v $tag ]
     tag="v1"
 fi
 
-imageName="template-project"
-
 # Print variables
 echo
-echo imageName="$imageName"
 echo dataDir="$dataDir"
 echo cleanRun="$cleanRun"
 echo tag="$tag"
@@ -61,12 +58,8 @@ if $cleanRun; then
     rm -rf $dataDir
 fi
 
-# Run image
-docker run \
-    --name $imageName \
-    -v "$dataDir":"/mnt/volume" \
-    -v "$dataDir/postgresql":"/var/lib/postgresql/9.4/main" \
-    -p 8888:8888 \
-    -t -i $imageName:$tag
+export APP_TAG=$tag
+export DATA_DIR=$dataDir
 
-docker rm $imageName
+# Run image
+docker-compose -f deploy/docker/app.yml up -d --force-recreate
