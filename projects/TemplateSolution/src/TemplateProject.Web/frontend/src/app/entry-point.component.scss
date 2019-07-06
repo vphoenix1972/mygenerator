@@ -1,11 +1,11 @@
 /* Sticky footer styles
 -------------------------------------------------- */
-/deep/ html {
+::ng-deep html {
     position: relative;
     min-height: 100%;
 }
 
-/deep/ body {
+::ng-deep body {
     margin-bottom: 84px; /* Margin bottom by footer height = 60px for footer + 24px for app content */
 }
 
