@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27004.2009
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29025.244
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{B008DFA9-0258-45D4-A185-BA77107C90C5}"
 EndProject
@@ -19,13 +19,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "<%= csprojName %>.Utils.Tes
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "<%= csprojName %>.Core.Tests", "tests\<%= csprojName %>.Core.Tests\<%= csprojName %>.Core.Tests.csproj", "{70EA5768-180B-4BF0-B564-326575C94B7E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "<%= csprojName %>.DataAccess.SQLServer", "src\<%= csprojName %>.DataAccess.SQLServer\<%= csprojName %>.DataAccess.SQLServer.csproj", "{8F976B95-632F-4088-9BDA-7AE44A2E609A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "<%= csprojName %>.DataAccess.SQLServer", "src\<%= csprojName %>.DataAccess.SQLServer\<%= csprojName %>.DataAccess.SQLServer.csproj", "{8F976B95-632F-4088-9BDA-7AE44A2E609A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "<%= csprojName %>.Utils.EntityFrameworkCore", "src\<%= csprojName %>.Utils.EntityFrameworkCore\<%= csprojName %>.Utils.EntityFrameworkCore.csproj", "{CD3703BD-922A-4F03-8F6B-0E641929F81D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "<%= csprojName %>.Utils.EntityFrameworkCore", "src\<%= csprojName %>.Utils.EntityFrameworkCore\<%= csprojName %>.Utils.EntityFrameworkCore.csproj", "{CD3703BD-922A-4F03-8F6B-0E641929F81D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "<%= csprojName %>.DataAccess.PostgreSQL", "src\<%= csprojName %>.DataAccess.PostgreSQL\<%= csprojName %>.DataAccess.PostgreSQL.csproj", "{E8B5A640-BF03-49D1-9B89-DAF977B11301}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "<%= csprojName %>.DataAccess.PostgreSQL", "src\<%= csprojName %>.DataAccess.PostgreSQL\<%= csprojName %>.DataAccess.PostgreSQL.csproj", "{E8B5A640-BF03-49D1-9B89-DAF977B11301}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "<%= csprojName %>.DataAccess.SQLite", "src\<%= csprojName %>.DataAccess.SQLite\<%= csprojName %>.DataAccess.SQLite.csproj", "{9E957687-9FDA-4E4F-B78B-230ECD322307}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "<%= csprojName %>.DataAccess.SQLite", "src\<%= csprojName %>.DataAccess.SQLite\<%= csprojName %>.DataAccess.SQLite.csproj", "{9E957687-9FDA-4E4F-B78B-230ECD322307}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "<%= csprojName %>.DataAccess.MongoDB", "src\<%= csprojName %>.DataAccess.MongoDB\<%= csprojName %>.DataAccess.MongoDB.csproj", "{E5A85B99-B583-483F-970C-25A1A89958BE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -73,6 +75,10 @@ Global
 		{9E957687-9FDA-4E4F-B78B-230ECD322307}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9E957687-9FDA-4E4F-B78B-230ECD322307}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9E957687-9FDA-4E4F-B78B-230ECD322307}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E5A85B99-B583-483F-970C-25A1A89958BE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E5A85B99-B583-483F-970C-25A1A89958BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E5A85B99-B583-483F-970C-25A1A89958BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E5A85B99-B583-483F-970C-25A1A89958BE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -88,6 +94,7 @@ Global
 		{CD3703BD-922A-4F03-8F6B-0E641929F81D} = {B008DFA9-0258-45D4-A185-BA77107C90C5}
 		{E8B5A640-BF03-49D1-9B89-DAF977B11301} = {B008DFA9-0258-45D4-A185-BA77107C90C5}
 		{9E957687-9FDA-4E4F-B78B-230ECD322307} = {B008DFA9-0258-45D4-A185-BA77107C90C5}
+		{E5A85B99-B583-483F-970C-25A1A89958BE} = {B008DFA9-0258-45D4-A185-BA77107C90C5}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {27E0AB35-46C4-4566-B08A-6E19A0FAF1F3}
