@@ -15,7 +15,7 @@ rem Build frontend
 cd src\<%= csprojName %>.Web\frontend
 call npm install
 
-call ng build --prod
+call npm run build
 
 if %ERRORLEVEL% NEQ 0 (
     goto error
