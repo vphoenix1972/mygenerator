@@ -9,6 +9,7 @@ using System.Linq;
 using System.Threading;
 using TemplateProject.Core;
 using TemplateProject.Core.Interfaces.DataAccess;
+using TemplateProject.DataAccess.MongoDB;
 using TemplateProject.DataAccess.PostgreSQL;
 using TemplateProject.Utils;
 using TemplateProject.Web.Common.ExceptionLogger;
@@ -39,7 +40,8 @@ namespace TemplateProject.Web
             services.AddCore();
 
             /* Change database backend here */
-            services.AddPostgreSQL(_config.DbConnectionString);
+            //services.AddPostgreSQL(_config.DbConnectionString);
+            services.AddMongoDB(_config.DbConnectionString);
 
             services.AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
