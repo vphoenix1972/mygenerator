@@ -3,16 +3,15 @@ using TemplateProject.Utils.Entities;
 
 namespace TemplateProject.Core.Interfaces.DataAccess.Repositories
 {
-    public interface IRepositoryBase<TEntity, in TKey>
-        where TEntity : class, IEntity<TKey?>
-        where TKey : struct
+    public interface IRepositoryBase<TEntity>
+        where TEntity : class, IEntity<string>
     {
         IList<TEntity> GetAll();
 
-        TEntity GetById(TKey id);
+        TEntity GetById(string id);
 
         TEntity AddOrUpdate(TEntity item);
 
-        void DeleteById(TKey id);
+        void DeleteById(string id);
     }
 }

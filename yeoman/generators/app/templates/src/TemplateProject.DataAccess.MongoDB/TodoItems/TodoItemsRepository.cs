@@ -13,7 +13,7 @@ namespace <%= csprojName %>.DataAccess.MongoDB.TodoItems
             return item;
         }
 
-        public void DeleteById(int id)
+        public void DeleteById(string id)
         {
 
         }
@@ -23,7 +23,7 @@ namespace <%= csprojName %>.DataAccess.MongoDB.TodoItems
             return new List<ITodoItem>();
         }
 
-        public ITodoItem GetById(int id)
+        public ITodoItem GetById(string id)
         {
             return null;
         }

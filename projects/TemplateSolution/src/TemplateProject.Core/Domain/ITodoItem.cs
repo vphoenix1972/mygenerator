@@ -2,7 +2,7 @@
 
 namespace TemplateProject.Core.Domain
 {
-    public interface ITodoItem : IEntity<int?>
+    public interface ITodoItem : IEntity<string>
     {
         string Name { get; set; }
     }

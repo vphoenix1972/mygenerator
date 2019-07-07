@@ -16,7 +16,7 @@ export class TodoItemsService {
         return this._http.get<TodoItem[]>('/app/todo/index');
     }
 
-    getById(id: number): Observable<TodoItem> {
+    getById(id: string): Observable<TodoItem> {
         return this._http.get<TodoItem>(`/app/todo/edit/${id}`);
     }
 
@@ -24,11 +24,11 @@ export class TodoItemsService {
         return this._http.post<TodoItem>('/app/todo', item);
     }
 
-    update(id: number, item: TodoItem): Observable<any> {
+    update(id: string, item: TodoItem): Observable<any> {
         return this._http.put(`/app/todo/${id}`, item);
     }
 
-    delete(id: number): Observable<any> {
+    delete(id: string): Observable<any> {
         return this._http.delete(`/app/todo/${id}`);
     }
 }
