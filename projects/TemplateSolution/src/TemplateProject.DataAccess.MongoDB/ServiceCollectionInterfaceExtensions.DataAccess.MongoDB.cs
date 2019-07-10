@@ -8,11 +8,10 @@ namespace TemplateProject.DataAccess.MongoDB
     {
         public static void AddMongoDB(this IServiceCollection services, string connectionString)
         {
-            services.AddScoped<IDatabaseService, DatabaseService>();
+            var database = new MongoUrl(connectionString).DatabaseName;
 
-            var connectionUrl = new MongoUrl(connectionString);
-            services.AddSingleton(_ => new MongoClient(connectionUrl));
-            services.AddSingleton(sp => sp.GetService<MongoClient>().GetDatabase(connectionUrl.DatabaseName));
+            services.AddSingleton(_ => new MongoClient(connectionString));
+            services.AddScoped<IDatabaseService, DatabaseService>(sp => ActivatorUtilities.CreateInstance<DatabaseService>(sp, database));            
         }
     }
 }
