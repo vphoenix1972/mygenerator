@@ -42,7 +42,7 @@ namespace TemplateProject.DataAccess.MongoDB.TodoItems
             {
                 var replaceResult = Collection.ReplaceOne(x => x.Id == item.Id, dataModel);
                 if (replaceResult.MatchedCount > 0)
-                    return item;                                    
+                    return item;
             }
 
             Collection.InsertOne(dataModel);

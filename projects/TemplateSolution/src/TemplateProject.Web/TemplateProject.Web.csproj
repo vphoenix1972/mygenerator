@@ -18,7 +18,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\TemplateProject.Core\TemplateProject.Core.csproj" />
-    <ProjectReference Include="..\TemplateProject.DataAccess.MongoDB\TemplateProject.DataAccess.MongoDB.csproj" />
     <ProjectReference Include="..\TemplateProject.DataAccess.PostgreSQL\TemplateProject.DataAccess.PostgreSQL.csproj" />
   </ItemGroup>
 
