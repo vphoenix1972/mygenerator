@@ -12,6 +12,8 @@ namespace <%= csprojName %>.DataAccess.MongoDB
 
             services.AddSingleton(_ => new MongoClient(connectionString));
             services.AddScoped<IDatabaseService, DatabaseService>(sp => ActivatorUtilities.CreateInstance<DatabaseService>(sp, database));
+
+            services.AddTransient<Migrator>();
         }
     }
 }

@@ -99,6 +99,7 @@ class MyGenerator extends Generator {
         const projects = [
             { name: 'Web' },
             { name: 'Core' },
+            { name: 'DataAccess.MongoDB' },
             { name: 'DataAccess.PostgreSQL' },
             { name: 'DataAccess.SQLite' },
             { name: 'DataAccess.SQLServer' },

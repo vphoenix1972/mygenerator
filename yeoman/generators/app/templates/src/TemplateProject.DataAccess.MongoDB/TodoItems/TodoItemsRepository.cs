@@ -1,10 +1,8 @@
 ﻿using AutoMapper;
 using MongoDB.Driver;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using <%= csprojName %>.Core.Domain;
 using <%= csprojName %>.Core.Interfaces.DataAccess.Repositories;
+using <%= csprojName %>.Utils.Factories;
 
 namespace <%= csprojName %>.DataAccess.MongoDB.TodoItems
 {
