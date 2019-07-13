@@ -4,7 +4,9 @@ using System;
 using System.Collections.Generic;
 using <%= csprojName %>.Core.Interfaces.DataAccess;
 using <%= csprojName %>.Core.Interfaces.DataAccess.Repositories;
+using <%= csprojName %>.DataAccess.MongoDB.RefreshTokens;
 using <%= csprojName %>.DataAccess.MongoDB.TodoItems;
+using <%= csprojName %>.DataAccess.MongoDB.Users;
 
 namespace <%= csprojName %>.DataAccess.MongoDB
 {
@@ -13,6 +15,8 @@ namespace <%= csprojName %>.DataAccess.MongoDB
         private readonly IServiceProvider _serviceProvider;
         private readonly string _database;
         private readonly Lazy<TodoItemsRepository> _todoItemsRepository;
+        private readonly Lazy<RefreshTokensRepository> _refreshTokensRepository;
+        private readonly Lazy<UsersRepository> _usersRepository;
 
         public DatabaseService(IServiceProvider serviceProvider, string database)
         {
@@ -24,13 +28,25 @@ namespace <%= csprojName %>.DataAccess.MongoDB
                     _serviceProvider,
                     GetDatabase()
             ));
+
+            _refreshTokensRepository = new Lazy<RefreshTokensRepository>(
+                () => ActivatorUtilities.CreateInstance<RefreshTokensRepository>(
+                    _serviceProvider,
+                    GetDatabase()
+            ));
+
+            _usersRepository = new Lazy<UsersRepository>(
+                () => ActivatorUtilities.CreateInstance<UsersRepository>(
+                    _serviceProvider,
+                    GetDatabase()
+            ));
         }
 
         public ITodoItemsRepository TodoItemsRepository => _todoItemsRepository.Value;
 
-        public IUsersRepository UsersRepository => throw new NotImplementedException();
+        public IUsersRepository UsersRepository => _usersRepository.Value;
 
-        public IRefreshTokensRepository RefreshTokensRepository => throw new NotImplementedException();
+        public IRefreshTokensRepository RefreshTokensRepository => _refreshTokensRepository.Value;
 
         public void MigrateToLatestVersion()
         {

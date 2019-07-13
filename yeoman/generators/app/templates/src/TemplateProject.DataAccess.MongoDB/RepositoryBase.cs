@@ -68,7 +68,7 @@ namespace <%= csprojName %>.DataAccess.MongoDB
 
         protected virtual void Map(TEntity source, TDataModel dest) => _mapper.Map(source, dest);
 
-        private TEntity Map(TDataModel source)
+        protected TEntity Map(TDataModel source)
         {
             var result = _entitiesFactory.Create();
 
