@@ -6,7 +6,7 @@ using TemplateProject.Utils.Factories;
 
 namespace TemplateProject.DataAccess.SQLite.TodoItems
 {
-    internal sealed class TodoItemsRepository : RepositoryBase<ITodoItem, TodoItem, int, TodoItemDataModel>,
+    internal sealed class TodoItemsRepository : RepositoryBase<ITodoItem, TodoItem, TodoItemDataModel>,
         ITodoItemsRepository
     {
         public TodoItemsRepository(ApplicationDbContext db,

@@ -26,8 +26,8 @@ namespace TemplateProject.Web.Controllers.App.Todo
             return Ok(_mapper.Map<List<TodoItemModel>>(todoItems));
         }
 
-        [HttpGet("edit/{id:int}")]
-        public IActionResult Edit(int id)
+        [HttpGet("edit/{id}")]
+        public IActionResult Edit(string id)
         {
             var item = _databaseService.TodoItemsRepository.GetById(id);
             if (item == null)
@@ -51,8 +51,8 @@ namespace TemplateProject.Web.Controllers.App.Todo
             return Ok(_mapper.Map<TodoItemModel>(result));
         }
 
-        [HttpPut("{id:int}")]
-        public IActionResult Update(int id, [FromBody] TodoItemModel itemModel)
+        [HttpPut("{id}")]
+        public IActionResult Update(string id, [FromBody] TodoItemModel itemModel)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -70,8 +70,8 @@ namespace TemplateProject.Web.Controllers.App.Todo
             return Ok(_mapper.Map<TodoItemModel>(result));
         }
 
-        [HttpDelete("{id:int}")]
-        public IActionResult Delete(int id)
+        [HttpDelete("{id}")]
+        public IActionResult Delete(string id)
         {
             _databaseService.TodoItemsRepository.DeleteById(id);
 

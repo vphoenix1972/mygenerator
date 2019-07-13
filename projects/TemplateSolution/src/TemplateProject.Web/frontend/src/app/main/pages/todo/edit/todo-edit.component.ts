@@ -14,7 +14,7 @@ import { asModelState } from 'src/app/shared/model-state/model-state';
 })
 export class TodoEditComponent implements OnInit {
     private _isNew: boolean
-    private _id: number;
+    private _id: string;
 
     isLoading: boolean;
     nameControl: FormControl;
@@ -35,16 +35,7 @@ export class TodoEditComponent implements OnInit {
             this._isNew = params['id'] == null;
 
             if (!this._isNew) {
-                let id = parseInt(params['id'], 10);
-                if (isNaN(id)) {
-                    this._dialogService.showErrorAsync({ text: 'Invalid item id' });
-
-                    this._router.navigate(['/main/todo/index']);
-
-                    return;
-                }
-
-                this._id = id;
+                this._id = params['id'];
 
                 this.loadItem();
             }

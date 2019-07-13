@@ -2,7 +2,7 @@
 
 namespace <%= projectNamespace %>.Core.Interfaces.DataAccess.Repositories
 {
-    public interface ITodoItemsRepository : IRepositoryBase<ITodoItem, int>
+    public interface ITodoItemsRepository : IRepositoryBase<ITodoItem>
     {
     }
 }
