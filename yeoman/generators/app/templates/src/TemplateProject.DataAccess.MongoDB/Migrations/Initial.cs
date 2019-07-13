@@ -3,7 +3,7 @@ using MongoDB.Driver;
 
 namespace <%= csprojName %>.DataAccess.MongoDB.Migrations
 {
-    public sealed class Initial : IMigration
+    internal sealed class Initial : IMigration
     {
         public void Up(IMongoDatabase database)
         {
