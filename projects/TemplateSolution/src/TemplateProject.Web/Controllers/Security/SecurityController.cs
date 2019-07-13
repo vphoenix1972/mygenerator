@@ -121,7 +121,7 @@ namespace TemplateProject.Web.Controllers.Security
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            long tokenId;
+            string tokenId;
             try
             {
                 tokenId = _webSecurityService.GetRefreshTokenId(model.RefreshToken);
@@ -162,7 +162,7 @@ namespace TemplateProject.Web.Controllers.Security
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            long tokenId;
+            string tokenId;
             try
             {
                 tokenId = _webSecurityService.GetRefreshTokenId(model.RefreshToken);
@@ -176,7 +176,7 @@ namespace TemplateProject.Web.Controllers.Security
             if (refreshToken == null)
                 return TokenNotFound();
 
-            _db.RefreshTokensRepository.DeleteById(refreshToken.Id.Value);
+            _db.RefreshTokensRepository.DeleteById(refreshToken.Id);
             _db.SaveChanges();
 
             return Ok();
@@ -184,14 +184,14 @@ namespace TemplateProject.Web.Controllers.Security
 
         private string GetRefreshTokenJwt(IUser user)
         {
-            if (!user.Id.HasValue)
+            if (user.Id == null)
                 throw new InvalidOperationException("Cannot create a refresh token for user without id");
 
             var now = DateTime.UtcNow;
             var expiresUtc = now.Add(_webConfig.JwtRefreshTokenLifetime);
 
             var refreshToken = _refreshTokenFactory.Create();
-            refreshToken.UserId = user.Id.Value;
+            refreshToken.UserId = user.Id;
             refreshToken.ExpiresUtc = expiresUtc;
 
             _db.RefreshTokensRepository.AddOrUpdate(refreshToken);

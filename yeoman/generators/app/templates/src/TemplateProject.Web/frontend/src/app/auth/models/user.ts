@@ -2,7 +2,7 @@ import { Role } from './role';
 
 export class User {
     readonly isAuthenticated: boolean;
-    readonly id: number;
+    readonly id: string;
     readonly name: string;
     readonly roles: Role[];
 

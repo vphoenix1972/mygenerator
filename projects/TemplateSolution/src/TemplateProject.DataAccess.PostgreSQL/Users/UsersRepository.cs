@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
@@ -33,12 +34,12 @@ namespace TemplateProject.DataAccess.PostgreSQL.Users
             return result.Select(Map).ToList();
         }
 
-        public IUser GetById(int id)
+        public IUser GetById(string id)
         {
             var userDataModel = _db.Users
                 .Include(e => e.UserUserRoles)
                 .ThenInclude(e => e.Role)
-                .SingleOrDefault(e => e.Id == id);
+                .SingleOrDefault(e => e.Id == MapKey(id));
 
             return Map(userDataModel);
         }
@@ -94,7 +95,7 @@ namespace TemplateProject.DataAccess.PostgreSQL.Users
 
             _db.Users.Add(userDataModel);
 
-            _db.AddSaveChangesHook(() => user.Id = userDataModel.Id);
+            _db.AddSaveChangesHook(() => user.Id = MapKey(userDataModel.Id));
 
             return user;
         }
@@ -109,7 +110,7 @@ namespace TemplateProject.DataAccess.PostgreSQL.Users
             var userDataModel = _db.Users
                 .Include(e => e.UserUserRoles)
                 .ThenInclude(e => e.Role)
-                .SingleOrDefault(e => e.Id == user.Id.Value);
+                .SingleOrDefault(e => e.Id == MapKey(user.Id));
             if (userDataModel == null)
                 throw new ArgumentException($"User with id '{user.Id}' doesn't exist in database");
 
@@ -140,9 +141,9 @@ namespace TemplateProject.DataAccess.PostgreSQL.Users
             return user;
         }
 
-        public void DeleteById(int id)
+        public void DeleteById(string id)
         {
-            var existing = _db.Users.Find(id);
+            var existing = _db.Users.Find(MapKey(id));
             if (existing == null)
                 return;
 
@@ -188,5 +189,9 @@ namespace TemplateProject.DataAccess.PostgreSQL.Users
         {
             _mapper.Map(source, dest);
         }
+
+        private int MapKey(string id) => int.Parse(id, CultureInfo.InvariantCulture);
+
+        private string MapKey(int id) => id.ToString();
     }
 }

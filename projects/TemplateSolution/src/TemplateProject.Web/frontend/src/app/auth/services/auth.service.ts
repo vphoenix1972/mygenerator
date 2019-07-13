@@ -136,7 +136,7 @@ export class AuthService {
     private loadUserFromAccessToken(accessTokenData: any): void {
         this._currentUserSubject.next(new User({
             isAuthenticated: true,
-            id: parseInt(accessTokenData[JwtClaimTypes.UserId]),
+            id: accessTokenData[JwtClaimTypes.UserId],
             name: accessTokenData[JwtClaimTypes.Name],
             roles: this.parseJwtRole(accessTokenData[JwtClaimTypes.Role])
         }));

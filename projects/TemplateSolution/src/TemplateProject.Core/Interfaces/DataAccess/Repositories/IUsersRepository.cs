@@ -7,7 +7,7 @@ namespace TemplateProject.Core.Interfaces.DataAccess.Repositories
     {
         IList<IUser> GetAll(UsersFilter filter = null);
 
-        IUser GetById(int id);
+        IUser GetById(string id);
 
         IUser Get(string nameOrEMail, string passwordEncrypted);
 
@@ -17,6 +17,6 @@ namespace TemplateProject.Core.Interfaces.DataAccess.Repositories
 
         IUser Update(IUser user);
 
-        void DeleteById(int id);        
+        void DeleteById(string id);
     }
 }

@@ -65,7 +65,7 @@ namespace <%= projectNamespace %>.Web.Security
         {
             var identity = new ClaimsIdentity();
 
-            identity.AddClaim(new Claim(WebSecurityConstants.AccessTokenUserIdClaim, user.Id.Value.ToString()));
+            identity.AddClaim(new Claim(WebSecurityConstants.AccessTokenUserIdClaim, user.Id));
             identity.AddClaim(new Claim(ClaimsIdentity.DefaultNameClaimType, user.Name));
 
             var roleClaims = user.Roles.Select(e => new Claim(ClaimsIdentity.DefaultRoleClaimType, e.Name));
@@ -94,7 +94,7 @@ namespace <%= projectNamespace %>.Web.Security
             return encodedJwt;
         }
 
-        public long GetRefreshTokenId(string refreshTokenJwt)
+        public string GetRefreshTokenId(string refreshTokenJwt)
         {
             if (refreshTokenJwt == null)
                 throw new ArgumentNullException(nameof(refreshTokenJwt));
@@ -117,14 +117,10 @@ namespace <%= projectNamespace %>.Web.Security
             if (tokenIdClaim == null)
                 throw new JwtTokenInvalidException("Token doesn't have token_id claim");
 
-            long tokenId;
-            if (!long.TryParse(tokenIdClaim.Value, out tokenId))
-                throw new JwtTokenInvalidException("token_id claim is invalid");
-
-            return tokenId;
+            return tokenIdClaim.Value;
         }
 
-        public int? GetUserIdFromIdentity(ClaimsPrincipal user)
+        public string GetUserIdFromIdentity(ClaimsPrincipal user)
         {
             if (user == null)
                 throw new ArgumentNullException(nameof(user));
@@ -133,11 +129,7 @@ namespace <%= projectNamespace %>.Web.Security
             if (userIdClaim == null)
                 return null;
 
-            int userId;
-            if (!int.TryParse(userIdClaim.Value, out userId))
-                return null;
-
-            return userId;
+            return userIdClaim.Value;
         }
 
         private SymmetricSecurityKey GetJwtSymmetricSecurityKey()

@@ -3,7 +3,7 @@ using TemplateProject.Utils.Entities;
 
 namespace TemplateProject.Core.Domain
 {
-    public interface IUser : IEntity<int?>
+    public interface IUser : IEntity<string>
     {
         string Name { get; }
 

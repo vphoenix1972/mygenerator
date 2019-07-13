@@ -33,8 +33,8 @@ namespace TemplateProject.Web.Controllers.Admin.Users
             return Ok(_mapper.Map<List<UserModel>>(_db.UsersRepository.GetAll(filter)));
         }
 
-        [HttpDelete("{id:int}")]
-        public IActionResult Delete(int id)
+        [HttpDelete("{id}")]
+        public IActionResult Delete(string id)
         {
             _db.RefreshTokensRepository.DeleteByUserId(id);
             _db.UsersRepository.DeleteById(id);

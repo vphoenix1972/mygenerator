@@ -8,8 +8,7 @@ using <%= projectNamespace %>.Utils.Factories;
 
 namespace <%= projectNamespace %>.DataAccess.PostgreSQL.RefreshTokens
 {
-    public sealed class RefreshTokensRepository : RepositoryBase<IRefreshToken, RefreshToken, long,
-                RefreshTokenDataModel>,
+    public sealed class RefreshTokensRepository : RepositoryKeyLongIdStringBase<IRefreshToken, RefreshToken, RefreshTokenDataModel>,
             IRefreshTokensRepository
     {
         private ApplicationDbContext _db;
@@ -25,9 +24,9 @@ namespace <%= projectNamespace %>.DataAccess.PostgreSQL.RefreshTokens
             _db.RefreshTokens.RemoveRange(_db.RefreshTokens.Where(e => e.ExpiresUtc <= beforeUtc));
         }
 
-        public void DeleteByUserId(int userId)
+        public void DeleteByUserId(string userId)
         {
-            _db.RefreshTokens.RemoveRange(_db.RefreshTokens.Where(e => e.UserId == userId));
+            _db.RefreshTokens.RemoveRange(_db.RefreshTokens.Where(e => e.UserId == MapKey(userId)));
         }
     }
 }

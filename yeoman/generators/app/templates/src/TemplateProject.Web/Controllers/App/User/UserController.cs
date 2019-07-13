@@ -35,16 +35,16 @@ namespace <%= projectNamespace %>.Web.Controllers.App.User
                 return BadRequest(ModelState);
 
             var userId = _webSecurityService.GetUserIdFromIdentity(User);
-            if (!userId.HasValue)
+            if (userId == null)
             {
                 ModelState.AddModelError(string.Empty, $"Cannot obtain user's id");
                 return BadRequest(ModelState);
             }
 
-            var user = _db.UsersRepository.GetById(userId.Value);
+            var user = _db.UsersRepository.GetById(userId);
             if (user == null)
             {
-                ModelState.AddModelError(string.Empty, $"User with id '{userId.Value}' doesn't exist");
+                ModelState.AddModelError(string.Empty, $"User with id '{userId}' doesn't exist");
                 return BadRequest(ModelState);
             }
 

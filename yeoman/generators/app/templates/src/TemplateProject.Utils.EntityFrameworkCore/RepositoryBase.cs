@@ -124,9 +124,29 @@ namespace <%= projectNamespace %>.Utils.EntityFrameworkCore
 
         }
 
-        protected override bool IsSet(string id) => id ==  null;
+        protected override bool IsSet(string id) => id == null;
         protected override int MapKey(string id) => int.Parse(id, CultureInfo.InvariantCulture);
         protected override string MapKey(int id) => id.ToString();
+    }
+
+    public abstract class RepositoryKeyLongIdStringBase<TEntity, TEntityImpl, TDataModel> :
+        RepositoryBase<TEntity, TEntityImpl, TDataModel, string, long>
+        where TEntity : class, IEntity<string>
+        where TEntityImpl : TEntity
+        where TDataModel : class, IEntity<long>, new()
+    {
+        public RepositoryKeyLongIdStringBase(DbContextWithSaveChangesHooks db,
+            IMapper mapper,
+            DbSet<TDataModel> dbSet,
+            IFactory<TEntityImpl> entitiesFactory) :
+            base(db, mapper, dbSet, entitiesFactory)
+        {
+
+        }
+
+        protected override bool IsSet(string id) => id == null;
+        protected override long MapKey(string id) => long.Parse(id, CultureInfo.InvariantCulture);
+        protected override string MapKey(long id) => id.ToString();
     }
 
     public abstract class RepositoryKeyIntBase<TEntity, TEntityImpl, TDataModel> :

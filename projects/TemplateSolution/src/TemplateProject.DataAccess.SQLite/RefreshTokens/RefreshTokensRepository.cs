@@ -8,9 +8,8 @@ using TemplateProject.Utils.Factories;
 
 namespace TemplateProject.DataAccess.SQLite.RefreshTokens
 {
-    public sealed class RefreshTokensRepository : RepositoryBase<IRefreshToken, RefreshToken, long,
-                RefreshTokenDataModel>,
-            IRefreshTokensRepository
+    public sealed class RefreshTokensRepository : RepositoryKeyLongIdStringBase<IRefreshToken, RefreshToken, RefreshTokenDataModel>,
+                IRefreshTokensRepository
     {
         private ApplicationDbContext _db;
 
@@ -25,9 +24,9 @@ namespace TemplateProject.DataAccess.SQLite.RefreshTokens
             _db.RefreshTokens.RemoveRange(_db.RefreshTokens.Where(e => e.ExpiresUtc <= beforeUtc));
         }
 
-        public void DeleteByUserId(int userId)
+        public void DeleteByUserId(string userId)
         {
-            _db.RefreshTokens.RemoveRange(_db.RefreshTokens.Where(e => e.UserId == userId));
+            _db.RefreshTokens.RemoveRange(_db.RefreshTokens.Where(e => e.UserId == MapKey(userId)));
         }
     }
 }

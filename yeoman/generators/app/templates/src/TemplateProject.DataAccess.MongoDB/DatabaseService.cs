@@ -28,10 +28,14 @@ namespace <%= csprojName %>.DataAccess.MongoDB
 
         public ITodoItemsRepository TodoItemsRepository => _todoItemsRepository.Value;
 
+        public IUsersRepository UsersRepository => throw new NotImplementedException();
+
+        public IRefreshTokensRepository RefreshTokensRepository => throw new NotImplementedException();
+
         public void MigrateToLatestVersion()
         {
             var migrator = _serviceProvider.GetRequiredService<Migrator>();
-            
+
             migrator.MigrateToLatestVersion(GetDatabase(), GetMigrations());
         }
 

@@ -3,9 +3,9 @@ using TemplateProject.Utils.Entities;
 
 namespace TemplateProject.Core.Domain
 {
-    public interface IRefreshToken : IEntity<long?>
+    public interface IRefreshToken : IEntity<string>
     {
-        int UserId { get; }
+        string UserId { get; }
 
         DateTime ExpiresUtc { get; set; }
     }

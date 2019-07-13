@@ -3,7 +3,7 @@ using <%= projectNamespace %>.Utils.Entities;
 
 namespace <%= projectNamespace %>.Core.Domain
 {
-    public interface IUser : IEntity<int?>
+    public interface IUser : IEntity<string>
     {
         string Name { get; }
 

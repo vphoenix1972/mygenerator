@@ -7,7 +7,8 @@ namespace <%= projectNamespace %>.DataAccess.PostgreSQL.Users
     {
         public UserMappingProfile()
         {
-            CreateMap<UserDataModel, User>();
+            CreateMap<UserDataModel, User>()
+                .ForMember(d => d.Id, o => o.MapFrom(s => s.Id.ToString()));
 
             CreateMap<IUser, UserDataModel>()
                 .ForMember(d => d.Id, o => o.Ignore());

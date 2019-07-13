@@ -7,7 +7,8 @@ namespace TemplateProject.DataAccess.SQLite.RefreshTokens
     {
         public RefreshTokenMappingProfile()
         {
-            CreateMap<RefreshTokenDataModel, RefreshToken>();
+            CreateMap<RefreshTokenDataModel, RefreshToken>()
+                .ForMember(d => d.Id, o => o.MapFrom(s => s.Id.ToString()));
 
             CreateMap<IRefreshToken, RefreshTokenDataModel>()
                 .ForMember(d => d.Id, o => o.Ignore());
