@@ -34,3 +34,9 @@ npm link
 # Database support
 Project supports several database backends.    
 To choose a database backend, add the project reference to 'Web' project and change dependency injection in Startup.cs
+
+## Connection strings:
+```
+Mongo:      mongodb://localhost:27017/mygenerator
+Postgres:   Host=127.0.0.1;Port=5432;Username=postgres;Password=postgres;Database=mygenerator
+```
