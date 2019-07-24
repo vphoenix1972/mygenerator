@@ -1,7 +1,6 @@
 import { Component, QueryList, ViewChildren } from '@angular/core';
-import { Router } from '@angular/router';
 
-import { TodoItemsService } from 'src/app/main/services/todo/todo-items.service';
+import { GetItemsResponse, TodoItemsService } from 'src/app/main/services/todo/todo-items.service';
 import { DialogService } from 'src/app/shared/dialogs/dialog.service';
 import { ConfirmResult } from 'src/app/shared/dialogs/confirm/confirm-result';
 import { TodoItem } from "../../../models/todo-item";
@@ -10,11 +9,6 @@ import { debounceTime, delay, map, switchMap, tap, catchError } from "rxjs/opera
 
 import { SortableHeaderDirective, SortEvent } from 'src/app/shared/directives/sortable-header/sortable-header.directive';
 import { SortDirection } from 'src/app/shared/models/sort-direction';
-
-interface SearchResult {
-    items: TodoItem[];
-    total: number;
-}
 
 @Component({
     selector: 'app-todo-index',
@@ -28,7 +22,7 @@ export class TodoIndexComponent {
     private _total$ = new BehaviorSubject<number>(0);
     private _page: number;
     private _pageSize: number;
-    private _searchTerm: string;
+    private _nameFilter: string;
     private _sortColumn: string;
     private _sortDirection: SortDirection;
 
@@ -73,9 +67,9 @@ export class TodoIndexComponent {
         this._search$.next();
     }
 
-    get searchTerm() { return this._searchTerm; }
-    set searchTerm(value: string) {
-        this._searchTerm = value;
+    get nameFilter() { return this._nameFilter; }
+    set nameFilter(value: string) {
+        this._nameFilter = value;
         this._search$.next();
     }
 
@@ -112,19 +106,18 @@ export class TodoIndexComponent {
         this._search$.next();
     }
 
-    private _search(): Observable<SearchResult> {
+    private _search(): Observable<GetItemsResponse> {
         return this._todoItemsService.getMany(
-            this._searchTerm,
+            this._nameFilter,
             this._pageSize,
             (this._page - 1) * this._pageSize,
             this._sortColumn,
             this._sortDirection
         ).pipe(
-                catchError(error => from(this._dialogService.showErrorAsync({ text: error.message }).then(() => []))),
-                map(items => {
-                    const total = items.length;
-
-                    return { items, total } as SearchResult;
-            }));
+                catchError(error =>
+                    from(this._dialogService.showErrorAsync({ text: error.message })
+                            .then(() => ({ items: [], total: 0 }))
+                    ))
+        );
     }
 }

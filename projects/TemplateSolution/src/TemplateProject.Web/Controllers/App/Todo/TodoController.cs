@@ -2,13 +2,21 @@
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using TemplateProject.Core.Domain;
 using TemplateProject.Core.Interfaces.DataAccess;
+using TemplateProject.Utils.Entities;
 
 namespace TemplateProject.Web.Controllers.App.Todo
 {
     public sealed class TodoController : AppControllerBase
     {
+        private readonly IReadOnlyList<string> allowedColumnsToSortBy = new List<string>
+        {
+            nameof(ITodoItem.Id),
+            nameof(ITodoItem.Name)
+        };
+
         private readonly IDatabaseService _databaseService;
         private readonly IMapper _mapper;
 
@@ -19,11 +27,53 @@ namespace TemplateProject.Web.Controllers.App.Todo
         }
 
         [HttpGet("index")]
-        public IActionResult Index()
+        public IActionResult Index(
+            string nameFilter,
+            int? limit,
+            int? skip,
+            string sortColumn,
+            string sortDirection)
         {
-            var todoItems = _databaseService.TodoItemsRepository.GetAll();
+            if (limit.HasValue && limit.Value < 1)
+            {
+                ModelState.AddModelError(nameof(limit), "Limit cannot be less than 1");
+                return BadRequest(ModelState);
+            }
 
-            return Ok(_mapper.Map<List<TodoItemModel>>(todoItems));
+            if (skip.HasValue && skip.Value < 0)
+            {
+                ModelState.AddModelError(nameof(skip), "Skip cannot be less than 0");
+                return BadRequest(ModelState);
+            }
+
+            SortOrder? order = null;
+
+            if (sortColumn != null)
+            {
+                if (allowedColumnsToSortBy.All(x => x != sortColumn))
+                {
+                    ModelState.AddModelError(nameof(sortColumn), $"Sort column '{sortColumn}' is not valid");
+                    return BadRequest(ModelState);
+                }
+
+                if (sortDirection == null)
+                {
+                    ModelState.AddModelError(nameof(sortDirection), $"Sort direction '{sortDirection}' is not set");
+                    return BadRequest(ModelState);
+                }                
+
+                if (!Enum.TryParse(sortDirection, true, out SortOrder orderValue))
+                {
+                    ModelState.AddModelError(nameof(sortDirection), $"Sort direction '{sortDirection}' is not valid");
+                    return BadRequest(ModelState);
+                }
+
+                order = orderValue;
+            }                                   
+
+            var result = _databaseService.TodoItemsRepository.GetMany(nameFilter, limit, skip, sortColumn, order);            
+
+            return Ok(new { Items = _mapper.Map<List<TodoItemModel>>(result.Items), Total = result.Total });
         }
 
         [HttpGet("edit/{id}")]

@@ -9,12 +9,14 @@ namespace <%= csprojName %>.DataAccess.MongoDB.Migrations
         {
             var collection = database.GetCollection<BsonDocument>("TodoItems");
 
-            collection.InsertMany(new[]
+            var items = new BsonDocument[100];
+
+            for (var i = 0; i < items.Length; i++)
             {
-                new BsonDocument { {"Name", "Item 1"} },
-                new BsonDocument { {"Name", "Item 2"} },
-                new BsonDocument { {"Name", "Item 3"} }
-            });
+                items[i] = new BsonDocument { { "Name", $"Item {i + 1}" } };
+            }
+
+            collection.InsertMany(items);
         }
     }
 }

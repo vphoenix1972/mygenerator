@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Linq.Dynamic.Core;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using TemplateProject.Utils.Entities;
@@ -95,11 +96,7 @@ namespace TemplateProject.Utils.EntityFrameworkCore
             _mapper.Map(source, dest);
         }
 
-        protected abstract bool IsSet(TKey id);
-        protected abstract TDataModelKey MapKey(TKey id);
-        protected abstract TKey MapKey(TDataModelKey id);
-
-        private TEntity Map(TDataModel source)
+        protected TEntity Map(TDataModel source)
         {
             var result = _entitiesFactory.Create();
 
@@ -107,6 +104,10 @@ namespace TemplateProject.Utils.EntityFrameworkCore
 
             return result;
         }
+
+        protected abstract bool IsSet(TKey id);
+        protected abstract TDataModelKey MapKey(TKey id);
+        protected abstract TKey MapKey(TDataModelKey id);
     }
 
     public abstract class RepositoryBase<TEntity, TEntityImpl, TDataModel> :

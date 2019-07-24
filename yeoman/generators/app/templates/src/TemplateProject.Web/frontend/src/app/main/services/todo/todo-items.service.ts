@@ -5,6 +5,11 @@ import { Observable, of } from 'rxjs';
 import { TodoItem } from 'src/app/main/models/todo-item';
 import { SortDirection } from 'src/app/shared/models/sort-direction';
 
+export interface GetItemsResponse {
+    items: TodoItem[];
+    total: number;
+}
+
 @Injectable({
     providedIn: 'root'
 })
@@ -13,10 +18,10 @@ export class TodoItemsService {
 
     }
 
-    getMany(searchTerm?: string, limit?: number, skip?: number, sortColumn?: string, sortDirection?: SortDirection): Observable<TodoItem[]> {
+    getMany(nameFilter?: string, limit?: number, skip?: number, sortColumn?: string, sortDirection?: SortDirection): Observable<GetItemsResponse> {
         let params = new HttpParams();
-        if (searchTerm)
-            params = params.append('searchTerm', searchTerm);
+        if (nameFilter)
+            params = params.append('nameFilter', nameFilter);
         if (limit !== undefined)
             params = params.append('limit', String(limit));
         if (skip !== undefined)
@@ -26,7 +31,7 @@ export class TodoItemsService {
         if (sortDirection)
             params = params.append('sortDirection', sortDirection);
 
-        return this._http.get<TodoItem[]>('/app/todo/index', {
+        return this._http.get<GetItemsResponse>('/app/todo/index', {
             params: params
         });
     }

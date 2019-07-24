@@ -6,7 +6,7 @@ namespace TemplateProject.Core.Interfaces.DataAccess.Repositories
     public interface IRepositoryBase<TEntity>
         where TEntity : class, IEntity<string>
     {
-        IList<TEntity> GetAll();
+        (IList<TEntity> Items, int Total) GetMany(string nameFilter = null, int? limit = null, int? skip = null, string sortColumn = null, SortOrder? order = null);
 
         TEntity GetById(string id);
 

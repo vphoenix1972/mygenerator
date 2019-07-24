@@ -26,9 +26,6 @@ namespace TemplateProject.DataAccess.MongoDB
             _collection = new Lazy<IMongoCollection<TDataModel>>(() => _db.GetCollection<TDataModel>(collectionName));
         }
 
-        public IList<TEntity> GetAll() =>
-            Collection.Find(FilterDefinition<TDataModel>.Empty).ToList().Select(Map).ToList();
-
         public TEntity GetById(string id)
         {
             var item = Collection.Find(x => x.Id == id).FirstOrDefault();
@@ -66,9 +63,9 @@ namespace TemplateProject.DataAccess.MongoDB
 
         protected virtual void Map(TDataModel source, TEntityImpl dest) => _mapper.Map(source, dest);
 
-        protected virtual void Map(TEntity source, TDataModel dest) => _mapper.Map(source, dest);        
-        
-        private TEntity Map(TDataModel source)
+        protected virtual void Map(TEntity source, TDataModel dest) => _mapper.Map(source, dest);
+
+        protected TEntity Map(TDataModel source)
         {
             var result = _entitiesFactory.Create();
 
