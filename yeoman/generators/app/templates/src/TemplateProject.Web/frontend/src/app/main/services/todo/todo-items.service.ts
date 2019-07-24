@@ -1,8 +1,14 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 
 import { TodoItem } from 'src/app/main/models/todo-item';
+import { SortDirection } from 'src/app/shared/models/sort-direction';
+
+export interface GetItemsResponse {
+    items: TodoItem[];
+    total: number;
+}
 
 @Injectable({
     providedIn: 'root'
@@ -12,8 +18,22 @@ export class TodoItemsService {
 
     }
 
-    getAll(): Observable<TodoItem[]> {
-        return this._http.get<TodoItem[]>('/app/todo/index');
+    getMany(nameFilter?: string, limit?: number, skip?: number, sortColumn?: string, sortDirection?: SortDirection): Observable<GetItemsResponse> {
+        let params = new HttpParams();
+        if (nameFilter)
+            params = params.append('nameFilter', nameFilter);
+        if (limit !== undefined)
+            params = params.append('limit', String(limit));
+        if (skip !== undefined)
+            params = params.append('skip', String(skip));
+        if (sortColumn)
+            params = params.append('sortColumn', sortColumn);
+        if (sortDirection)
+            params = params.append('sortDirection', sortDirection);
+
+        return this._http.get<GetItemsResponse>('/app/todo/index', {
+            params: params
+        });
     }
 
     getById(id: string): Observable<TodoItem> {

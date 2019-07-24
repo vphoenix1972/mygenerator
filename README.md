@@ -1,7 +1,7 @@
 # Development environment
 
-VS 2017    
-ASP.NET Core 2.2.103 SDK, 2.2.1 Runtime    
+VS 2017
+ASP.NET Core 2.2.103 SDK, 2.2.1 Runtime
 NodeJS 10 or higher
 
 ```
@@ -32,5 +32,12 @@ npm link
 ```
 
 # Database support
-Project supports several database backends.    
+Project supports several database backends.
 To choose a database backend, add the project reference to 'Web' project and change dependency injection in Startup.cs
+
+## Connection strings:
+```
+Mongo:      mongodb://localhost:27017/mygenerator
+Postgres:   Host=127.0.0.1;Port=5432;Username=postgres;Password=postgres;Database=mygenerator
+SQLite:     Data Source=mygenerator.db;
+```

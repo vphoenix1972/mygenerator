@@ -7,6 +7,9 @@ import { ErrorDialogComponent } from './dialogs/error/error-dialog.component';
 
 import { SpinnerComponent } from './components/spinner/spinner.component';
 import { PanelPageCenteredComponent } from './components/panel-page-centered/panel-page-centered.component';
+import { OverlayComponent } from './components/overlay/overlay.component';
+
+import { SortableHeaderDirective } from './directives/sortable-header/sortable-header.directive';
 
 @NgModule({
     declarations: [
@@ -14,14 +17,18 @@ import { PanelPageCenteredComponent } from './components/panel-page-centered/pan
         ConfirmDialogComponent,
         ErrorDialogComponent,
         SpinnerComponent,
-        PanelPageCenteredComponent
+        PanelPageCenteredComponent,
+        OverlayComponent,
+        SortableHeaderDirective
     ],
     imports: [
         BrowserAnimationsModule
     ],
     exports: [
         SpinnerComponent,
-        PanelPageCenteredComponent
+        PanelPageCenteredComponent,
+        OverlayComponent,
+        SortableHeaderDirective
     ],
     entryComponents: [
         ExecutingDialogComponent,

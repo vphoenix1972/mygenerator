@@ -26,9 +26,6 @@ namespace <%= csprojName %>.DataAccess.MongoDB
             _collection = new Lazy<IMongoCollection<TDataModel>>(() => _db.GetCollection<TDataModel>(collectionName));
         }
 
-        public IList<TEntity> GetAll() =>
-            Collection.Find(FilterDefinition<TDataModel>.Empty).ToList().Select(Map).ToList();
-
         public TEntity GetById(string id)
         {
             var item = Collection.Find(x => x.Id == id).FirstOrDefault();

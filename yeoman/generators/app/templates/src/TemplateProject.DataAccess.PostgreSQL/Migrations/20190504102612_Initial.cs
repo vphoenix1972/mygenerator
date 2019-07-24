@@ -133,7 +133,8 @@ namespace <%= projectNamespace %>.DataAccess.PostgreSQL.Migrations
 
         private void SeedTodoItems(MigrationBuilder mb)
         {
-            mb.Sql(@"INSERT INTO ""TodoItems"" (""Name"") VALUES ('Item 1'), ('Item 2'), ('Item 3')");
+            for (var i = 0; i < 100; i++)
+                mb.Sql($@"INSERT INTO ""TodoItems"" (""Name"") VALUES ('Item {i + 1}')");
         }
 
         private void SeedUsers(MigrationBuilder mb)
