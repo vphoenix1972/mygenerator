@@ -1,13 +1,10 @@
-﻿using System.Collections.Generic;
-using <%= projectNamespace %>.Utils.Entities;
+﻿using <%= projectNamespace %>.Utils.Entities;
 
 namespace <%= projectNamespace %>.Core.Interfaces.DataAccess.Repositories
 {
     public interface IRepositoryBase<TEntity>
         where TEntity : class, IEntity<string>
     {
-        (IList<TEntity> Items, int Total) GetMany(string nameFilter = null, int? limit = null, int? skip = null, string sortColumn = null, SortOrder? order = null);
-
         TEntity GetById(string id);
 
         TEntity AddOrUpdate(TEntity item);
