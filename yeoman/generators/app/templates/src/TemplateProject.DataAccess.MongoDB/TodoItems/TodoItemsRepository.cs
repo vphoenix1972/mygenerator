@@ -3,12 +3,12 @@ using System.Linq;
 using AutoMapper;
 using MongoDB.Bson;
 using MongoDB.Driver;
-using <%= csprojName %>.Core.Domain;
-using <%= csprojName %>.Core.Interfaces.DataAccess.Repositories;
-using <%= csprojName %>.Utils.Entities;
-using <%= csprojName %>.Utils.Factories;
+using <%= projectNamespace %>.Core.Domain;
+using <%= projectNamespace %>.Core.Interfaces.DataAccess.Repositories;
+using <%= projectNamespace %>.Utils.Entities;
+using <%= projectNamespace %>.Utils.Factories;
 
-namespace <%= csprojName %>.DataAccess.MongoDB.TodoItems
+namespace <%= projectNamespace %>.DataAccess.MongoDB.TodoItems
 {
     internal sealed class TodoItemsRepository : RepositoryBase<ITodoItem, TodoItem, TodoItemDataModel>, ITodoItemsRepository
     {
@@ -18,7 +18,7 @@ namespace <%= csprojName %>.DataAccess.MongoDB.TodoItems
 
         }
 
-        public (IList<ITodoItem> Items, int Total) GetMany(string nameFilter = null, int? limit = null, int? skip = null, string sortColumn = null, SortOrder? order = null)
+        public (IList<ITodoItem> Items, int Total) GetMany(string nameFilter = null, int? limit = null, int? skip = null, string orderBy = null, SortOrder? orderDirection = null)
         {
             var filter = FilterDefinition<TodoItemDataModel>.Empty;
 
@@ -29,12 +29,12 @@ namespace <%= csprojName %>.DataAccess.MongoDB.TodoItems
 
             var total = (int)findCursor.CountDocuments();
 
-            if (sortColumn != null && order != null)
+            if (orderBy != null && orderDirection != null)
             {
                 findCursor = findCursor.Sort(
-                    order.Value == SortOrder.Asc ?
-                         Builders<TodoItemDataModel>.Sort.Ascending(sortColumn) :
-                         Builders<TodoItemDataModel>.Sort.Descending(sortColumn)
+                    orderDirection.Value == SortOrder.Asc ?
+                         Builders<TodoItemDataModel>.Sort.Ascending(orderBy) :
+                         Builders<TodoItemDataModel>.Sort.Descending(orderBy)
                 );
             }
 

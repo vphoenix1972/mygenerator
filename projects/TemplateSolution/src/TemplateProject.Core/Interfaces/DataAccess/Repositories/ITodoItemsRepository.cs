@@ -6,6 +6,6 @@ namespace TemplateProject.Core.Interfaces.DataAccess.Repositories
 {
     public interface ITodoItemsRepository : IRepositoryBase<ITodoItem>
     {
-        (IList<ITodoItem> Items, int Total) GetMany(string nameFilter = null, int? limit = null, int? skip = null, string sortColumn = null, SortOrder? order = null);
+        (IList<ITodoItem> Items, int Total) GetMany(string nameFilter = null, int? limit = null, int? skip = null, string orderBy = null, SortOrder? orderDirection = null);
     }
 }

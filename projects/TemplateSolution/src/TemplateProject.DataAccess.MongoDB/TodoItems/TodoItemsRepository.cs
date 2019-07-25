@@ -18,7 +18,7 @@ namespace TemplateProject.DataAccess.MongoDB.TodoItems
 
         }
 
-        public (IList<ITodoItem> Items, int Total) GetMany(string nameFilter = null, int? limit = null, int? skip = null, string sortColumn = null, SortOrder? order = null)
+        public (IList<ITodoItem> Items, int Total) GetMany(string nameFilter = null, int? limit = null, int? skip = null, string orderBy = null, SortOrder? orderDirection = null)
         {
             var filter = FilterDefinition<TodoItemDataModel>.Empty;
 
@@ -29,12 +29,12 @@ namespace TemplateProject.DataAccess.MongoDB.TodoItems
 
             var total = (int)findCursor.CountDocuments();
 
-            if (sortColumn != null && order != null)
+            if (orderBy != null && orderDirection != null)
             {
                 findCursor = findCursor.Sort(
-                    order.Value == SortOrder.Asc ?
-                         Builders<TodoItemDataModel>.Sort.Ascending(sortColumn) :
-                         Builders<TodoItemDataModel>.Sort.Descending(sortColumn)
+                    orderDirection.Value == SortOrder.Asc ?
+                         Builders<TodoItemDataModel>.Sort.Ascending(orderBy) :
+                         Builders<TodoItemDataModel>.Sort.Descending(orderBy)
                 );
             }
 

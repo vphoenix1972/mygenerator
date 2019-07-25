@@ -4,8 +4,11 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.OpenApi.Models;
 using System;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Threading;
 using TemplateProject.Core;
 using TemplateProject.Core.Interfaces.DataAccess;
@@ -43,6 +46,16 @@ namespace TemplateProject.Web
 
             services.AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
+            services.AddSwaggerGen(x =>
+            {
+                x.SwaggerDoc("v1", new OpenApiInfo { Title = "REST API", Version = "v1" });
+
+                // Set the comments path for the Swagger JSON and UI.
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                x.IncludeXmlComments(xmlPath);
+            });
         }
 
         public void Configure(IApplicationBuilder app,
@@ -53,6 +66,12 @@ namespace TemplateProject.Web
 
             app.UseDefaultFiles();
             app.UseStaticFiles();
+
+            app.UseSwagger();
+            app.UseSwaggerUI(x =>
+            {
+                x.SwaggerEndpoint("/swagger/v1/swagger.json", "REST API V1");
+            });
 
             app.UseMvc(routes =>
             {
