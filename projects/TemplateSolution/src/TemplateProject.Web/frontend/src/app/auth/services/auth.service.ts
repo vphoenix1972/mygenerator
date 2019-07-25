@@ -18,7 +18,7 @@ const paths = {
     signOut: '/api/security/signout',
     register: '/api/security/register',
     refreshToken: '/api/security/refreshToken',
-    changePassword: '/api/user/password'
+    changePassword: '/api/app/user/password'
 };
 
 @Injectable({

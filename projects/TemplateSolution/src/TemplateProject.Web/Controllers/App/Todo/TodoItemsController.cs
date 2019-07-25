@@ -9,7 +9,7 @@ using TemplateProject.Utils.Entities;
 
 namespace TemplateProject.Web.Controllers.App.Todo
 {
-    public sealed class TodoItemsController : ApiControllerBase
+    public sealed class TodoItemsController : ApiAppControllerBase
     {
         private readonly int DefaultLimit = 10;
         private readonly int DefaultSkip = 0;
@@ -49,7 +49,7 @@ namespace TemplateProject.Web.Controllers.App.Todo
                 limit = DefaultLimit;
             }
 
-            if (skip.HasValue && skip.Value < 0)
+            if (skip.HasValue)
             {
                 if (skip.Value < 0)
                 {
