@@ -9,7 +9,7 @@ namespace TemplateProject.Web
 
         public const string DefaultServerUrls = "http://*:8888";
 
-        public const string SpaApiPathPrefix = "app";
+        public const string ApiPrefix = "api";
 
         public static readonly TimeSpan MaxAllowedTimeToPerformStartup = TimeSpan.FromSeconds(30);
     }

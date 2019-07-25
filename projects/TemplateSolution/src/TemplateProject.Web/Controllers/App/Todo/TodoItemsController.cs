@@ -9,8 +9,10 @@ using TemplateProject.Utils.Entities;
 
 namespace TemplateProject.Web.Controllers.App.Todo
 {
-    public sealed class TodoController : AppControllerBase
+    public sealed class TodoItemsController : ApiControllerBase
     {
+        private readonly int DefaultLimit = 10;
+        private readonly int DefaultSkip = 0;
         private readonly IReadOnlyList<string> allowedColumnsToSortBy = new List<string>
         {
             nameof(ITodoItem.Id),
@@ -20,30 +22,44 @@ namespace TemplateProject.Web.Controllers.App.Todo
         private readonly IDatabaseService _databaseService;
         private readonly IMapper _mapper;
 
-        public TodoController(IDatabaseService databaseService, IMapper mapper)
+        public TodoItemsController(IDatabaseService databaseService, IMapper mapper)
         {
             _databaseService = databaseService ?? throw new ArgumentNullException(nameof(databaseService));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
-        [HttpGet("index")]
-        public IActionResult Index(
+        [HttpGet]
+        public IActionResult GetMany(
             string nameFilter,
             int? limit,
             int? skip,
             string sortColumn,
             string sortDirection)
         {
-            if (limit.HasValue && limit.Value < 1)
+            if (limit.HasValue)
             {
-                ModelState.AddModelError(nameof(limit), "Limit cannot be less than 1");
-                return BadRequest(ModelState);
+                if (limit.Value < 1)
+                {
+                    ModelState.AddModelError(nameof(limit), "Limit cannot be less than 1");
+                    return BadRequest(ModelState);
+                }
+            }
+            else
+            {
+                limit = DefaultLimit;
             }
 
             if (skip.HasValue && skip.Value < 0)
             {
-                ModelState.AddModelError(nameof(skip), "Skip cannot be less than 0");
-                return BadRequest(ModelState);
+                if (skip.Value < 0)
+                {
+                    ModelState.AddModelError(nameof(skip), "Skip cannot be less than 0");
+                    return BadRequest(ModelState);
+                }
+            }
+            else
+            {
+                skip = DefaultSkip;
             }
 
             SortOrder? order = null;
@@ -60,7 +76,7 @@ namespace TemplateProject.Web.Controllers.App.Todo
                 {
                     ModelState.AddModelError(nameof(sortDirection), $"Sort direction '{sortDirection}' is not set");
                     return BadRequest(ModelState);
-                }                
+                }
 
                 if (!Enum.TryParse(sortDirection, true, out SortOrder orderValue))
                 {
@@ -69,25 +85,25 @@ namespace TemplateProject.Web.Controllers.App.Todo
                 }
 
                 order = orderValue;
-            }                                   
+            }
 
-            var result = _databaseService.TodoItemsRepository.GetMany(nameFilter, limit, skip, sortColumn, order);            
+            var result = _databaseService.TodoItemsRepository.GetMany(nameFilter, limit, skip, sortColumn, order);
 
-            return Ok(new { Items = _mapper.Map<List<TodoItemModel>>(result.Items), Total = result.Total });
+            return Ok(new { Items = _mapper.Map<List<TodoItemApiDto>>(result.Items), Total = result.Total });
         }
 
-        [HttpGet("edit/{id}")]
-        public IActionResult Edit(string id)
+        [HttpGet("{id}")]
+        public IActionResult GetOne(string id)
         {
             var item = _databaseService.TodoItemsRepository.GetById(id);
             if (item == null)
                 return ItemNotFound(id);
 
-            return Ok(_mapper.Map<TodoItemModel>(item));
+            return Ok(_mapper.Map<TodoItemApiDto>(item));
         }
 
         [HttpPost]
-        public IActionResult Add([FromBody] TodoItemModel itemModel)
+        public IActionResult Add([FromBody] TodoItemApiDto itemModel)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -98,11 +114,11 @@ namespace TemplateProject.Web.Controllers.App.Todo
 
             _databaseService.SaveChanges();
 
-            return Ok(_mapper.Map<TodoItemModel>(result));
+            return Ok(_mapper.Map<TodoItemApiDto>(result));
         }
 
         [HttpPut("{id}")]
-        public IActionResult Update(string id, [FromBody] TodoItemModel itemModel)
+        public IActionResult Update(string id, [FromBody] TodoItemApiDto itemModel)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -117,7 +133,7 @@ namespace TemplateProject.Web.Controllers.App.Todo
 
             _databaseService.SaveChanges();
 
-            return Ok(_mapper.Map<TodoItemModel>(result));
+            return Ok(_mapper.Map<TodoItemApiDto>(result));
         }
 
         [HttpDelete("{id}")]
