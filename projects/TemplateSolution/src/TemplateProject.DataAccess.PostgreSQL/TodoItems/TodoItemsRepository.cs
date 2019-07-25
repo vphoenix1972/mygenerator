@@ -21,7 +21,7 @@ namespace TemplateProject.DataAccess.PostgreSQL.TodoItems
     {
     }
 
-        public (IList<ITodoItem> Items, int Total) GetMany(string nameFilter = null, int? limit = null, int? skip = null, string sortColumn = null, SortOrder? order = null)
+        public (IList<ITodoItem> Items, int Total) GetMany(string nameFilter = null, int? limit = null, int? skip = null, string orderBy = null, SortOrder? orderDirection = null)
         {
             var query = DbSet.AsQueryable();
 
@@ -30,10 +30,10 @@ namespace TemplateProject.DataAccess.PostgreSQL.TodoItems
 
             var total = query.Count();
 
-            if (sortColumn != null && order != null)
-                query = order.Value == SortOrder.Asc ?
-                    query.OrderBy($"{sortColumn} asc") :
-                    query.OrderBy($"{sortColumn} desc");
+            if (orderBy != null && orderDirection != null)
+                query = orderDirection.Value == SortOrder.Asc ?
+                    query.OrderBy($"{orderBy} asc") :
+                    query.OrderBy($"{orderBy} desc");
 
             if (skip.HasValue)
                 query = query.Skip(skip.Value);
