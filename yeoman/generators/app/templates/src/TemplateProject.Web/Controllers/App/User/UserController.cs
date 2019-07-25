@@ -6,7 +6,7 @@ using <%= projectNamespace %>.Web.Security;
 
 namespace <%= projectNamespace %>.Web.Controllers.App.User
 {
-    public sealed class UserController : AppControllerBase
+    public sealed class UserController : ApiControllerBase
     {
         private readonly IDatabaseService _db;
         private readonly IMd5Crypter _md5Crypter;
@@ -28,8 +28,8 @@ namespace <%= projectNamespace %>.Web.Controllers.App.User
             _webSecurityService = webSecurityService;
         }
 
-        [HttpPost("changePassword")]
-        public IActionResult ChangePassword([FromBody] ChangePasswordModel model)
+        [HttpPost("password")]
+        public IActionResult ChangePassword([FromBody] ChangePasswordApiDto model)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -51,7 +51,7 @@ namespace <%= projectNamespace %>.Web.Controllers.App.User
             var oldPasswordEncrypted = _md5Crypter.Encrypt(model.OldPassword);
             if (oldPasswordEncrypted != user.PasswordEncrypted)
             {
-                ModelState.AddModelError(nameof(ChangePasswordModel.OldPassword), "Old password is invalid");
+                ModelState.AddModelError(nameof(ChangePasswordApiDto.OldPassword), "Old password is invalid");
                 return BadRequest(ModelState);
             }
 

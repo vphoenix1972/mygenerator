@@ -2,16 +2,12 @@
 
 namespace TemplateProject.Web.Controllers.Security
 {
-    public sealed class RegisterModel
+    public sealed class SignInApiDto
     {
         [Required]
-        public string Name { get; set; }
+        public string Login { get; set; }
 
         [Required]
-        public string EMail { get; set; }
-
-        [Required]
-        [MinLength(4)]
         public string Password { get; set; }
     }
 }

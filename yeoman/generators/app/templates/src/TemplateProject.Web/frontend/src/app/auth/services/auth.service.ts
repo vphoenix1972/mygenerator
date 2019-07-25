@@ -14,11 +14,11 @@ import { JwtClaimTypes } from 'src/app/auth/models/jwtClaimTypes';
 const localStorageRefreshTokenKey: string = 'authService.refreshToken';
 
 const paths = {
-    signIn: '/security/signin',
-    signOut: '/security/signout',
-    register: '/security/register',
-    refreshToken: '/security/refreshToken',
-    changePassword: '/app/user/changePassword'
+    signIn: '/api/security/signin',
+    signOut: '/api/security/signout',
+    register: '/api/security/register',
+    refreshToken: '/api/security/refreshToken',
+    changePassword: '/api/user/password'
 };
 
 @Injectable({

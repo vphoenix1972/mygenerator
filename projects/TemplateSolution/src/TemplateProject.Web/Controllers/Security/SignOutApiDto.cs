@@ -2,7 +2,7 @@
 
 namespace TemplateProject.Web.Controllers.Security
 {
-    public sealed class SignOutModel
+    public sealed class SignOutApiDto
     {
         [Required]
         public string RefreshToken { get; set; }

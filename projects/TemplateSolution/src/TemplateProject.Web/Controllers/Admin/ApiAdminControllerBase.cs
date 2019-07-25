@@ -4,9 +4,9 @@ using TemplateProject.Core.Domain;
 
 namespace TemplateProject.Web.Controllers.Admin
 {
-    [Route("admin/[controller]")]
+    [Route(WebConstants.ApiPrefix + "/admin/[controller]")]
     [Authorize(Roles = UserRoleNames.RoleAdmin)]
-    public abstract class AdminControllerBase : Controller
+    public abstract class ApiAdminControllerBase : Controller
     {
     }
 }

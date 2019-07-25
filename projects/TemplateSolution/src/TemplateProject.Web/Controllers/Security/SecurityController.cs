@@ -11,7 +11,7 @@ using TemplateProject.Web.Security;
 
 namespace TemplateProject.Web.Controllers.Security
 {
-    [Route("security")]
+    [Route(WebConstants.ApiPrefix + "/security")]
     public sealed class SecurityController : Controller
     {
         private readonly IDatabaseService _db;
@@ -30,34 +30,19 @@ namespace TemplateProject.Web.Controllers.Security
             IWebConfiguration webConfig,
             IMd5Crypter md5Crypter)
         {
-            if (db == null)
-                throw new ArgumentNullException(nameof(db));
-            if (usersFactory == null)
-                throw new ArgumentNullException(nameof(usersFactory));
-            if (userRolesFactory == null)
-                throw new ArgumentNullException(nameof(userRolesFactory));
-            if (refreshTokenFactory == null)
-                throw new ArgumentNullException(nameof(refreshTokenFactory));
-            if (webSecurityService == null)
-                throw new ArgumentNullException(nameof(webSecurityService));
-            if (webConfig == null)
-                throw new ArgumentNullException(nameof(webConfig));
-            if (md5Crypter == null)
-                throw new ArgumentNullException(nameof(md5Crypter));
-
-            _db = db;
-            _usersFactory = usersFactory;
-            _userRolesFactory = userRolesFactory;
-            _refreshTokenFactory = refreshTokenFactory;
-            _webSecurityService = webSecurityService;
-            _webConfig = webConfig;
-            _md5Crypter = md5Crypter;
+            _db = db ?? throw new ArgumentNullException(nameof(db));
+            _usersFactory = usersFactory ?? throw new ArgumentNullException(nameof(usersFactory));
+            _userRolesFactory = userRolesFactory ?? throw new ArgumentNullException(nameof(userRolesFactory));
+            _refreshTokenFactory = refreshTokenFactory ?? throw new ArgumentNullException(nameof(refreshTokenFactory));
+            _webSecurityService = webSecurityService ?? throw new ArgumentNullException(nameof(webSecurityService));
+            _webConfig = webConfig ?? throw new ArgumentNullException(nameof(webConfig));
+            _md5Crypter = md5Crypter ?? throw new ArgumentNullException(nameof(md5Crypter));
         }
 
         [Route("signin")]
         [AllowAnonymous]
         [HttpPost]
-        public IActionResult SignIn([FromBody] SignInModel model)
+        public IActionResult SignIn([FromBody] SignInApiDto model)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -81,7 +66,7 @@ namespace TemplateProject.Web.Controllers.Security
         [Route("register")]
         [AllowAnonymous]
         [HttpPost]
-        public IActionResult Register([FromBody] RegisterModel model)
+        public IActionResult Register([FromBody] RegisterApiDto model)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -116,7 +101,7 @@ namespace TemplateProject.Web.Controllers.Security
         [Route("refreshToken")]
         [AllowAnonymous]
         [HttpPost]
-        public IActionResult RefreshToken([FromBody] RefreshTokenModel model)
+        public IActionResult RefreshToken([FromBody] RefreshTokenApiDto model)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -157,7 +142,7 @@ namespace TemplateProject.Web.Controllers.Security
         [Route("signout")]
         [AllowAnonymous]
         [HttpPost]
-        public IActionResult SignOut([FromBody] SignOutModel model)
+        public IActionResult SignOut([FromBody] SignOutApiDto model)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);

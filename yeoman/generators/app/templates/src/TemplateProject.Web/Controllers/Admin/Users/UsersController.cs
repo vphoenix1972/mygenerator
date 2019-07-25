@@ -8,7 +8,7 @@ using <%= projectNamespace %>.Core.Interfaces.DataAccess.Repositories;
 
 namespace <%= projectNamespace %>.Web.Controllers.Admin.Users
 {
-    public sealed class UsersController : AdminControllerBase
+    public sealed class UsersController : ApiAdminControllerBase
     {
         private readonly IDatabaseService _db;
         private readonly IMapper _mapper;
@@ -19,8 +19,8 @@ namespace <%= projectNamespace %>.Web.Controllers.Admin.Users
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
-        [HttpGet("index")]
-        public IActionResult Index()
+        [HttpGet]
+        public IActionResult GetAll()
         {
             var filter = new UsersFilter()
             {
@@ -30,7 +30,7 @@ namespace <%= projectNamespace %>.Web.Controllers.Admin.Users
                 }
             };
 
-            return Ok(_mapper.Map<List<UserModel>>(_db.UsersRepository.GetAll(filter)));
+            return Ok(_mapper.Map<List<UserApiDto>>(_db.UsersRepository.GetAll(filter)));
         }
 
         [HttpDelete("{id}")]

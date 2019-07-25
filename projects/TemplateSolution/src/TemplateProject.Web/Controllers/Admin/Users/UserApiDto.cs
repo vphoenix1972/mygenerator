@@ -1,6 +1,6 @@
 ﻿namespace TemplateProject.Web.Controllers.Admin.Users
 {
-    public sealed class UserModel
+    public sealed class UserApiDto
     {
         public string Id { get; set; }
 

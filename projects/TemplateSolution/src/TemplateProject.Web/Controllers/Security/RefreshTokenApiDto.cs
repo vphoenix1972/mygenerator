@@ -2,7 +2,7 @@
 
 namespace TemplateProject.Web.Controllers.Security
 {
-    public sealed class RefreshTokenModel
+    public sealed class RefreshTokenApiDto
     {
         [Required]
         public string RefreshToken { get; set; }

@@ -2,7 +2,7 @@
 
 namespace TemplateProject.Web.Controllers.App.User
 {
-    public sealed class ChangePasswordModel
+    public sealed class ChangePasswordApiDto
     {
         [Required]
         public string OldPassword { get; set; }

@@ -21,7 +21,7 @@ export class UsersIndexComponent implements OnInit {
     ngOnInit() {
         this.isLoading = true;
 
-        this._http.get('/admin/users/index')
+        this._http.get('/api/admin/users')
             .subscribe(serverUsers => {
                 this.users = serverUsers;
 
@@ -40,7 +40,7 @@ export class UsersIndexComponent implements OnInit {
 
                 this._dialogService.showExecuting();
 
-                this._http.delete(`/admin/users/${user.id}`)
+                this._http.delete(`/api/admin/users/${user.id}`)
                     .subscribe(() => {
                         this.users.splice(this.users.indexOf(user), 1);
 
