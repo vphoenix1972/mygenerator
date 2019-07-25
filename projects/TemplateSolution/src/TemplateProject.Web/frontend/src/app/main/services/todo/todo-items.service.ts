@@ -31,24 +31,24 @@ export class TodoItemsService {
         if (sortDirection)
             params = params.append('sortDirection', sortDirection);
 
-        return this._http.get<GetItemsResponse>('/api/todoItems', {
+        return this._http.get<GetItemsResponse>('/api/app/todoItems', {
             params: params
         });
     }
 
     getById(id: string): Observable<TodoItem> {
-        return this._http.get<TodoItem>(`/api/todoItems/${id}`);
+        return this._http.get<TodoItem>(`/api/app/todoItems/${id}`);
     }
 
     add(item: TodoItem): Observable<TodoItem> {
-        return this._http.post<TodoItem>('/api/todoItems', item);
+        return this._http.post<TodoItem>('/api/app/todoItems', item);
     }
 
     update(id: string, item: TodoItem): Observable<any> {
-        return this._http.put(`/api/todoItems/${id}`, item);
+        return this._http.put(`/api/app/todoItems/${id}`, item);
     }
 
     delete(id: string): Observable<any> {
-        return this._http.delete(`/api/todoItems/${id}`);
+        return this._http.delete(`/api/app/todoItems/${id}`);
     }
 }

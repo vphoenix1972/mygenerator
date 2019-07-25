@@ -4,8 +4,8 @@ using <%= projectNamespace %>.Core.Domain;
 
 namespace <%= projectNamespace %>.Web.Controllers.App
 {
-    [Route(WebConstants.ApiPrefix + "/[controller]")]
-    public abstract class ApiControllerBase : Controller
+    [Route(WebConstants.ApiPrefix + "/app/[controller]")]
+    public abstract class ApiAppControllerBase : Controller
     {
     }
 }
