@@ -11,6 +11,7 @@ using TemplateProject.Web.Security;
 
 namespace TemplateProject.Web.Controllers.Security
 {
+    [Produces("application/json")]
     [Route(WebConstants.ApiPrefix + "/security")]
     public sealed class SecurityController : Controller
     {
@@ -39,6 +40,14 @@ namespace TemplateProject.Web.Controllers.Security
             _md5Crypter = md5Crypter ?? throw new ArgumentNullException(nameof(md5Crypter));
         }
 
+        /// <summary>
+        /// Signs in a user.
+        /// </summary>
+        /// <param name="model">Signin data</param>
+        /// <response code="200">Returns tokens</response>
+        /// <response code="400">Returns if there is a validation error</response> 
+        [ProducesResponseType(typeof(SignInResponse), 200)]
+        [ProducesResponseType(typeof(Dictionary<string, string[]>), 400)]
         [Route("signin")]
         [AllowAnonymous]
         [HttpPost]
@@ -56,13 +65,21 @@ namespace TemplateProject.Web.Controllers.Security
             var accessToken = _webSecurityService.GetAccessTokenJwt(user);
             var refreshToken = GetRefreshTokenJwt(user);
 
-            return Ok(new
+            return Ok(new SignInResponse
             {
-                accessToken,
-                refreshToken
+                AccessToken = accessToken,
+                RefreshToken = refreshToken
             });
         }
 
+        /// <summary>
+        /// Registers a new user in the system.
+        /// </summary>
+        /// <param name="model">Register data</param>
+        /// <response code="200">Returns tokens of new logged user</response>
+        /// <response code="400">Returns if there is a validation error</response> 
+        [ProducesResponseType(typeof(SignInResponse), 200)]
+        [ProducesResponseType(typeof(Dictionary<string, string[]>), 400)]
         [Route("register")]
         [AllowAnonymous]
         [HttpPost]
@@ -91,13 +108,24 @@ namespace TemplateProject.Web.Controllers.Security
             var accessToken = _webSecurityService.GetAccessTokenJwt(newUser);
             var refreshToken = GetRefreshTokenJwt(newUser);
 
-            return Ok(new
+            return Ok(new SignInResponse
             {
-                accessToken,
-                refreshToken
+                AccessToken = accessToken,
+                RefreshToken = refreshToken
             });
         }
 
+        /// <summary>
+        /// Gets a new pair of tokens for new user.
+        /// </summary>
+        /// <remarks>
+        /// Use this method to silently refresh tokens of logged user without sending the password
+        /// </remarks>
+        /// <param name="model">Refresh token data</param>
+        /// <response code="200">Returns new pair of tokens</response>
+        /// <response code="400">Returns if there is a validation error</response> 
+        [ProducesResponseType(typeof(SignInResponse), 200)]
+        [ProducesResponseType(typeof(Dictionary<string, string[]>), 400)]
         [Route("refreshToken")]
         [AllowAnonymous]
         [HttpPost]
@@ -132,13 +160,21 @@ namespace TemplateProject.Web.Controllers.Security
             var accessToken = _webSecurityService.GetAccessTokenJwt(user);
             var refreshTokenJwt = _webSecurityService.GetRefreshTokenJwt(refreshToken);
 
-            return Ok(new
+            return Ok(new SignInResponse
             {
-                accessToken,
-                refreshToken = refreshTokenJwt
+                AccessToken = accessToken,
+                RefreshToken = refreshTokenJwt
             });
         }
 
+        /// <summary>
+        /// Signs out a user.
+        /// </summary>
+        /// <param name="model">Sign out data</param>
+        /// <response code="200">Returns if the user has been signed out successfully</response>
+        /// <response code="400">Returns if there is a validation error</response> 
+        [ProducesResponseType(typeof(void), 200)]
+        [ProducesResponseType(typeof(Dictionary<string, string[]>), 400)]
         [Route("signout")]
         [AllowAnonymous]
         [HttpPost]
@@ -213,6 +249,13 @@ namespace TemplateProject.Web.Controllers.Security
         {
             ModelState.AddModelError(string.Empty, "Token is not found");
             return BadRequest(ModelState);
+        }
+
+        public sealed class SignInResponse
+        {
+            public string AccessToken { get; set; }
+
+            public string RefreshToken { get; set; }
         }
     }
 }

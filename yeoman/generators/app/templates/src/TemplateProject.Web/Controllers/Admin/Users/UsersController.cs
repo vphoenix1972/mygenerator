@@ -8,6 +8,7 @@ using <%= projectNamespace %>.Core.Interfaces.DataAccess.Repositories;
 
 namespace <%= projectNamespace %>.Web.Controllers.Admin.Users
 {
+    [Produces("application/json")]
     public sealed class UsersController : ApiAdminControllerBase
     {
         private readonly IDatabaseService _db;
@@ -19,6 +20,14 @@ namespace <%= projectNamespace %>.Web.Controllers.Admin.Users
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
+        /// <summary>
+        /// Gets all users except admin.
+        /// </summary>
+        /// <remarks>
+        /// Requires admin role
+        /// </remarks>
+        /// <response code="200">Returns a list of users</response>
+        [ProducesResponseType(typeof(IEnumerable<UserApiDto>), 200)]
         [HttpGet]
         public IActionResult GetAll()
         {
@@ -33,6 +42,14 @@ namespace <%= projectNamespace %>.Web.Controllers.Admin.Users
             return Ok(_mapper.Map<List<UserApiDto>>(_db.UsersRepository.GetAll(filter)));
         }
 
+        /// <summary>
+        /// Deletes a user by id.
+        /// </summary>
+        /// <remarks>
+        /// Requires admin role
+        /// </remarks>
+        /// <response code="200">Returns if user has been deleted successfully of does not exist</response>
+        [ProducesResponseType(typeof(void), 200)]
         [HttpDelete("{id}")]
         public IActionResult Delete(string id)
         {

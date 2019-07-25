@@ -1,11 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 using <%= projectNamespace %>.Core.Interfaces.DataAccess;
 using <%= projectNamespace %>.Utils.Md5;
 using <%= projectNamespace %>.Web.Security;
 
 namespace <%= projectNamespace %>.Web.Controllers.App.User
 {
+    [Produces("application/json")]
     public sealed class UserController : ApiAppControllerBase
     {
         private readonly IDatabaseService _db;
@@ -16,18 +18,19 @@ namespace <%= projectNamespace %>.Web.Controllers.App.User
             IMd5Crypter md5Crypter,
             IWebSecurityService webSecurityService)
         {
-            if (db == null)
-                throw new ArgumentNullException(nameof(db));
-            if (md5Crypter == null)
-                throw new ArgumentNullException(nameof(md5Crypter));
-            if (webSecurityService == null)
-                throw new ArgumentNullException(nameof(webSecurityService));
-
-            _db = db;
-            _md5Crypter = md5Crypter;
-            _webSecurityService = webSecurityService;
+            _db = db ?? throw new ArgumentNullException(nameof(db));
+            _md5Crypter = md5Crypter ?? throw new ArgumentNullException(nameof(md5Crypter));
+            _webSecurityService = webSecurityService ?? throw new ArgumentNullException(nameof(webSecurityService));
         }
 
+        /// <summary>
+        /// Changes password for logged user
+        /// </summary>
+        /// <param name="model">Password change data</param>
+        /// <response code="200">Returns if password has been changed successfully</response>
+        /// <response code="400">Returns if there is a validation error</response>
+        [ProducesResponseType(typeof(void), 200)]
+        [ProducesResponseType(typeof(Dictionary<string, string[]>), 400)]
         [HttpPost("password")]
         public IActionResult ChangePassword([FromBody] ChangePasswordApiDto model)
         {

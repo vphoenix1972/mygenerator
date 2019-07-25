@@ -69,7 +69,7 @@ export class RegisterComponent {
             await this._authService.registerAsync(ticket);
         }
         catch (error) {
-            let errorText = 'A error occured during password change. Please try again later.';
+            let errorText = 'A error occured during registration. Please try again later.';
 
             const modelState = asModelState(error);
             if (modelState != null)

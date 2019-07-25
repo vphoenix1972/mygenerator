@@ -58,6 +58,27 @@ namespace TemplateProject.Web
                 var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                 x.IncludeXmlComments(xmlPath);
+
+                x.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    Type = SecuritySchemeType.Http,
+                    Description = "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
+                    Name = "Authorization",
+                    In = ParameterLocation.Header,
+                    Scheme = "bearer",
+                    BearerFormat = "JWT"
+                });
+
+                x.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "Bearer" }
+                        },
+                        new string[0]
+                    }
+                });
             });
         }
 
@@ -77,9 +98,10 @@ namespace TemplateProject.Web
             });
 
             app.UseSecurity();
-            
-            app.UseMvc(routes => {
-                routes.MapSpaFallbackRoute("spaFallback", new { controller = "Spa", action = "Index" });          
+
+            app.UseMvc(routes =>
+            {
+                routes.MapSpaFallbackRoute("spaFallback", new { controller = "Spa", action = "Index" });
             });
 
             applicationLifetime.ApplicationStarted.Register(() => OnApplicationStarted(app));
