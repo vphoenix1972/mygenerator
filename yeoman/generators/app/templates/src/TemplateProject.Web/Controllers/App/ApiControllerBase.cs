@@ -4,9 +4,9 @@ using <%= projectNamespace %>.Core.Domain;
 
 namespace <%= projectNamespace %>.Web.Controllers.App
 {
-    [Route(WebConstants.SpaApiPathPrefix + "/[controller]")]
+    [Route(WebConstants.ApiPrefix + "/[controller]")]
     [Authorize(Roles = UserRoleNames.RoleUser)]
-    public abstract class AppControllerBase : Controller
+    public abstract class ApiControllerBase : Controller
     {
     }
 }

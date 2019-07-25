@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace <%= projectNamespace %>.Web.Controllers.App.Todo
+namespace TemplateProject.Web.Controllers.App.Todo
 {
-    public class TodoItemModel
+    public class TodoItemApiDto
     {
         public string Id { get; set; }
 

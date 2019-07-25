@@ -3,12 +3,12 @@ using <%= projectNamespace %>.Core.Domain;
 
 namespace <%= projectNamespace %>.Web.Controllers.App.Todo
 {
-    public sealed class TodoItemModelMappingProfile : Profile
+    public sealed class TodoItemsApiMappingProfile : Profile
     {
-        public TodoItemModelMappingProfile()
+        public TodoItemsApiMappingProfile()
         {
-            CreateMap<TodoItem, TodoItemModel>();
-            CreateMap<TodoItemModel, TodoItem>()
+            CreateMap<TodoItem, TodoItemApiDto>();
+            CreateMap<TodoItemApiDto, TodoItem>()
                 .ForMember(d => d.Id, o => o.Ignore());
         }
     }
