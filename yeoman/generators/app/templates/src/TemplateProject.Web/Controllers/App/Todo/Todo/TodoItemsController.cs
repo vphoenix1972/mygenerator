@@ -49,7 +49,7 @@ namespace <%= projectNamespace %>.Web.Controllers.App.Todo
                 limit = DefaultLimit;
             }
 
-            if (skip.HasValue && skip.Value < 0)
+            if (skip.HasValue)
             {
                 if (skip.Value < 0)
                 {
