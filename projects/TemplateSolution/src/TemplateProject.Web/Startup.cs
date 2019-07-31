@@ -59,6 +59,8 @@ namespace TemplateProject.Web
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                 x.IncludeXmlComments(xmlPath);
 
+                x.DescribeAllEnumsAsStrings();
+                
                 x.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
                     Type = SecuritySchemeType.Http,

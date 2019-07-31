@@ -27,9 +27,9 @@ export class TodoItemsService {
         if (skip !== undefined)
             params = params.append('skip', String(skip));
         if (sortColumn)
-            params = params.append('orderBy', sortColumn);
+            params = params.append('order.field', sortColumn);
         if (sortDirection)
-            params = params.append('orderDirection', sortDirection);
+            params = params.append('order.direction', sortDirection);
 
         return this._http.get<GetItemsResponse>('/api/app/todoItems', {
             params: params
