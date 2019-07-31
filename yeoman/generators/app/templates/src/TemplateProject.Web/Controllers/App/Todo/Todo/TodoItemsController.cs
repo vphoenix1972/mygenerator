@@ -1,12 +1,13 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using <%= projectNamespace %>.Core.Domain;
 using <%= projectNamespace %>.Core.Interfaces.DataAccess;
-using <%= projectNamespace %>.Utils.Entities;
+using <%= projectNamespace %>.Web.Common.Dto;
+using <%= projectNamespace %>.Web.Common.Validation;
 
 namespace <%= projectNamespace %>.Web.Controllers.App.Todo
 {
@@ -15,11 +16,6 @@ namespace <%= projectNamespace %>.Web.Controllers.App.Todo
     {
         private const int DefaultLimit = 10;
         private const int DefaultSkip = 0;
-        private readonly IReadOnlyList<string> allowedColumnsToSortBy = new List<string>
-        {
-            nameof(ITodoItem.Id),
-            nameof(ITodoItem.Name)
-        };
 
         private readonly IDatabaseService _databaseService;
         private readonly IMapper _mapper;
@@ -33,69 +29,56 @@ namespace <%= projectNamespace %>.Web.Controllers.App.Todo
         /// <summary>
         /// Gets items according to filters.
         /// </summary>
-        /// <param name="nameFilter">Item's name filter</param>
-        /// <param name="limit">Limit for returned items</param>
-        /// <param name="skip">Number of items to skip</param>
-        /// <param name="orderBy">Item's field to order by</param>
-        /// <param name="orderDirection">Order direction</param>
         /// <response code="200">Returns a list of items</response>
         /// <response code="400">Returns if there is a validation error</response>
         [ProducesResponseType(typeof(GetManyResponse), 200)]
         [ProducesResponseType(typeof(Dictionary<string, string[]>), 400)]
         [HttpGet]
-        public IActionResult GetMany(
-            string nameFilter = null,
-            int? limit = DefaultLimit,
-            int? skip = DefaultSkip,
-            string orderBy = null,
-            string orderDirection = null)
+        public IActionResult GetMany(GetManyParameters parameters)
         {
-            if (limit.HasValue)
-            {
-                if (limit.Value < 1)
-                {
-                    ModelState.AddModelError(nameof(limit), "Limit cannot be less than 1");
-                    return BadRequest(ModelState);
-                }
-            }
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
-            if (skip.HasValue)
-            {
-                if (skip.Value < 0)
-                {
-                    ModelState.AddModelError(nameof(skip), "Skip cannot be less than 0");
-                    return BadRequest(ModelState);
-                }
-            }
-
-            SortOrder? order = null;
-
-            if (orderBy != null)
-            {
-                if (allowedColumnsToSortBy.All(x => x != orderBy))
-                {
-                    ModelState.AddModelError(nameof(orderBy), $"Order column '{orderBy}' is not valid");
-                    return BadRequest(ModelState);
-                }
-
-                if (orderDirection == null)
-                {
-                    ModelState.AddModelError(nameof(orderDirection), $"Order direction '{order}' is not set");
-                    return BadRequest(ModelState);
-                }
-
-                if (!Enum.TryParse(orderDirection, true, out SortOrder orderValue))
-                {
-                    ModelState.AddModelError(nameof(order), $"Order direction '{orderDirection}' is not valid");
-                    return BadRequest(ModelState);
-                }
-
-                order = orderValue;
-            }
-
-            var result = _databaseService.TodoItemsRepository.GetMany(nameFilter, limit, skip, orderBy, order);
+            var result = _databaseService.TodoItemsRepository.GetMany(parameters.NameFilter,
+                parameters.Limit,
+                parameters.Skip,
+                parameters.Order?.Field,
+                parameters.Order?.Direction
+            );
 
             return Ok(new GetManyResponse { Items = _mapper.Map<List<TodoItemApiDto>>(result.Items), Total = result.Total });
+        }
+
+        public sealed class GetManyParameters
+        {
+            /// <summary>
+            /// Item's name filter
+            /// </summary>
+            public string NameFilter { get; set; }
+
+            /// <summary>
+            /// Limit for returned items
+            /// </summary>
+            [Range(1, WebConstants.MaxLimit)]
+            [DefaultValue(DefaultLimit)]
+            public int? Limit { get; set; } = DefaultLimit;
+
+            /// <summary>
+            /// Number of items to skip
+            /// </summary>
+            [Range(0, int.MaxValue)]
+            [DefaultValue(DefaultSkip)]
+            public int? Skip { get; set; } = DefaultSkip;
+
+            [OrderApiDtoValidation(fields: new[] { nameof(ITodoItem.Id), nameof(ITodoItem.Name) })]
+            public OrderApiDto Order { get; set; } = null;
+        }
+
+        public sealed class GetManyResponse
+        {
+            public IList<TodoItemApiDto> Items { get; set; }
+
+            public int Total { get; set; }
         }
 
         /// <summary>
@@ -191,13 +174,6 @@ namespace <%= projectNamespace %>.Web.Controllers.App.Todo
         private IActionResult ItemNotFound<T>(T id)
         {
             return NotFound($"Item with id='{id}' is not found");
-        }
-
-        public sealed class GetManyResponse
-        {
-            public IList<TodoItemApiDto> Items { get; set; }
-
-            public int Total { get; set; }
         }
     }
 }

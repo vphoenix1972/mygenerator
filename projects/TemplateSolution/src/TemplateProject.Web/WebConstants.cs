@@ -12,5 +12,7 @@ namespace TemplateProject.Web
         public const string ApiPrefix = "api";
 
         public static readonly TimeSpan MaxAllowedTimeToPerformStartup = TimeSpan.FromSeconds(30);
+
+        public const int MaxLimit = 1000;
     }
 }
