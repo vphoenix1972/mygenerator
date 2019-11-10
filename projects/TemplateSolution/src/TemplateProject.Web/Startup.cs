@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using System;
@@ -44,8 +44,7 @@ namespace TemplateProject.Web
             /* Change database backend here */
             services.AddPostgreSQL(_config.DbConnectionString);
 
-            services.AddMvc()
-                .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddControllers();
 
             services.AddSwaggerGen(x =>
             {
@@ -61,8 +60,8 @@ namespace TemplateProject.Web
         }
 
         public void Configure(IApplicationBuilder app,
-            IHostingEnvironment env,
-            IApplicationLifetime applicationLifetime)
+            IWebHostEnvironment env,
+            IHostApplicationLifetime applicationLifetime)
         {
             app.UseExceptionLogger();
 
@@ -75,9 +74,12 @@ namespace TemplateProject.Web
                 x.SwaggerEndpoint("/swagger/v1/swagger.json", "REST API V1");
             });
 
-            app.UseMvc(routes =>
+            app.UseRouting();
+
+            app.UseEndpoints(endpoints =>
             {
-                routes.MapSpaFallbackRoute("spaFallback", new { controller = "Spa", action = "Index" });
+                endpoints.MapControllers();
+                endpoints.MapFallbackToController("Index", "Spa");
             });
 
             applicationLifetime.ApplicationStarted.Register(() => OnApplicationStarted(app));

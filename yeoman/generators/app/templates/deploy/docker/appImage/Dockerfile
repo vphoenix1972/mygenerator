@@ -17,7 +17,7 @@ RUN npm install
 RUN npm run build
 
 # Build backend
-FROM microsoft/dotnet:2.2-sdk AS backend-build
+FROM mcr.microsoft.com/dotnet/core/sdk:3.0 AS backend-build
 WORKDIR /app
 
 RUN apt-get update && apt-get install -y dos2unix
