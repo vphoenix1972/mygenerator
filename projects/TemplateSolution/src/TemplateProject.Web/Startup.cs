@@ -98,9 +98,9 @@ namespace TemplateProject.Web
                 x.SwaggerEndpoint("/swagger/v1/swagger.json", "REST API V1");
             });
 
-            app.UseSecurity();
-            
             app.UseRouting();
+
+            app.UseSecurity();
 
             app.UseEndpoints(endpoints =>
             {

@@ -46,7 +46,7 @@ namespace <%= projectNamespace %>.Web
             services.AddPostgreSQL(_config.DbConnectionString);
 
             services.AddWebSecurity(_config);
-            
+
             services.AddControllers();
 
             services.AddSwaggerGen(x =>
@@ -59,7 +59,7 @@ namespace <%= projectNamespace %>.Web
                 x.IncludeXmlComments(xmlPath);
 
                 x.DescribeAllEnumsAsStrings();
-                
+
                 x.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
                     Type = SecuritySchemeType.Http,
@@ -98,9 +98,9 @@ namespace <%= projectNamespace %>.Web
                 x.SwaggerEndpoint("/swagger/v1/swagger.json", "REST API V1");
             });
 
-            app.UseSecurity();
-            
             app.UseRouting();
+
+            app.UseSecurity();
 
             app.UseEndpoints(endpoints =>
             {

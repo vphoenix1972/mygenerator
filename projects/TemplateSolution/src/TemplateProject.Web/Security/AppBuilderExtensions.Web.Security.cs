@@ -7,6 +7,7 @@ namespace TemplateProject.Web.Security
         public static void UseSecurity(this IApplicationBuilder app)
         {
             app.UseAuthentication();
+            app.UseAuthorization();
         }
     }
 }
