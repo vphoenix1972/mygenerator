@@ -1,7 +1,7 @@
 # Development environment
 
-VS 2017
-ASP.NET Core 2.2.103 SDK, 2.2.1 Runtime
+VS 2019
+ASP.NET Core 3.0 SDK & Runtime
 NodeJS 10 or higher
 
 ```
