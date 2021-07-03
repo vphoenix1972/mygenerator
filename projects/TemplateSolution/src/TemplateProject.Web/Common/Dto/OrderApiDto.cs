@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
+﻿using System.Text.Json.Serialization;
 using TemplateProject.Utils.Entities;
 
 namespace TemplateProject.Web.Common.Dto
@@ -14,7 +13,7 @@ namespace TemplateProject.Web.Common.Dto
         /// <summary>
         /// Order direction
         /// </summary>
-        [JsonConverter(typeof(StringEnumConverter))]
+        [JsonConverter(typeof(JsonStringEnumConverter))]
         public SortOrder? Direction { get; set; }
     }
 }
