@@ -7,7 +7,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    imports: [RouterModule.forRoot(routes, { initialNavigation: 'disabled' })],
+    imports: [RouterModule.forRoot(routes, { initialNavigation: 'disabled', relativeLinkResolution: 'legacy' })],
     exports: [RouterModule]
 })
 export class EntryPointRoutingModule { }

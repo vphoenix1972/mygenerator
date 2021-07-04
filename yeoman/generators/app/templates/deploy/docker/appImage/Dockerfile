@@ -3,7 +3,7 @@
 ###############################
 
 # Build frontend
-FROM node:8.14 as frontend-build
+FROM node:12 as frontend-build
 WORKDIR /build
 
 RUN npm install -g @angular/cli
@@ -17,7 +17,7 @@ RUN npm install
 RUN npm run build
 
 # Build backend
-FROM mcr.microsoft.com/dotnet/core/sdk:3.0 AS backend-build
+FROM mcr.microsoft.com/dotnet/sdk:5.0 AS backend-build
 WORKDIR /app
 
 RUN apt-get update && apt-get install -y dos2unix
@@ -39,7 +39,7 @@ RUN rm -rf /app/publish/wwwroot
 ### Build docker image ###
 ##########################
 
-FROM microsoft/dotnet:2.2-aspnetcore-runtime-bionic
+FROM mcr.microsoft.com/dotnet/runtime:5.0-focal
 
 ### Install packages
 
