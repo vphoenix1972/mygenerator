@@ -1,8 +1,7 @@
 # Development environment
 
-VS 2019
-ASP.NET Core 3.0 SDK & Runtime
-NodeJS 10 or higher
+.NET 5.0 SDK & Runtime
+NodeJS 12 or higher
 
 ```
 npm install -g @angular/cli
@@ -26,8 +25,9 @@ cd projects\TemplateSolution\src\TemplateProject.Web\frontend
 ng build --watch
 ```
 
-To install generator into yeoman run the following command in root directory
+To install generator into yeoman run the following in root directory
 ```
+cd yeoman
 npm link
 ```
 
