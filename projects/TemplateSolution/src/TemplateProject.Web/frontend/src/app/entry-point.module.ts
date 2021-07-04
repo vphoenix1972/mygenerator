@@ -15,7 +15,7 @@ import { EntryPointRoutingModule } from './entry-point-routing.module';
     ],
     imports: [
         BrowserModule,
-        NgbModule.forRoot(),
+        NgbModule,
         ToasterModule.forRoot(),
         SharedModule,
         MainModule,
